@@ -92,6 +92,9 @@
 
                     <li><a href="#realizar-un-enlace-entre-dos-servidores-de-bases-de-datos-postgres%2C-explicando-la-configuraci%C3%B3n-necesaria-en-ambos-extremos-y-demostrando-su-funcionamiento.">Realizar un enlace entre dos servidores de bases de datos Postgres, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.</a>
             		</li>
+
+                    <li><a href="#realizar-un-enlace-entre-un-servidor-oracle-y-otro-postgres-o-mysql-empleando-heterogeneus-services%2C-explicando-la-configuraci%C3%B3n-necesaria-en-ambos-extremos-y-demostrando-su-funcionamiento.">Realizar un enlace entre un servidor ORACLE y otro Postgres o MySQL empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.</a>
+            		</li>
                 </ol>
             </nav>
 
@@ -99,11 +102,8 @@
             
 
             <h3 id="realizar-un-enlace-entre-dos-servidores-de-bases-de-datos-oracle%2C-explicando-la-configuraci%C3%B3n-necesaria-en-ambos-extremos-y-demostrando-su-funcionamiento." tabindex="-1">Realizar un enlace entre dos servidores de bases de datos ORACLE, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.</h3>
-<p>En el escenario, tenemos 2 servidores Oracle, uno creado en mi propio sistema debian y otro en una máquina virtual debian. Ambos se conectan a través de una red virtual. Lo primero que haremos, es crear un usuario en cada servidor con los privilegios suficientes para poder realizar la interconexión.</p>
-<p>El usuario del servidor 1:</p>
+<p>En el escenario, tenemos 2 servidores Oracle, uno creado en mi propio sistema debian y otro en una máquina virtual debian. Ambos se conectan a través de una red virtual. Lo primero que haremos, es crear un usuario en cada servidor con los privilegios suficientes para poder realizar la interconexión. (Solo muestro la creación de un usuario para no repetir información.)</p>
 <p><img src="/img/BD-P2.2.png" alt="BD-P2.2.png"></p>
-<p>El usuario del servidor 2:</p>
-<p><img src="/img/BD-P2.1.png" alt="BD-P2.1.png"></p>
 <p>He añadido como ejemplo el esquema SCOTT para poder visualizar algunas tablas. Vamos a configurar el archivo <code>tnsnames.ora</code>:</p>
 <pre class="language-bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">nano</span> /opt/oracle/product/19c/dbhome_1/network/admin/tnsnames.ora</code></pre>
 <pre class="language-bash"><code class="language-bash">ORCLCDB <span class="token operator">=</span><br>  <span class="token punctuation">(</span>DESCRIPTION <span class="token operator">=</span><br>    <span class="token punctuation">(</span>ADDRESS <span class="token operator">=</span> <span class="token punctuation">(</span>PROTOCOL <span class="token operator">=</span> TCP<span class="token punctuation">)</span><span class="token punctuation">(</span>HOST <span class="token operator">=</span> <span class="token number">192.168</span>.122.97<span class="token punctuation">)</span><span class="token punctuation">(</span>PORT <span class="token operator">=</span> <span class="token number">1521</span><span class="token punctuation">))</span><br>    <span class="token punctuation">(</span>CONNECT_DATA <span class="token operator">=</span><br>      <span class="token punctuation">(</span>SERVER <span class="token operator">=</span> DEDICATED<span class="token punctuation">)</span><br>      <span class="token punctuation">(</span>SERVICE_NAME <span class="token operator">=</span> ORCLCDB<span class="token punctuation">)</span><br>    <span class="token punctuation">)</span><br>  <span class="token punctuation">)</span></code></pre>
@@ -116,6 +116,43 @@
 <p><img src="/img/BD-P2.5.png" alt="BD-P2.5.png"></p>
 <hr>
 <h3 id="realizar-un-enlace-entre-dos-servidores-de-bases-de-datos-postgres%2C-explicando-la-configuraci%C3%B3n-necesaria-en-ambos-extremos-y-demostrando-su-funcionamiento." tabindex="-1">Realizar un enlace entre dos servidores de bases de datos Postgres, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.</h3>
+<p>Lo primero que haré será crear la base de datos en ambos servidores.</p>
+<pre class="language-txt"><code class="language-txt">usuario@PostgreSQL:~$ su - postgres<br>Contraseña: <br>postgres@PostgreSQL:~$ psql<br>psql (11.17 (Debian 11.17-0+deb10u1))<br>Digite «help» para obtener ayuda.<br><br>postgres=# CREATE DATABASE SERVIDOR1;<br>CREATE DATABASE</code></pre>
+<p>Una vez creado las bases de datos en los 2 servidores, crearemos un usuario para cada base de datos y le otorgaremos los privilegios correspondientes.</p>
+<pre class="language-txt"><code class="language-txt">postgres=# CREATE USER alejandro1 WITH PASSWORD 'usuario';<br>CREATE ROLE<br>postgres=# GRANT ALL PRIVILEGES ON DATABASE SERVIDOR1 to alejandro1;<br>GRANT</code></pre>
+<p>Nos conectaremos a la base de datos con el usuario que hemos creado para comprobar que funciona correctamente.</p>
+<pre class="language-txt"><code class="language-txt">postgres@PostgreSQL:~$ psql -h localhost -U alejandro1 -d servidor1;<br>Contraseña para usuario alejandro1: <br>psql (11.17 (Debian 11.17-0+deb10u1))<br>conexión SSL (protocolo: TLSv1.3, cifrado: TLS_AES_256_GCM_SHA384, bits: 256, compresión: desactivado)<br>Digite «help» para obtener ayuda.<br><br>servidor1=> <br></code></pre>
+<p>En las bases de datos, introduciré algunas tablas y registros para mostrar el funcionamiento del enlace posteriormente. He añadido el esquema scott en ambas bases de datos como hice en el anterior ejercicio.</p>
+<p>Una vez que hemos creado las tablas y hemos insertados los registros, modificaremos el fichero de configuración de postgres para que acepte conexiones de forma remota. El fichero que tenemos que editar es el siguiente:</p>
+<pre class="language-bash"><code class="language-bash">usuario@PostgreSQL:~$ <span class="token function">sudo</span> <span class="token function">nano</span> /etc/postgresql/11/main/postgresql.conf</code></pre>
+<p>Editamos la línea que empieza por:</p>
+<pre class="language-txt"><code class="language-txt">listen_addresses = 'localhost'</code></pre>
+<p>Y lo cambiamos por lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">listen_addresses = '*'</code></pre>
+<p>Ahora, editaremos un segundo fichero que se ubica en:</p>
+<pre class="language-txt"><code class="language-txt">usuario@PostgreSQL:~$ sudo nano /etc/postgresql/11/main/pg_hba.conf </code></pre>
+<p>Buscamos la siguiente línea:</p>
+<pre class="language-txt"><code class="language-txt">host    all             all             127.0.0.1/32            md5</code></pre>
+<p>Y ponemos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">host    all             all              192.168.122.0/24       md5</code></pre>
+<p>Podemos cambiar la dirección de red por <code>all</code> y así permitirá el trafico desde cualquier red.</p>
+<p>Una vez modificados ambos ficheros reiniciaremos el servicio para que se apliquen los cambios.</p>
+<pre class="language-bash"><code class="language-bash">usuario@PostgreSQL:~$ <span class="token function">sudo</span> systemctl restart postgresql</code></pre>
+<p>Esta sería la configuración para un servidor, tenemos que hacer exactamente los mismos pasos en el otro servidor, cambiando los nombres necesarios.</p>
+<p>Instalaremos el paquete <code>postgresql-contrib</code>, ejecuntando el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">usuario@PostgreSQL:~$ sudo apt install postgresql-contrib</code></pre>
+<p>Nos cambiaremos al usuario postgres y nos conectaremos a la base de datos que hemos creado anteriormente.</p>
+<pre class="language-txt"><code class="language-txt">usuario@PostgreSQL:~$ su - postgres<br>Contraseña: <br>postgres@PostgreSQL:~$ psql -d servidor1<br>psql (11.17 (Debian 11.17-0+deb10u1))<br>Digite «help» para obtener ayuda.<br><br>servidor1=# </code></pre>
+<p>Creamos la extension con la que nos conectaremos a la base de datos remota con el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">servidor1=# CREATE EXTENSION dblink;<br>CREATE EXTENSION</code></pre>
+<p>Ahora probaré a hacer una consulta del DNAME y DEPTNO del servidor2 desde el servidor1:</p>
+<pre class="language-txt"><code class="language-txt">SELECT * FROM dblink('dbname=servidor2 host=192.168.122.218 user=alejandro2 password=usuario', 'select DNAME, DEPTNO FROM DEPT') as DEPT (DNAME VARCHAR, DEPTNO NUMERIC);</code></pre>
+<p><img src="/img/BD-P2.8.png" alt="BD-P2.8.png"></p>
+<p>Repetiremos el proceso en el servidor 2 ya que el dblink es unidireccional y si queremos conectar el servidor2 con el servidor1 debemos repetir los pasos que hemos hecho anteriormente en el servidor1.</p>
+<p>Ahora probaré a hacer una consulta del DNAME y DEPTNO del servidor1 desde el servidor2:</p>
+<pre class="language-bash"><code class="language-bash">SELECT * FROM dblink<span class="token punctuation">(</span><span class="token string">'dbname=servidor1 host=192.168.122.98 user=alejandro1 password=usuario'</span>, <span class="token string">'select DNAME, DEPTNO FROM DEPT'</span><span class="token punctuation">)</span> as DEPT <span class="token punctuation">(</span>DNAME VARCHAR, DEPTNO NUMERIC<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><img src="/img/BD-P2.9.png" alt="BD-P2.9.png"></p>
+<h3 id="realizar-un-enlace-entre-un-servidor-oracle-y-otro-postgres-o-mysql-empleando-heterogeneus-services%2C-explicando-la-configuraci%C3%B3n-necesaria-en-ambos-extremos-y-demostrando-su-funcionamiento." tabindex="-1">Realizar un enlace entre un servidor ORACLE y otro Postgres o MySQL empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.</h3>
 <hr>
 <h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
 <p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
