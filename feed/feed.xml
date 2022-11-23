@@ -5,11 +5,50 @@
 	
 	<link href="https://reeseschultz.github.io/feed/feed.xml" rel="self"/>
 	<link href="https://reeseschultz.github.io"/>
-	<updated>2022-11-16T00:00:00Z</updated>
+	<updated>2022-11-18T00:00:00Z</updated>
 	<id>https://example.com/</id>
 	<author> 
 		<name>Reese Schultz</name>
 	</author>
+	
+	<entry>
+		<title>Migrar CentOS a otra distribución.</title>
+		<link href="https://reeseschultz.github.io/post/migrar-centos-a-otra-distribucion./"/>
+		<updated>2022-11-18T00:00:00Z</updated>
+		<id>https://reeseschultz.github.io/post/migrar-centos-a-otra-distribucion./</id>
+		<content type="html">&lt;p&gt;Debido al anuncio del fin de soporte por parte de Red Hat de Centos8 el pasado 31 de diciembre de 2021, y teniendo en cuentas que el fin de vida de centos 7 está programada para el 30 de junio de 2024. Han salido múltiples distribuciones que cubren el hueco dejado por esta distribución tan extendida y tan usada en el ámbito de servidores.&lt;/p&gt;
+&lt;p&gt;En la presente práctica, analiza posibles versiones candidatas y opciones desplegadas para la migración de tus servidores CentOS.&lt;/p&gt;
+&lt;p&gt;El espectro es amplio:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Cambiar el rumbo a una nueva distribución, debian, opensuse, slakware, etc.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Soluciones aportadas por Red Hat: Red Hat Enterprise Linux, CentOS Stream.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Solución aportada por Oracle Linux.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Nuevas distribuciones surgidas para paliar el hueco dejado:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;AlmaLinux.&lt;/li&gt;
+&lt;li&gt;Rocky Linux.&lt;/li&gt;
+&lt;li&gt;VZLinux.&lt;/li&gt;
+&lt;li&gt;euroLinux.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;analiza-el-desencadenante-de-la-retirada-de-centos-8-del-mercado.-%C2%BFqu%C3%A9-opini%C3%B3n-tienes-al-respecto%3F&quot; tabindex=&quot;-1&quot;&gt;Analiza el desencadenante de la retirada de centOS 8 del mercado. ¿Qué opinión tienes al respecto?&lt;/h3&gt;
+&lt;p&gt;Al final, creo que la comunidad ha convertido algo que en un principio era malo, en algo muy positivo, ya que gracias a la descontinuación de CentOS han aparecido muchas distribuciones y buenas para usar.&lt;/p&gt;
+&lt;p&gt;CentOS 8 se ha convertido en el nuevo CentOS Stream, este cambio supone un fin a una gran trayectoria o legado, aunque a grandes rasgos nada o poco ha cambiado o vaya a cambiar.&lt;/p&gt;
+&lt;h3 id=&quot;crea-una-cuenta-en-red-hat-y-desc%C3%A1rgate-la-iso-de-red-hat-enterprise-linux-(rel)-y-eval%C3%BAa-el-producto.-comenta-el-procedimiento-de-alta.&quot; tabindex=&quot;-1&quot;&gt;Crea una cuenta en Red Hat y descárgate la iso de Red Hat Enterprise Linux (REL) y evalúa el producto. Comenta el procedimiento de alta.&lt;/h3&gt;
+&lt;p&gt;Lo primero que debemos de hacer es acceder a la página oficial de &lt;img src=&quot;https://www.redhat.com/es/technologies/linux-platforms/enterprise-linux/server/trial?sc_cid=7013a000002pdRFAAY&amp;amp;gclid=Cj0KCQiAg_KbBhDLARIsANx7wAz-LbYyFuxRlM2fU6aFLoXtvGOLRanBnxNm6uBHRNATDa0XvyGdkggaApVJEALw_wcB&amp;amp;gclsrc=aw.ds&quot; alt=&quot;Red Hat&quot; /&gt; para iniciar el registro&lt;/p&gt;
+&lt;h3 id=&quot;descarga-la-iso-de-centos-stream-y-eval%C3%BAa-el-producto.&quot; tabindex=&quot;-1&quot;&gt;Descarga la iso de CentOS Stream y evalúa el producto.&lt;/h3&gt;
+&lt;h3 id=&quot;descarga-iso-de-una-de-las-otras-distribuciones-candidatas%2C-indica-criterios-para-la-elecci%C3%B3n-de-la-nueva-distribuci%C3%B3n-y-eval%C3%BAa-el-producto.&quot; tabindex=&quot;-1&quot;&gt;Descarga iso de una de las otras distribuciones candidatas, indica criterios para la elección de la nueva distribución y evalúa el producto.&lt;/h3&gt;
+&lt;h3 id=&quot;instala-centos-7%2C-y-eval%C3%BAa-la-herramientas-que-ofrecen-la-distribuci%C3%B3n-del-punto-3.&quot; tabindex=&quot;-1&quot;&gt;Instala CentOS 7, y evalúa la herramientas que ofrecen la distribución del punto 3.&lt;/h3&gt;
+&lt;h2 id=&quot;documento-realizado-por%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Documento realizado por:&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;✒️ &lt;strong&gt;Alejandro Montes Delgado&lt;/strong&gt; - &lt;em&gt;2º ASIR&lt;/em&gt;&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>Interconexión de Servidores de Bases de datos</title>
@@ -68,7 +107,40 @@
 &lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;SELECT * FROM dblink&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;dbname=servidor1 host=192.168.122.98 user=alejandro1 password=usuario&#39;&lt;/span&gt;, &lt;span class=&quot;token string&quot;&gt;&#39;select DNAME, DEPTNO FROM DEPT&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; as DEPT &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;DNAME VARCHAR, DEPTNO NUMERIC&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/BD-P2.9.png&quot; alt=&quot;BD-P2.9.png&quot; /&gt;&lt;/p&gt;
 &lt;h3 id=&quot;realizar-un-enlace-entre-un-servidor-oracle-y-otro-postgres-o-mysql-empleando-heterogeneus-services%2C-explicando-la-configuraci%C3%B3n-necesaria-en-ambos-extremos-y-demostrando-su-funcionamiento.&quot; tabindex=&quot;-1&quot;&gt;Realizar un enlace entre un servidor ORACLE y otro Postgres o MySQL empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.&lt;/h3&gt;
-&lt;hr /&gt;
+&lt;h4 id=&quot;oracle-a-postgresql.&quot; tabindex=&quot;-1&quot;&gt;Oracle a PostgreSQL.&lt;/h4&gt;
+&lt;p&gt;El primer paso que haremos en la máquina oracle consistirá en instalar la paquetéria para crear dicho enlace:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@oracle:~$ sudo apt install odbc-postgresql unixodbc               &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/BD-P2.10.png&quot; alt=&quot;BD-P2.10.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Cuando ya esté instalado, procederemos a realizar la configuración en el servidor oracle. Modificaremos el archivo odbcinst.ini:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@oracle:~$ sudo nano /etc/odbc.ini&lt;br /&gt;---&lt;br /&gt;&lt;br /&gt;Tenemos que dejar el siguiente contenido:&lt;br /&gt;&lt;br /&gt;```txt&lt;br /&gt;[PostgreSQL ANSI]&lt;br /&gt;Description=PostgreSQL ODBC driver (ANSI version)&lt;br /&gt;Driver=psqlodbca.so&lt;br /&gt;Setup=libodbcpsqlS.so&lt;br /&gt;Debug=0&lt;br /&gt;CommLog=1&lt;br /&gt;UsageCount=1&lt;br /&gt;&lt;br /&gt;[PostgreSQL Unicode]&lt;br /&gt;Description=PostgreSQL ODBC driver (Unicode version)&lt;br /&gt;Driver=psqlodbcw.so&lt;br /&gt;Setup=libodbcpsqlS.so&lt;br /&gt;Debug=0&lt;br /&gt;CommLog=1&lt;br /&gt;UsageCount=1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora editaremos otro fichero para terminar de configurar el servidor oracle:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@oracle:~$ sudo nano /etc/odbc.ini &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[PSQLA]&lt;br /&gt;Debug = 0&lt;br /&gt;CommLog = 0&lt;br /&gt;ReadOnly = 1&lt;br /&gt;Driver = PostgreSQL ANSI   &lt;br /&gt;Servername = 192.168.122.218&lt;br /&gt;Username = alejandro2&lt;br /&gt;Password = usuario&lt;br /&gt;Port = 5432&lt;br /&gt;Database = servidor2&lt;br /&gt;Trace = 0&lt;br /&gt;TraceFile = /tmp/sql.log&lt;br /&gt;&lt;br /&gt;[PSQLU]&lt;br /&gt;Debug = 0&lt;br /&gt;CommLog = 0&lt;br /&gt;ReadOnly = 0&lt;br /&gt;Driver = PostgreSQL Unicode&lt;br /&gt;Servername = 192.168.122.218&lt;br /&gt;Username = alejandro2&lt;br /&gt;Password = usuario&lt;br /&gt;Port = 5432&lt;br /&gt;Database = servidor2&lt;br /&gt;Trace = 0&lt;br /&gt;TraceFile = /tmp/sql.log&lt;br /&gt;&lt;br /&gt;[Default]&lt;br /&gt; Driver = /usr/lib/x86_64-linux-gnu/odbc/liboplodbcS.so&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Para comprobar que hemos configurado correctamente el fichero &lt;code&gt;odbcinst.ini&lt;/code&gt; ejecutamos el siguiente comando:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@oracle:~$ odbcinst -q -d&lt;br /&gt;[PostgreSQL ANSI]&lt;br /&gt;[PostgreSQL Unicode]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Para comprobar que hemos configurado correctamente el fichero &lt;code&gt;odbc.ini&lt;/code&gt; ejecutamos el siguiente comando:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@oracle:~$ odbcinst -q -s&lt;br /&gt;[PSQLA]&lt;br /&gt;[PSQLU]&lt;br /&gt;[Default]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Con este comando probamos la conexión a postgres;&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@oracle:~$ sudo isql -v PSQLU                                      &lt;br /&gt;[sudo] password for usuario:                                              &lt;br /&gt;+---------------------------------------+&lt;br /&gt;| Connected!                            |&lt;br /&gt;|                                       |&lt;br /&gt;| sql-statement                         |&lt;br /&gt;| help [tablename]                      |&lt;br /&gt;| quit                                  |&lt;br /&gt;|                                       |&lt;br /&gt;+---------------------------------------+&lt;br /&gt;SQL&gt; quit&lt;br /&gt;usuario@oracle:~$ sudo isql -v PSQLA&lt;br /&gt;+---------------------------------------+&lt;br /&gt;| Connected!                            |&lt;br /&gt;|                                       |&lt;br /&gt;| sql-statement                         |&lt;br /&gt;| help [tablename]                      |&lt;br /&gt;| quit                                  |&lt;br /&gt;|                                       |&lt;br /&gt;+---------------------------------------+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Una vez comprobado que las conexiones funcionan correctamente, vamos a configurar el &lt;code&gt;heterogeneus services&lt;/code&gt;. Tendremos que crear un fichero dentro de uno de los directorios de oracle y añadiremos lo siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@oracle:~$ sudo nano /opt/oracle/product/19c/dbhome_1/hs/admin/initPSQLU.ora&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Añadimos lo siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;HS_FDS_CONNECT_INFO = PSQLU&lt;br /&gt;HS_FDS_TRACE_LEVEL = Debug&lt;br /&gt;HS_FDS_SHAREABLE_NAME = /usr/lib/x86_64-linux-gnu/odbc/psqlodbcw.so&lt;br /&gt;HS_LANGUAGE = AMERICAN_AMERICA.WE8ISO8859P1&lt;br /&gt;set ODBCINI=/etc/odbc.ini&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora modificaremos el &lt;code&gt;listener.ora&lt;/code&gt; añadiendo lo siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@oracle:~$ sudo nano /opt/oracle/product/19c/dbhome_1/network/admin/listener.ora&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;SID_LIST_LISTENER=&lt;br /&gt; (SID_LIST=&lt;br /&gt; (SID_DESC=&lt;br /&gt; (SID_NAME=PSQLU)&lt;br /&gt; (ORACLE_HOME=/opt/oracle/product/19c/dbhome_1)&lt;br /&gt; (PROGRAM=dg4odbc)&lt;br /&gt; )&lt;br /&gt; )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;También modificaremos el &lt;code&gt;tnsnames.ora&lt;/code&gt; añadiendo lo siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@oracle:~$ sudo nano /opt/oracle/product/19c/dbhome_1/network/admin/tnsnames.ora&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;PSQLU =&lt;br /&gt; (DESCRIPTION=&lt;br /&gt;   (ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521))&lt;br /&gt;   (CONNECT_DATA=(SID=PSQLU))&lt;br /&gt; (HS=OK)&lt;br /&gt; )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Una vez tengamo todo configurado guardaremos los cambios y reiniciaremos el servidor:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@oracle:~$ sudo systemctl restart oracledb_ORCLCDB-19c.service&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;En el servidor postgres, tenemos que permitir conexiones remotas no documentaré nuevamente como se hace ya que está explicado mas arriba.&lt;/p&gt;
+&lt;p&gt;Cuando hayamos terminado de configurar ambos servidores correctamente, procederenis a realizar la creación del enlace de la base de datos en oracle para que se pueda consultar la de postgres.&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;CREATE PUBLIC DATABASE LINK psql1 &lt;br /&gt;CONNECT TO &quot;alejandro2&quot; IDENTIFIED BY &quot;usuario&quot;&lt;br /&gt;USING &#39;PSQLU&#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/BD-P2.11.png&quot; alt=&quot;BD-P2.11.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Ahora hacemos una prueba para comprobar que funciona:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/BD-P2.12.png&quot; alt=&quot;BD-P2.12.png&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;postgres-a-oracle&quot; tabindex=&quot;-1&quot;&gt;Postgres a Oracle&lt;/h4&gt;
 &lt;h2 id=&quot;documento-realizado-por%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Documento realizado por:&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;✒️ &lt;strong&gt;Alejandro Montes Delgado&lt;/strong&gt; - &lt;em&gt;2º ASIR&lt;/em&gt;&lt;/p&gt;
 </content>

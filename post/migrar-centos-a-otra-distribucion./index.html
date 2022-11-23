@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Migrar CentOS a otra distribución. | Cutreblog">
+    <meta itemprop="description" content="En este articulo, veremos como realizar una migración de CentOS a otra distribución.">
+
+    
+    <meta name="twitter:title" content="Migrar CentOS a otra distribución. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="En este articulo, veremos como realizar una migración de CentOS a otra distribución.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Migrar CentOS a otra distribución. | Cutreblog">
+    <meta name="og:description" content="En este articulo, veremos como realizar una migración de CentOS a otra distribución.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Migrar CentOS a otra distribución. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">About</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Migrar CentOS a otra distribución.</h2>
+
+        
+            <p class="excerpt">En este articulo, veremos como realizar una migración de CentOS a otra distribución.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag ASO" href="/tag/ASO">ASO</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Fri Nov 18 2022 01:00:00 GMT+0100 (hora estándar de Europa central)">November 18, 2022</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#analiza-el-desencadenante-de-la-retirada-de-centos-8-del-mercado.-%C2%BFqu%C3%A9-opini%C3%B3n-tienes-al-respecto%3F">Analiza el desencadenante de la retirada de centOS 8 del mercado. ¿Qué opinión tienes al respecto?</a>
+            		</li>
+
+                    <li><a href="#crea-una-cuenta-en-red-hat-y-desc%C3%A1rgate-la-iso-de-red-hat-enterprise-linux-(rel)-y-eval%C3%BAa-el-producto.-comenta-el-procedimiento-de-alta.">Crea una cuenta en Red Hat y descárgate la iso de Red Hat Enterprise Linux (REL) y evalúa el producto. Comenta el procedimiento de alta.</a>
+            		</li>
+
+                    <li><a href="#descarga-la-iso-de-centos-stream-y-eval%C3%BAa-el-producto.">Descarga la iso de CentOS Stream y evalúa el producto.</a>
+            		</li>
+
+                    <li><a href="#descarga-iso-de-una-de-las-otras-distribuciones-candidatas%2C-indica-criterios-para-la-elecci%C3%B3n-de-la-nueva-distribuci%C3%B3n-y-eval%C3%BAa-el-producto.">Descarga iso de una de las otras distribuciones candidatas, indica criterios para la elección de la nueva distribución y evalúa el producto.</a>
+            		</li>
+
+                    <li><a href="#instala-centos-7%2C-y-eval%C3%BAa-la-herramientas-que-ofrecen-la-distribuci%C3%B3n-del-punto-3.">Instala CentOS 7, y evalúa la herramientas que ofrecen la distribución del punto 3.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <p>Debido al anuncio del fin de soporte por parte de Red Hat de Centos8 el pasado 31 de diciembre de 2021, y teniendo en cuentas que el fin de vida de centos 7 está programada para el 30 de junio de 2024. Han salido múltiples distribuciones que cubren el hueco dejado por esta distribución tan extendida y tan usada en el ámbito de servidores.</p>
+<p>En la presente práctica, analiza posibles versiones candidatas y opciones desplegadas para la migración de tus servidores CentOS.</p>
+<p>El espectro es amplio:</p>
+<ul>
+<li>
+<p>Cambiar el rumbo a una nueva distribución, debian, opensuse, slakware, etc.</p>
+</li>
+<li>
+<p>Soluciones aportadas por Red Hat: Red Hat Enterprise Linux, CentOS Stream.</p>
+</li>
+<li>
+<p>Solución aportada por Oracle Linux.</p>
+</li>
+</ul>
+<p>Nuevas distribuciones surgidas para paliar el hueco dejado:</p>
+<ul>
+<li>AlmaLinux.</li>
+<li>Rocky Linux.</li>
+<li>VZLinux.</li>
+<li>euroLinux.</li>
+</ul>
+<h3 id="analiza-el-desencadenante-de-la-retirada-de-centos-8-del-mercado.-%C2%BFqu%C3%A9-opini%C3%B3n-tienes-al-respecto%3F" tabindex="-1">Analiza el desencadenante de la retirada de centOS 8 del mercado. ¿Qué opinión tienes al respecto?</h3>
+<p>Al final, creo que la comunidad ha convertido algo que en un principio era malo, en algo muy positivo, ya que gracias a la descontinuación de CentOS han aparecido muchas distribuciones y buenas para usar.</p>
+<p>CentOS 8 se ha convertido en el nuevo CentOS Stream, este cambio supone un fin a una gran trayectoria o legado, aunque a grandes rasgos nada o poco ha cambiado o vaya a cambiar.</p>
+<h3 id="crea-una-cuenta-en-red-hat-y-desc%C3%A1rgate-la-iso-de-red-hat-enterprise-linux-(rel)-y-eval%C3%BAa-el-producto.-comenta-el-procedimiento-de-alta." tabindex="-1">Crea una cuenta en Red Hat y descárgate la iso de Red Hat Enterprise Linux (REL) y evalúa el producto. Comenta el procedimiento de alta.</h3>
+<p>Lo primero que debemos de hacer es acceder a la página oficial de <img src="https://www.redhat.com/es/technologies/linux-platforms/enterprise-linux/server/trial?sc_cid=7013a000002pdRFAAY&amp;gclid=Cj0KCQiAg_KbBhDLARIsANx7wAz-LbYyFuxRlM2fU6aFLoXtvGOLRanBnxNm6uBHRNATDa0XvyGdkggaApVJEALw_wcB&amp;gclsrc=aw.ds" alt="Red Hat"> para iniciar el registro</p>
+<h3 id="descarga-la-iso-de-centos-stream-y-eval%C3%BAa-el-producto." tabindex="-1">Descarga la iso de CentOS Stream y evalúa el producto.</h3>
+<h3 id="descarga-iso-de-una-de-las-otras-distribuciones-candidatas%2C-indica-criterios-para-la-elecci%C3%B3n-de-la-nueva-distribuci%C3%B3n-y-eval%C3%BAa-el-producto." tabindex="-1">Descarga iso de una de las otras distribuciones candidatas, indica criterios para la elección de la nueva distribución y evalúa el producto.</h3>
+<h3 id="instala-centos-7%2C-y-eval%C3%BAa-la-herramientas-que-ofrecen-la-distribuci%C3%B3n-del-punto-3." tabindex="-1">Instala CentOS 7, y evalúa la herramientas que ofrecen la distribución del punto 3.</h3>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/interconexion-de-servidores-de-bases-de-datos/">Interconexión de Servidores de Bases de datos</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
