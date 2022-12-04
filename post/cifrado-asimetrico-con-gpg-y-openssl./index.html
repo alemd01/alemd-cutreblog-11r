@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Cifrado asimétrico con gpg y openssl. | Cutreblog">
+    <meta itemprop="description" content="En esta práctica vamos a cifrar ficheros utilizando cifrado asimétrico utilizando el programa gpg. Puedes encontrar el resumen de comando en esta chuleta o buscar información en internet.">
+
+    
+    <meta name="twitter:title" content="Cifrado asimétrico con gpg y openssl. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="En esta práctica vamos a cifrar ficheros utilizando cifrado asimétrico utilizando el programa gpg. Puedes encontrar el resumen de comando en esta chuleta o buscar información en internet.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Cifrado asimétrico con gpg y openssl. | Cutreblog">
+    <meta name="og:description" content="En esta práctica vamos a cifrar ficheros utilizando cifrado asimétrico utilizando el programa gpg. Puedes encontrar el resumen de comando en esta chuleta o buscar información en internet.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Cifrado asimétrico con gpg y openssl. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">About</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Cifrado asimétrico con gpg y openssl.</h2>
+
+        
+            <p class="excerpt">En esta práctica vamos a cifrar ficheros utilizando cifrado asimétrico utilizando el programa gpg. Puedes encontrar el resumen de comando en esta chuleta o buscar información en internet.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SAD" href="/tag/SAD">SAD</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Fri Dec 02 2022 01:00:00 GMT+0100 (hora estándar de Europa central)">December 2, 2022</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#tarea-1%3A-generaci%C3%B3n-de-claves">Tarea 1: Generación de claves</a>
+            
+                <ol>
+                    
+                    <li><a href="#genera-un-par-de-claves-(p%C3%BAblica-y-privada).-%C2%BFen-que-directorio-se-guarda-las-claves-de-un-usuario%3F">Genera un par de claves (pública y privada). ¿En que directorio se guarda las claves de un usuario?</a>
+            		</li>
+
+                    <li><a href="#lista-las-claves-p%C3%BAblicas-que-tienes-en-tu-almac%C3%A9n-de-claves.-explica-los-distintos-datos-que-nos-muestra.-%C2%BFc%C3%B3mo-deber%C3%ADas-haber-generado-las-claves-para-indicar%2C-por-ejemplo%2C-que-tenga-un-1-mes-de-validez%3F">Lista las claves públicas que tienes en tu almacén de claves. Explica los distintos datos que nos muestra. ¿Cómo deberías haber generado las claves para indicar, por ejemplo, que tenga un 1 mes de validez?</a>
+            		</li>
+
+                    <li><a href="#lista-las-claves-privadas-de-tu-almac%C3%A9n-de-claves.">Lista las claves privadas de tu almacén de claves.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#tarea-2%3A-importar-%2F-exportar-clave-p%C3%BAblica">Tarea 2: Importar / exportar clave pública</a>
+            
+                <ol>
+                    
+                    <li><a href="#exporta-tu-clave-p%C3%BAblica-en-formato-ascii-y-guardalo-en-un-archivo-nombre_apellido.asc-y-env%C3%ADalo-al-compa%C3%B1ero-con-el-que-vas-a-hacer-esta-pr%C3%A1ctica.">Exporta tu clave pública en formato ASCII y guardalo en un archivo nombre_apellido.asc y envíalo al compañero con el que vas a hacer esta práctica.</a>
+            		</li>
+
+                    <li><a href="#importa-las-claves-p%C3%BAblicas-recibidas-de-vuestro-compa%C3%B1ero.">Importa las claves públicas recibidas de vuestro compañero.</a>
+            		</li>
+
+                    <li><a href="#comprueba-que-las-claves-se-han-incluido-correctamente-en-vuestro-keyring.">Comprueba que las claves se han incluido correctamente en vuestro keyring.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#tarea-3%3A-cifrado-asim%C3%A9trico-con-claves-p%C3%BAblicas">Tarea 3: Cifrado asimétrico con claves públicas</a>
+            
+                <ol>
+                    
+                    <li><a href="#cifraremos-un-archivo-cualquiera-y-lo-remitiremos-por-email-a-uno-de-nuestros-compa%C3%B1eros-que-nos-proporcion%C3%B3-su-clave-p%C3%BAblica.">Cifraremos un archivo cualquiera y lo remitiremos por email a uno de nuestros compañeros que nos proporcionó su clave pública.</a>
+            		</li>
+
+                    <li><a href="#nuestro-compa%C3%B1ero%2C-a-su-vez%2C-nos-remitir%C3%A1-un-archivo-cifrado-para-que-nosotros-lo-descifremos.">Nuestro compañero, a su vez, nos remitirá un archivo cifrado para que nosotros lo descifremos.</a>
+            		</li>
+
+                    <li><a href="#tanto-nosotros-como-nuestro-compa%C3%B1ero-comprobaremos-que-hemos-podido-descifrar-los-mensajes-recibidos-respectivamente.">Tanto nosotros como nuestro compañero comprobaremos que hemos podido descifrar los mensajes recibidos respectivamente.</a>
+            		</li>
+
+                    <li><a href="#por-%C3%BAltimo%2C-enviaremos-el-documento-cifrado-a-alguien-que-no-estaba-en-la-lista-de-destinatarios-y-comprobaremos-que-este-usuario-no-podr%C3%A1-descifrar-este-archivo.">Por último, enviaremos el documento cifrado a alguien que no estaba en la lista de destinatarios y comprobaremos que este usuario no podrá descifrar este archivo.</a>
+            		</li>
+
+                    <li><a href="#para-terminar%2C-indica-los-comandos-necesarios-para-borrar-las-claves-p%C3%BAblicas-y-privadas-que-posees.">Para terminar, indica los comandos necesarios para borrar las claves públicas y privadas que posees.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#tarea-4%3A-exportar-clave-a-un-servidor-p%C3%BAblico-de-claves-pgp">Tarea 4: Exportar clave a un servidor público de claves PGP</a>
+            
+                <ol>
+                    
+                    <li><a href="#genera-la-clave-de-revocaci%C3%B3n-de-tu-clave-p%C3%BAblica-para-utilizarla-en-caso-de-que-haya-problemas.">Genera la clave de revocación de tu clave pública para utilizarla en caso de que haya problemas.</a>
+            		</li>
+
+                    <li><a href="#exporta-tu-clave-p%C3%BAblica-al-servidor-pgp.rediris.es">Exporta tu clave pública al servidor pgp.rediris.es</a>
+            		</li>
+
+                    <li><a href="#borra-la-clave-p%C3%BAblica-de-alguno-de-tus-compa%C3%B1eros-de-clase-e-imp%C3%B3rtala-ahora-del-servidor-p%C3%BAblico-de-rediris.">Borra la clave pública de alguno de tus compañeros de clase e impórtala ahora del servidor público de rediris.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#tarea-5%3A-cifrado-asim%C3%A9trico-con-openssl">Tarea 5: Cifrado asimétrico con openssl</a>
+            
+                <ol>
+                    
+                    <li><a href="#genera-un-par-de-claves-(p%C3%BAblica-y-privada).">Genera un par de claves (pública y privada).</a>
+            		</li>
+
+                    <li><a href="#env%C3%ADa-tu-clave-p%C3%BAblica-a-un-compa%C3%B1ero.">Envía tu clave pública a un compañero.</a>
+            		</li>
+
+                    <li><a href="#utilizando-la-clave-p%C3%BAblica-cifra-un-fichero-de-texto-y-env%C3%ADalo-a-tu-compa%C3%B1ero.">Utilizando la clave pública cifra un fichero de texto y envíalo a tu compañero.</a>
+            		</li>
+
+                    <li><a href="#tu-compa%C3%B1ero-te-ha-mandado-un-fichero-cifrado%2C-muestra-el-proceso-para-el-descifrado.">Tu compañero te ha mandado un fichero cifrado, muestra el proceso para el descifrado.</a>
+            		</li>
+                </ol>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="tarea-1%3A-generaci%C3%B3n-de-claves" tabindex="-1">Tarea 1: Generación de claves</h3>
+<h4 id="genera-un-par-de-claves-(p%C3%BAblica-y-privada).-%C2%BFen-que-directorio-se-guarda-las-claves-de-un-usuario%3F" tabindex="-1">Genera un par de claves (pública y privada). ¿En que directorio se guarda las claves de un usuario?</h4>
+<p>Para generar un par de claves, usaremos el siguiente comando.</p>
+<pre class="language-txt"><code class="language-txt">$ gpg --gen-key</code></pre>
+<p><img src="/img/SAD-P3.1.png" alt="SAD-P3.1.png"></p>
+<p>Las claves públicas y privadas se guardan en <code>~/.gnupg</code></p>
+<h4 id="lista-las-claves-p%C3%BAblicas-que-tienes-en-tu-almac%C3%A9n-de-claves.-explica-los-distintos-datos-que-nos-muestra.-%C2%BFc%C3%B3mo-deber%C3%ADas-haber-generado-las-claves-para-indicar%2C-por-ejemplo%2C-que-tenga-un-1-mes-de-validez%3F" tabindex="-1">Lista las claves públicas que tienes en tu almacén de claves. Explica los distintos datos que nos muestra. ¿Cómo deberías haber generado las claves para indicar, por ejemplo, que tenga un 1 mes de validez?</h4>
+<p>El comando usado para listar las claves es:</p>
+<pre class="language-txt"><code class="language-txt">$ gpg --list-keys</code></pre>
+<p><img src="/img/SAD-P3.2.png" alt="SAD-P3.2.png"></p>
+<p>Para indicar el tiempo de validez al crear el par de claves, usamos el comando:</p>
+<pre class="language-txt"><code class="language-txt">$ gpg --full-gen-key</code></pre>
+<p><img src="/img/SAD-P3.4.png" alt="SAD-P3.4.png"></p>
+<p><img src="/img/SAD-P3.5.png" alt="SAD-P3.5.png"></p>
+<h4 id="lista-las-claves-privadas-de-tu-almac%C3%A9n-de-claves." tabindex="-1">Lista las claves privadas de tu almacén de claves.</h4>
+<p>El comando usado para listar las claves privadas es:</p>
+<pre class="language-txt"><code class="language-txt">$ gpg --list-secret-keys</code></pre>
+<p><img src="/img/SAD-P3.3.png" alt="SAD-P3.3.png"></p>
+<hr>
+<h3 id="tarea-2%3A-importar-%2F-exportar-clave-p%C3%BAblica" tabindex="-1">Tarea 2: Importar / exportar clave pública</h3>
+<h4 id="exporta-tu-clave-p%C3%BAblica-en-formato-ascii-y-guardalo-en-un-archivo-nombre_apellido.asc-y-env%C3%ADalo-al-compa%C3%B1ero-con-el-que-vas-a-hacer-esta-pr%C3%A1ctica." tabindex="-1">Exporta tu clave pública en formato ASCII y guardalo en un archivo nombre_apellido.asc y envíalo al compañero con el que vas a hacer esta práctica.</h4>
+<p>El comando para generar el archivo con la clave pública en formato ASCII es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">$ gpg --armor --output alejandro_montes.asc --export aaleemd11@gmail.com</code></pre>
+<p>Le he enviado mi clave pública a mi compañero Juan Jesús.</p>
+<h4 id="importa-las-claves-p%C3%BAblicas-recibidas-de-vuestro-compa%C3%B1ero." tabindex="-1">Importa las claves públicas recibidas de vuestro compañero.</h4>
+<p>El comando para importar la clave pública de Juan Jesús es el siguiente:</p>
+<p><img src="/img/SAD-P3.6.png" alt="SAD-P3.6.png"></p>
+<h4 id="comprueba-que-las-claves-se-han-incluido-correctamente-en-vuestro-keyring." tabindex="-1">Comprueba que las claves se han incluido correctamente en vuestro keyring.</h4>
+<p>Muestro mi anillo de claves y se ve que la clave de Juan Jesús está importada correctamente:</p>
+<p><img src="/img/SAD-P3.8.png" alt="SAD-P3.8.png"></p>
+<hr>
+<h3 id="tarea-3%3A-cifrado-asim%C3%A9trico-con-claves-p%C3%BAblicas" tabindex="-1">Tarea 3: Cifrado asimétrico con claves públicas</h3>
+<h4 id="cifraremos-un-archivo-cualquiera-y-lo-remitiremos-por-email-a-uno-de-nuestros-compa%C3%B1eros-que-nos-proporcion%C3%B3-su-clave-p%C3%BAblica." tabindex="-1">Cifraremos un archivo cualquiera y lo remitiremos por email a uno de nuestros compañeros que nos proporcionó su clave pública.</h4>
+<p>Ciframos un archivo de ejemplo y se lo envío a Iván.</p>
+<pre class="language-txt"><code class="language-txt">gpg --encrypt --recipient githubemail1asir@gmail.com para_juanjesus.txt</code></pre>
+<h4 id="nuestro-compa%C3%B1ero%2C-a-su-vez%2C-nos-remitir%C3%A1-un-archivo-cifrado-para-que-nosotros-lo-descifremos." tabindex="-1">Nuestro compañero, a su vez, nos remitirá un archivo cifrado para que nosotros lo descifremos.</h4>
+<p>El comando usado para desifrar el archivo que nos ha enviado nuestro compañero es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">gpg --decrypt criptoarchivo.txt.gpg</code></pre>
+<p><img src="/img/SAD-P3.9.png" alt="SAD-P3.9.png"></p>
+<h4 id="tanto-nosotros-como-nuestro-compa%C3%B1ero-comprobaremos-que-hemos-podido-descifrar-los-mensajes-recibidos-respectivamente." tabindex="-1">Tanto nosotros como nuestro compañero comprobaremos que hemos podido descifrar los mensajes recibidos respectivamente.</h4>
+<p>Nuestro compañero también ha descifrado el archivo correctamente.</p>
+<p><img src="/img/SAD-P3.10.png" alt="SAD-P3.10.png"></p>
+<h4 id="por-%C3%BAltimo%2C-enviaremos-el-documento-cifrado-a-alguien-que-no-estaba-en-la-lista-de-destinatarios-y-comprobaremos-que-este-usuario-no-podr%C3%A1-descifrar-este-archivo." tabindex="-1">Por último, enviaremos el documento cifrado a alguien que no estaba en la lista de destinatarios y comprobaremos que este usuario no podrá descifrar este archivo.</h4>
+<p>No tengo captura pero lo he probado y mi compañero no podía visualizar el contenido ni desencriptarlo.</p>
+<h4 id="para-terminar%2C-indica-los-comandos-necesarios-para-borrar-las-claves-p%C3%BAblicas-y-privadas-que-posees." tabindex="-1">Para terminar, indica los comandos necesarios para borrar las claves públicas y privadas que posees.</h4>
+<pre class="language-txt"><code class="language-txt">gpg --delete-secret-key "Alejandro Montes Delgado"</code></pre>
+<p><img src="/img/SAD-P3.11.png" alt="SAD-P3.11.png"></p>
+<hr>
+<h3 id="tarea-4%3A-exportar-clave-a-un-servidor-p%C3%BAblico-de-claves-pgp" tabindex="-1">Tarea 4: Exportar clave a un servidor público de claves PGP</h3>
+<h4 id="genera-la-clave-de-revocaci%C3%B3n-de-tu-clave-p%C3%BAblica-para-utilizarla-en-caso-de-que-haya-problemas." tabindex="-1">Genera la clave de revocación de tu clave pública para utilizarla en caso de que haya problemas.</h4>
+<p>Para crear una  clave de rovación usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">gpg --gen-revoke 0549F57086A3E680F1DD7F7DB99701ED0FAD4CEF</code></pre>
+<p><img src="/img/SAD-P3.12.png" alt="SAD-P3.12.png"></p>
+<h4 id="exporta-tu-clave-p%C3%BAblica-al-servidor-pgp.rediris.es" tabindex="-1">Exporta tu clave pública al servidor <a href="http://pgp.rediris.es">pgp.rediris.es</a></h4>
+<p>He usado otro servidor de claves públicas debido a que rediris está caido.</p>
+<pre class="language-txt"><code class="language-txt">gpg --keyserver pgp.mit.edu --send-keys 0549F57086A3E680F1DD7F7DB99701ED0FAD4CEF</code></pre>
+<p><img src="/img/SAD-P3.13.png" alt="SAD-P3.13.png"></p>
+<p>Como podemos ver se ha subido correctamente.</p>
+<p><img src="/img/SAD-P3.14.png" alt="SAD-P3.14.png"></p>
+<h4 id="borra-la-clave-p%C3%BAblica-de-alguno-de-tus-compa%C3%B1eros-de-clase-e-imp%C3%B3rtala-ahora-del-servidor-p%C3%BAblico-de-rediris." tabindex="-1">Borra la clave pública de alguno de tus compañeros de clase e impórtala ahora del servidor público de rediris.</h4>
+<p>Borro la clave pública de mi compañero:</p>
+<pre class="language-txt"><code class="language-txt">gpg --delete-key "Juan Jesus"</code></pre>
+<p>Para importar la clave de Juan Jesús usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">gpg --keyserver pgp.rediris.es --recv-keys 63DE4D1C7A7D69E8BB02F2F60D9A9FF1B5EE9093</code></pre>
+<p>Da error pero porque no funciona correctamente rediris.</p>
+<p><img src="/img/SAD-P3.15.png" alt="SAD-P3.15.png"></p>
+<hr>
+<h3 id="tarea-5%3A-cifrado-asim%C3%A9trico-con-openssl" tabindex="-1">Tarea 5: Cifrado asimétrico con openssl</h3>
+<h4 id="genera-un-par-de-claves-(p%C3%BAblica-y-privada)." tabindex="-1">Genera un par de claves (pública y privada).</h4>
+<p>Para generar el par de claves, uso el siguiente comando:</p>
+<p><img src="/img/SAD-P3.16.png" alt="SAD-P3.16.png"></p>
+<p>Extraemos la clave pública y la insertamos en un fichero con el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">openssl rsa -in alejandro-montes-ssl.pem -pubout > alejandro-montes-ssl.pub.pem</code></pre>
+<p><img src="/img/SAD-P3.17.png" alt="SAD-P3.17.png"></p>
+<h4 id="env%C3%ADa-tu-clave-p%C3%BAblica-a-un-compa%C3%B1ero." tabindex="-1">Envía tu clave pública a un compañero.</h4>
+<p>Le he enviado mi clave a Juanje y él me ha enviado la suya.</p>
+<h4 id="utilizando-la-clave-p%C3%BAblica-cifra-un-fichero-de-texto-y-env%C3%ADalo-a-tu-compa%C3%B1ero." tabindex="-1">Utilizando la clave pública cifra un fichero de texto y envíalo a tu compañero.</h4>
+<p>Este es el fichero que yo he cifrado:</p>
+<p><img src="/img/SAD-P3.18.png" alt="SAD-P3.18.png"></p>
+<p>Este es el fichero que ha encriptado Juanje</p>
+<p><img src="/img/SAD-P3.19.png" alt="SAD-P3.19.png"></p>
+<h4 id="tu-compa%C3%B1ero-te-ha-mandado-un-fichero-cifrado%2C-muestra-el-proceso-para-el-descifrado." tabindex="-1">Tu compañero te ha mandado un fichero cifrado, muestra el proceso para el descifrado.</h4>
+<p>Para descifrarlo usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">openssl rsautl -decrypt -inkey alejandro-montes-ssl.pem -in criptoarchivossl.txt.enc -out criptoarchivossl.txt</code></pre>
+<p><img src="/img/SAD-P3.20.png" alt="SAD-P3.20.png"></p>
+<p>Mi compañero Juanje también ha descifrado el mío correctamente.</p>
+<p><img src="/img/SAD-P3.21.png" alt="SAD-P3.21.png"></p>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Siguiente post</p>
+            <p class="font-bold mb-2">
+                <a href="/post/boletin-individual-plsql/">Boletín individual PL/SQL</a>
+            </p>
+        
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/migracion-de-aplicaciones-web-al-vps/">Migración de Aplicaciones Web al VPS</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>

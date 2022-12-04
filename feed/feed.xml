@@ -5,11 +5,143 @@
 	
 	<link href="https://reeseschultz.github.io/feed/feed.xml" rel="self"/>
 	<link href="https://reeseschultz.github.io"/>
-	<updated>2022-11-24T00:00:00Z</updated>
+	<updated>2022-12-04T00:00:00Z</updated>
 	<id>https://example.com/</id>
 	<author> 
 		<name>Reese Schultz</name>
 	</author>
+	
+	<entry>
+		<title>Boletín individual PL/SQL</title>
+		<link href="https://reeseschultz.github.io/post/boletin-individual-plsql/"/>
+		<updated>2022-12-04T00:00:00Z</updated>
+		<id>https://reeseschultz.github.io/post/boletin-individual-plsql/</id>
+		<content type="html">&lt;h3 id=&quot;hacer-un-procedimiento-que-muestre-el-nombre-y-el-salario-del-empleado-cuyo-c%C3%B3digo-es-7082&quot; tabindex=&quot;-1&quot;&gt;Hacer un procedimiento que muestre el nombre y el salario del empleado cuyo código es 7082&lt;/h3&gt;
+&lt;pre class=&quot;language-plsql&quot;&gt;&lt;code class=&quot;language-plsql&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;DECLARE&lt;/span&gt;&lt;br /&gt;    V_ENAME EMP&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ENAME&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;TYPE&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;    V_SAL EMP&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;SAL&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;TYPE&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;&lt;span class=&quot;token keyword&quot;&gt;BEGIN&lt;/span&gt;&lt;br /&gt;    &lt;span class=&quot;token keyword&quot;&gt;SELECT&lt;/span&gt; ENAME&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; SAL &lt;span class=&quot;token keyword&quot;&gt;INTO&lt;/span&gt; V_ENAME&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; V_SAL&lt;br /&gt;    &lt;span class=&quot;token keyword&quot;&gt;FROM&lt;/span&gt; EMP &lt;span class=&quot;token keyword&quot;&gt;WHERE&lt;/span&gt; EMPNO &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;7082&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;    &lt;br /&gt;    DBMS_OUTPUT&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;PUT_LINE&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;Nombre: &#39;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;||&lt;/span&gt; v_ename&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;    DBMS_OUTPUT&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;PUT_LINE&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;Salario: &#39;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;||&lt;/span&gt; v_sal&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;&lt;span class=&quot;token keyword&quot;&gt;END&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;hacer-un-procedimiento-que-reciba-como-par%C3%A1metro-un-c%C3%B3digo-de-empleado-y-devuelva-su-nombre&quot; tabindex=&quot;-1&quot;&gt;Hacer un procedimiento que reciba como parámetro un código de empleado y devuelva su nombre&lt;/h3&gt;
+&lt;pre class=&quot;language-plsql&quot;&gt;&lt;code class=&quot;language-plsql&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;OR&lt;/span&gt; REPLACE &lt;span class=&quot;token keyword&quot;&gt;PROCEDURE&lt;/span&gt; MUESTRA_NOMBRE &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;P_EMPNO EMP&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;EMPNO&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;TYPE&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;br /&gt;&lt;span class=&quot;token keyword&quot;&gt;IS&lt;/span&gt;&lt;br /&gt;    V_NOMBRE EMP&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ENAME&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;TYPE&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;&lt;span class=&quot;token keyword&quot;&gt;BEGIN&lt;/span&gt;&lt;br /&gt;    &lt;span class=&quot;token keyword&quot;&gt;SELECT&lt;/span&gt; ENAME &lt;span class=&quot;token keyword&quot;&gt;INTO&lt;/span&gt; V_NOMBRE &lt;br /&gt;    &lt;span class=&quot;token keyword&quot;&gt;FROM&lt;/span&gt; EMP &lt;span class=&quot;token keyword&quot;&gt;WHERE&lt;/span&gt; EMPNO&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;P_EMPNO&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;&lt;br /&gt;    DBMS_OUTPUT&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;PUT_LINE&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;Nombre: &#39;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;||&lt;/span&gt; V_NOMBRE&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;&lt;span class=&quot;token keyword&quot;&gt;END&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;hacer-un-procedimiento-que-devuelva-los-nombres-de-los-tres-empleados-m%C3%A1s-antiguos&quot; tabindex=&quot;-1&quot;&gt;Hacer un procedimiento que devuelva los nombres de los tres empleados más antiguos&lt;/h3&gt;
+&lt;pre class=&quot;language-plsql&quot;&gt;&lt;code class=&quot;language-plsql&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;OR&lt;/span&gt; REPLACE &lt;span class=&quot;token keyword&quot;&gt;PROCEDURE&lt;/span&gt; TRES_MAS_ANTIGUOS&lt;br /&gt;&lt;span class=&quot;token keyword&quot;&gt;AS&lt;/span&gt;&lt;br /&gt;&lt;span class=&quot;token keyword&quot;&gt;BEGIN&lt;/span&gt;&lt;br /&gt;  &lt;span class=&quot;token keyword&quot;&gt;FOR&lt;/span&gt; emp &lt;span class=&quot;token keyword&quot;&gt;IN&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;SELECT&lt;/span&gt; ENAME&lt;br /&gt;              &lt;span class=&quot;token keyword&quot;&gt;FROM&lt;/span&gt; EMP&lt;br /&gt;              &lt;span class=&quot;token keyword&quot;&gt;ORDER&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;BY&lt;/span&gt; HIREDATE &lt;span class=&quot;token keyword&quot;&gt;ASC&lt;/span&gt;&lt;br /&gt;              &lt;span class=&quot;token keyword&quot;&gt;FETCH&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;FIRST&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt; ROWS &lt;span class=&quot;token keyword&quot;&gt;ONLY&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;br /&gt;  &lt;span class=&quot;token keyword&quot;&gt;LOOP&lt;/span&gt;&lt;br /&gt;    DBMS_OUTPUT&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;PUT_LINE&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;emp&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ENAME&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;  &lt;span class=&quot;token keyword&quot;&gt;END&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;LOOP&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;&lt;span class=&quot;token keyword&quot;&gt;END&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;br /&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;hacer-un-procedimiento-que-reciba-el-nombre-de-un-tablespace-y-muestre-los-nombres-de-los-usuarios-que-lo-tienen-como-tablespace-por-defecto-(vista-dba_users)&quot; tabindex=&quot;-1&quot;&gt;Hacer un procedimiento que reciba el nombre de un tablespace y muestre los nombres de los usuarios que lo tienen como tablespace por defecto (Vista DBA_USERS)&lt;/h3&gt;
+&lt;pre class=&quot;language-plsql&quot;&gt;&lt;code class=&quot;language-plsql&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;modificar-el-procedimiento-anterior-para-que-haga-lo-mismo-pero-devolviendo-el-n%C3%BAmero-de-usuarios-que-tienen-ese-tablespace-como-tablespace-por-defecto.-nota%3A-hay-que-convertir-el-procedimiento-en-funci%C3%B3n&quot; tabindex=&quot;-1&quot;&gt;Modificar el procedimiento anterior para que haga lo mismo pero devolviendo el número de usuarios que tienen ese tablespace como tablespace por defecto. Nota: Hay que convertir el procedimiento en función&lt;/h3&gt;
+&lt;h3 id=&quot;hacer-un-procedimiento-llamado-mostrar_usuarios_por_tablespace-que-muestre-por-pantalla-un-listado-de-los-tablespaces-existentes-con-la-lista-de-usuarios-de-cada-uno-y-el-n%C3%BAmero-de-los-mismos%2C-as%C3%AD%3A-(vistas-dba_tablespaces-y-dba_users)&quot; tabindex=&quot;-1&quot;&gt;Hacer un procedimiento llamado mostrar_usuarios_por_tablespace que muestre por pantalla un listado de los tablespaces existentes con la lista de usuarios de cada uno y el número de los mismos, así: (Vistas DBA_TABLESPACES y DBA_USERS)&lt;/h3&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;Tablespace xxxx:&lt;br /&gt;&lt;br /&gt;	Usr1&lt;br /&gt;	Usr2&lt;br /&gt;	...&lt;br /&gt;&lt;br /&gt;Total Usuarios Tablespace xxxx: n1&lt;br /&gt;&lt;br /&gt;Tablespace yyyy:&lt;br /&gt;&lt;br /&gt;	Usr1&lt;br /&gt;	Usr2&lt;br /&gt;	...&lt;br /&gt;&lt;br /&gt;Total Usuarios Tablespace yyyy: n2&lt;br /&gt;....&lt;br /&gt;Total Usuarios BD: nn&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;hacer-un-procedimiento-llamado-mostrar_codigo_fuente-que-reciba-el-nombre-de-otro-procedimiento-y-muestre-su-c%C3%B3digo-fuente.-(dba_source)&quot; tabindex=&quot;-1&quot;&gt;Hacer un procedimiento llamado mostrar_codigo_fuente  que reciba el nombre de otro procedimiento y muestre su código fuente. (DBA_SOURCE)&lt;/h3&gt;
+&lt;h3 id=&quot;hacer-un-procedimiento-llamado-mostrar_privilegios_usuario-que-reciba-el-nombre-de-un-usuario-y-muestre-sus-privilegios-de-sistema-y-sus-privilegios-sobre-objetos.-(dba_sys_privs-y-dba_tab_privs)&quot; tabindex=&quot;-1&quot;&gt;Hacer un procedimiento llamado mostrar_privilegios_usuario que reciba el nombre de un usuario y muestre sus privilegios de sistema y sus privilegios sobre objetos. (DBA_SYS_PRIVS y DBA_TAB_PRIVS)&lt;/h3&gt;
+&lt;h3 id=&quot;realiza-un-procedimiento-llamado-listar_comisiones-que-nos-muestre-por-pantalla-un-listado-de-las-comisiones-de-los-empleados-agrupados-seg%C3%BAn-la-localidad-donde-est%C3%A1-ubicado-su-departamento-con-el-siguiente-formato%3A&quot; tabindex=&quot;-1&quot;&gt;Realiza un procedimiento llamado listar_comisiones que nos muestre por pantalla un listado de las comisiones de los empleados agrupados según la localidad donde está ubicado su departamento con el siguiente formato:&lt;/h3&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;Localidad NombreLocalidad&lt;br /&gt;	&lt;br /&gt;Departamento: NombreDepartamento&lt;br /&gt;&lt;br /&gt;		Empleado1 ……. Comisión 1&lt;br /&gt;		Empleado2 ……. Comisión 2&lt;br /&gt;		.	&lt;br /&gt;		.&lt;br /&gt;		.&lt;br /&gt;		Empleadon ……. Comision n&lt;br /&gt;&lt;br /&gt;	Total Comisiones en el Departamento NombreDepartamento: SumaComisiones&lt;br /&gt;&lt;br /&gt;	Departamento: NombreDepartamento&lt;br /&gt;&lt;br /&gt;		Empleado1 ……. Comisión 1&lt;br /&gt;		Empleado2 ……. Comisión 2&lt;br /&gt;		.	&lt;br /&gt;		.		.&lt;br /&gt;		Empleadon ……. Comision n&lt;br /&gt;&lt;br /&gt;	Total Comisiones en el Departamento NombreDepartamento: SumaComisiones&lt;br /&gt;	.	&lt;br /&gt;	.&lt;br /&gt;Total Comisiones en la Localidad NombreLocalidad: SumaComisionesLocalidad&lt;br /&gt;&lt;br /&gt;Localidad NombreLocalidad&lt;br /&gt;.&lt;br /&gt;.&lt;br /&gt;&lt;br /&gt;Total Comisiones en la Empresa: TotalComisiones&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nota: Los nombres de localidades, departamentos y empleados deben aparecer por orden alfabético.&lt;/p&gt;
+&lt;p&gt;Si alguno de los departamentos no tiene ningún empleado con comisiones, aparecerá un mensaje informando de ello en lugar de la lista de empleados.&lt;/p&gt;
+&lt;p&gt;El procedimiento debe gestionar adecuadamente las siguientes excepciones:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;a) La tabla Empleados está vacía.
+b) Alguna comisión es mayor que 10000.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;realiza-un-procedimiento-que-reciba-el-nombre-de-una-tabla-y-muestre-los-nombres-de-las-restricciones-que-tiene%2C-a-qu%C3%A9-columna-afectan-y-en-qu%C3%A9-consisten-exactamente.-(dba_tables%2C-dba_constraints%2C-dba_cons_columns)&quot; tabindex=&quot;-1&quot;&gt;Realiza un procedimiento que reciba el nombre de una tabla y muestre los nombres de las restricciones que tiene, a qué columna afectan y en qué consisten exactamente. (DBA_TABLES, DBA_CONSTRAINTS, DBA_CONS_COLUMNS)&lt;/h3&gt;
+&lt;h3 id=&quot;realiza-al-menos-dos-de-los-ejercicios-anteriores-en-postgres-usando-pl%2Fpgsql.&quot; tabindex=&quot;-1&quot;&gt;Realiza al menos dos de los ejercicios anteriores en Postgres usando PL/pgSQL.&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;h2 id=&quot;documento-realizado-por%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Documento realizado por:&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;✒️ &lt;strong&gt;Alejandro Montes Delgado&lt;/strong&gt; - &lt;em&gt;2º ASIR&lt;/em&gt;&lt;/p&gt;
+</content>
+	</entry>
+	
+	<entry>
+		<title>Cifrado asimétrico con gpg y openssl.</title>
+		<link href="https://reeseschultz.github.io/post/cifrado-asimetrico-con-gpg-y-openssl./"/>
+		<updated>2022-12-02T00:00:00Z</updated>
+		<id>https://reeseschultz.github.io/post/cifrado-asimetrico-con-gpg-y-openssl./</id>
+		<content type="html">&lt;h3 id=&quot;tarea-1%3A-generaci%C3%B3n-de-claves&quot; tabindex=&quot;-1&quot;&gt;Tarea 1: Generación de claves&lt;/h3&gt;
+&lt;h4 id=&quot;genera-un-par-de-claves-(p%C3%BAblica-y-privada).-%C2%BFen-que-directorio-se-guarda-las-claves-de-un-usuario%3F&quot; tabindex=&quot;-1&quot;&gt;Genera un par de claves (pública y privada). ¿En que directorio se guarda las claves de un usuario?&lt;/h4&gt;
+&lt;p&gt;Para generar un par de claves, usaremos el siguiente comando.&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;$ gpg --gen-key&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.1.png&quot; alt=&quot;SAD-P3.1.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Las claves públicas y privadas se guardan en &lt;code&gt;~/.gnupg&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&quot;lista-las-claves-p%C3%BAblicas-que-tienes-en-tu-almac%C3%A9n-de-claves.-explica-los-distintos-datos-que-nos-muestra.-%C2%BFc%C3%B3mo-deber%C3%ADas-haber-generado-las-claves-para-indicar%2C-por-ejemplo%2C-que-tenga-un-1-mes-de-validez%3F&quot; tabindex=&quot;-1&quot;&gt;Lista las claves públicas que tienes en tu almacén de claves. Explica los distintos datos que nos muestra. ¿Cómo deberías haber generado las claves para indicar, por ejemplo, que tenga un 1 mes de validez?&lt;/h4&gt;
+&lt;p&gt;El comando usado para listar las claves es:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;$ gpg --list-keys&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.2.png&quot; alt=&quot;SAD-P3.2.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Para indicar el tiempo de validez al crear el par de claves, usamos el comando:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;$ gpg --full-gen-key&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.4.png&quot; alt=&quot;SAD-P3.4.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.5.png&quot; alt=&quot;SAD-P3.5.png&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;lista-las-claves-privadas-de-tu-almac%C3%A9n-de-claves.&quot; tabindex=&quot;-1&quot;&gt;Lista las claves privadas de tu almacén de claves.&lt;/h4&gt;
+&lt;p&gt;El comando usado para listar las claves privadas es:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;$ gpg --list-secret-keys&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.3.png&quot; alt=&quot;SAD-P3.3.png&quot; /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h3 id=&quot;tarea-2%3A-importar-%2F-exportar-clave-p%C3%BAblica&quot; tabindex=&quot;-1&quot;&gt;Tarea 2: Importar / exportar clave pública&lt;/h3&gt;
+&lt;h4 id=&quot;exporta-tu-clave-p%C3%BAblica-en-formato-ascii-y-guardalo-en-un-archivo-nombre_apellido.asc-y-env%C3%ADalo-al-compa%C3%B1ero-con-el-que-vas-a-hacer-esta-pr%C3%A1ctica.&quot; tabindex=&quot;-1&quot;&gt;Exporta tu clave pública en formato ASCII y guardalo en un archivo nombre_apellido.asc y envíalo al compañero con el que vas a hacer esta práctica.&lt;/h4&gt;
+&lt;p&gt;El comando para generar el archivo con la clave pública en formato ASCII es el siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;$ gpg --armor --output alejandro_montes.asc --export aaleemd11@gmail.com&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Le he enviado mi clave pública a mi compañero Juan Jesús.&lt;/p&gt;
+&lt;h4 id=&quot;importa-las-claves-p%C3%BAblicas-recibidas-de-vuestro-compa%C3%B1ero.&quot; tabindex=&quot;-1&quot;&gt;Importa las claves públicas recibidas de vuestro compañero.&lt;/h4&gt;
+&lt;p&gt;El comando para importar la clave pública de Juan Jesús es el siguiente:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.6.png&quot; alt=&quot;SAD-P3.6.png&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;comprueba-que-las-claves-se-han-incluido-correctamente-en-vuestro-keyring.&quot; tabindex=&quot;-1&quot;&gt;Comprueba que las claves se han incluido correctamente en vuestro keyring.&lt;/h4&gt;
+&lt;p&gt;Muestro mi anillo de claves y se ve que la clave de Juan Jesús está importada correctamente:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.8.png&quot; alt=&quot;SAD-P3.8.png&quot; /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h3 id=&quot;tarea-3%3A-cifrado-asim%C3%A9trico-con-claves-p%C3%BAblicas&quot; tabindex=&quot;-1&quot;&gt;Tarea 3: Cifrado asimétrico con claves públicas&lt;/h3&gt;
+&lt;h4 id=&quot;cifraremos-un-archivo-cualquiera-y-lo-remitiremos-por-email-a-uno-de-nuestros-compa%C3%B1eros-que-nos-proporcion%C3%B3-su-clave-p%C3%BAblica.&quot; tabindex=&quot;-1&quot;&gt;Cifraremos un archivo cualquiera y lo remitiremos por email a uno de nuestros compañeros que nos proporcionó su clave pública.&lt;/h4&gt;
+&lt;p&gt;Ciframos un archivo de ejemplo y se lo envío a Iván.&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;gpg --encrypt --recipient githubemail1asir@gmail.com para_juanjesus.txt&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;nuestro-compa%C3%B1ero%2C-a-su-vez%2C-nos-remitir%C3%A1-un-archivo-cifrado-para-que-nosotros-lo-descifremos.&quot; tabindex=&quot;-1&quot;&gt;Nuestro compañero, a su vez, nos remitirá un archivo cifrado para que nosotros lo descifremos.&lt;/h4&gt;
+&lt;p&gt;El comando usado para desifrar el archivo que nos ha enviado nuestro compañero es el siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;gpg --decrypt criptoarchivo.txt.gpg&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.9.png&quot; alt=&quot;SAD-P3.9.png&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;tanto-nosotros-como-nuestro-compa%C3%B1ero-comprobaremos-que-hemos-podido-descifrar-los-mensajes-recibidos-respectivamente.&quot; tabindex=&quot;-1&quot;&gt;Tanto nosotros como nuestro compañero comprobaremos que hemos podido descifrar los mensajes recibidos respectivamente.&lt;/h4&gt;
+&lt;p&gt;Nuestro compañero también ha descifrado el archivo correctamente.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.10.png&quot; alt=&quot;SAD-P3.10.png&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;por-%C3%BAltimo%2C-enviaremos-el-documento-cifrado-a-alguien-que-no-estaba-en-la-lista-de-destinatarios-y-comprobaremos-que-este-usuario-no-podr%C3%A1-descifrar-este-archivo.&quot; tabindex=&quot;-1&quot;&gt;Por último, enviaremos el documento cifrado a alguien que no estaba en la lista de destinatarios y comprobaremos que este usuario no podrá descifrar este archivo.&lt;/h4&gt;
+&lt;p&gt;No tengo captura pero lo he probado y mi compañero no podía visualizar el contenido ni desencriptarlo.&lt;/p&gt;
+&lt;h4 id=&quot;para-terminar%2C-indica-los-comandos-necesarios-para-borrar-las-claves-p%C3%BAblicas-y-privadas-que-posees.&quot; tabindex=&quot;-1&quot;&gt;Para terminar, indica los comandos necesarios para borrar las claves públicas y privadas que posees.&lt;/h4&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;gpg --delete-secret-key &quot;Alejandro Montes Delgado&quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.11.png&quot; alt=&quot;SAD-P3.11.png&quot; /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h3 id=&quot;tarea-4%3A-exportar-clave-a-un-servidor-p%C3%BAblico-de-claves-pgp&quot; tabindex=&quot;-1&quot;&gt;Tarea 4: Exportar clave a un servidor público de claves PGP&lt;/h3&gt;
+&lt;h4 id=&quot;genera-la-clave-de-revocaci%C3%B3n-de-tu-clave-p%C3%BAblica-para-utilizarla-en-caso-de-que-haya-problemas.&quot; tabindex=&quot;-1&quot;&gt;Genera la clave de revocación de tu clave pública para utilizarla en caso de que haya problemas.&lt;/h4&gt;
+&lt;p&gt;Para crear una  clave de rovación usamos el siguiente comando:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;gpg --gen-revoke 0549F57086A3E680F1DD7F7DB99701ED0FAD4CEF&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.12.png&quot; alt=&quot;SAD-P3.12.png&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;exporta-tu-clave-p%C3%BAblica-al-servidor-pgp.rediris.es&quot; tabindex=&quot;-1&quot;&gt;Exporta tu clave pública al servidor &lt;a href=&quot;http://pgp.rediris.es/&quot;&gt;pgp.rediris.es&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;He usado otro servidor de claves públicas debido a que rediris está caido.&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;gpg --keyserver pgp.mit.edu --send-keys 0549F57086A3E680F1DD7F7DB99701ED0FAD4CEF&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.13.png&quot; alt=&quot;SAD-P3.13.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Como podemos ver se ha subido correctamente.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.14.png&quot; alt=&quot;SAD-P3.14.png&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;borra-la-clave-p%C3%BAblica-de-alguno-de-tus-compa%C3%B1eros-de-clase-e-imp%C3%B3rtala-ahora-del-servidor-p%C3%BAblico-de-rediris.&quot; tabindex=&quot;-1&quot;&gt;Borra la clave pública de alguno de tus compañeros de clase e impórtala ahora del servidor público de rediris.&lt;/h4&gt;
+&lt;p&gt;Borro la clave pública de mi compañero:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;gpg --delete-key &quot;Juan Jesus&quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Para importar la clave de Juan Jesús usamos el siguiente comando:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;gpg --keyserver pgp.rediris.es --recv-keys 63DE4D1C7A7D69E8BB02F2F60D9A9FF1B5EE9093&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Da error pero porque no funciona correctamente rediris.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.15.png&quot; alt=&quot;SAD-P3.15.png&quot; /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h3 id=&quot;tarea-5%3A-cifrado-asim%C3%A9trico-con-openssl&quot; tabindex=&quot;-1&quot;&gt;Tarea 5: Cifrado asimétrico con openssl&lt;/h3&gt;
+&lt;h4 id=&quot;genera-un-par-de-claves-(p%C3%BAblica-y-privada).&quot; tabindex=&quot;-1&quot;&gt;Genera un par de claves (pública y privada).&lt;/h4&gt;
+&lt;p&gt;Para generar el par de claves, uso el siguiente comando:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.16.png&quot; alt=&quot;SAD-P3.16.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Extraemos la clave pública y la insertamos en un fichero con el siguiente comando:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;openssl rsa -in alejandro-montes-ssl.pem -pubout &gt; alejandro-montes-ssl.pub.pem&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.17.png&quot; alt=&quot;SAD-P3.17.png&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;env%C3%ADa-tu-clave-p%C3%BAblica-a-un-compa%C3%B1ero.&quot; tabindex=&quot;-1&quot;&gt;Envía tu clave pública a un compañero.&lt;/h4&gt;
+&lt;p&gt;Le he enviado mi clave a Juanje y él me ha enviado la suya.&lt;/p&gt;
+&lt;h4 id=&quot;utilizando-la-clave-p%C3%BAblica-cifra-un-fichero-de-texto-y-env%C3%ADalo-a-tu-compa%C3%B1ero.&quot; tabindex=&quot;-1&quot;&gt;Utilizando la clave pública cifra un fichero de texto y envíalo a tu compañero.&lt;/h4&gt;
+&lt;p&gt;Este es el fichero que yo he cifrado:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.18.png&quot; alt=&quot;SAD-P3.18.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Este es el fichero que ha encriptado Juanje&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.19.png&quot; alt=&quot;SAD-P3.19.png&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;tu-compa%C3%B1ero-te-ha-mandado-un-fichero-cifrado%2C-muestra-el-proceso-para-el-descifrado.&quot; tabindex=&quot;-1&quot;&gt;Tu compañero te ha mandado un fichero cifrado, muestra el proceso para el descifrado.&lt;/h4&gt;
+&lt;p&gt;Para descifrarlo usamos el siguiente comando:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;openssl rsautl -decrypt -inkey alejandro-montes-ssl.pem -in criptoarchivossl.txt.enc -out criptoarchivossl.txt&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.20.png&quot; alt=&quot;SAD-P3.20.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Mi compañero Juanje también ha descifrado el mío correctamente.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P3.21.png&quot; alt=&quot;SAD-P3.21.png&quot; /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2 id=&quot;documento-realizado-por%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Documento realizado por:&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;✒️ &lt;strong&gt;Alejandro Montes Delgado&lt;/strong&gt; - &lt;em&gt;2º ASIR&lt;/em&gt;&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>Migración de Aplicaciones Web al VPS</title>
@@ -112,7 +244,9 @@
 &lt;p&gt;Al final, creo que la comunidad ha convertido algo que en un principio era malo, en algo muy positivo, ya que gracias a la descontinuación de CentOS han aparecido muchas distribuciones y buenas para usar.&lt;/p&gt;
 &lt;p&gt;CentOS 8 se ha convertido en el nuevo CentOS Stream, este cambio supone un fin a una gran trayectoria o legado, aunque a grandes rasgos nada o poco ha cambiado o vaya a cambiar.&lt;/p&gt;
 &lt;h3 id=&quot;crea-una-cuenta-en-red-hat-y-desc%C3%A1rgate-la-iso-de-red-hat-enterprise-linux-(rel)-y-eval%C3%BAa-el-producto.-comenta-el-procedimiento-de-alta.&quot; tabindex=&quot;-1&quot;&gt;Crea una cuenta en Red Hat y descárgate la iso de Red Hat Enterprise Linux (REL) y evalúa el producto. Comenta el procedimiento de alta.&lt;/h3&gt;
-&lt;p&gt;Lo primero que debemos de hacer es acceder a la página oficial de &lt;img src=&quot;https://www.redhat.com/es/technologies/linux-platforms/enterprise-linux/server/trial?sc_cid=7013a000002pdRFAAY&amp;amp;gclid=Cj0KCQiAg_KbBhDLARIsANx7wAz-LbYyFuxRlM2fU6aFLoXtvGOLRanBnxNm6uBHRNATDa0XvyGdkggaApVJEALw_wcB&amp;amp;gclsrc=aw.ds&quot; alt=&quot;Red Hat&quot; /&gt; para iniciar el registro&lt;/p&gt;
+&lt;p&gt;Lo primero que debemos de hacer es acceder a la página oficial de &lt;a href=&quot;https://www.redhat.com/es/technologies/linux-platforms/enterprise-linux/server/trial?sc_cid=7013a000002pdRFAAY&amp;amp;gclid=Cj0KCQiAg_KbBhDLARIsANx7wAz-LbYyFuxRlM2fU6aFLoXtvGOLRanBnxNm6uBHRNATDa0XvyGdkggaApVJEALw_wcB&amp;amp;gclsrc=aw.ds&quot;&gt;Red Hat&lt;/a&gt;
+para iniciar el registro. Para el registro debemos de poner nuestra información personal y en el apartado de la organización no dejaba ponerlo en blanco y he puesto Gonzalo Nazareno.&lt;/p&gt;
+&lt;p&gt;Una vez hecho el registro, se descargará automáticamente. Cuando se haya descargado la iso, Detallaré por encima la instalación de RHEL. Una vez descargada la iso la insertaremos en una máquina virtual.&lt;/p&gt;
 &lt;h3 id=&quot;descarga-la-iso-de-centos-stream-y-eval%C3%BAa-el-producto.&quot; tabindex=&quot;-1&quot;&gt;Descarga la iso de CentOS Stream y evalúa el producto.&lt;/h3&gt;
 &lt;h3 id=&quot;descarga-iso-de-una-de-las-otras-distribuciones-candidatas%2C-indica-criterios-para-la-elecci%C3%B3n-de-la-nueva-distribuci%C3%B3n-y-eval%C3%BAa-el-producto.&quot; tabindex=&quot;-1&quot;&gt;Descarga iso de una de las otras distribuciones candidatas, indica criterios para la elección de la nueva distribución y evalúa el producto.&lt;/h3&gt;
 &lt;h3 id=&quot;instala-centos-7%2C-y-eval%C3%BAa-la-herramientas-que-ofrecen-la-distribuci%C3%B3n-del-punto-3.&quot; tabindex=&quot;-1&quot;&gt;Instala CentOS 7, y evalúa la herramientas que ofrecen la distribución del punto 3.&lt;/h3&gt;

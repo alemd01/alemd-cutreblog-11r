@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Boletín individual PL/SQL | Cutreblog">
+    <meta itemprop="description" content="En esta práctica vamos a realizar un boletín de ejercicios de PLSQL.">
+
+    
+    <meta name="twitter:title" content="Boletín individual PL/SQL | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="En esta práctica vamos a realizar un boletín de ejercicios de PLSQL.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Boletín individual PL/SQL | Cutreblog">
+    <meta name="og:description" content="En esta práctica vamos a realizar un boletín de ejercicios de PLSQL.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Boletín individual PL/SQL | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">About</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Boletín individual PL/SQL</h2>
+
+        
+            <p class="excerpt">En esta práctica vamos a realizar un boletín de ejercicios de PLSQL.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag GBD" href="/tag/GBD">GBD</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Sun Dec 04 2022 01:00:00 GMT+0100 (hora estándar de Europa central)">December 4, 2022</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#hacer-un-procedimiento-que-muestre-el-nombre-y-el-salario-del-empleado-cuyo-c%C3%B3digo-es-7082">Hacer un procedimiento que muestre el nombre y el salario del empleado cuyo código es 7082</a>
+            		</li>
+
+                    <li><a href="#hacer-un-procedimiento-que-reciba-como-par%C3%A1metro-un-c%C3%B3digo-de-empleado-y-devuelva-su-nombre">Hacer un procedimiento que reciba como parámetro un código de empleado y devuelva su nombre</a>
+            		</li>
+
+                    <li><a href="#hacer-un-procedimiento-que-devuelva-los-nombres-de-los-tres-empleados-m%C3%A1s-antiguos">Hacer un procedimiento que devuelva los nombres de los tres empleados más antiguos</a>
+            		</li>
+
+                    <li><a href="#hacer-un-procedimiento-que-reciba-el-nombre-de-un-tablespace-y-muestre-los-nombres-de-los-usuarios-que-lo-tienen-como-tablespace-por-defecto-(vista-dba_users)">Hacer un procedimiento que reciba el nombre de un tablespace y muestre los nombres de los usuarios que lo tienen como tablespace por defecto (Vista DBA_USERS)</a>
+            		</li>
+
+                    <li><a href="#modificar-el-procedimiento-anterior-para-que-haga-lo-mismo-pero-devolviendo-el-n%C3%BAmero-de-usuarios-que-tienen-ese-tablespace-como-tablespace-por-defecto.-nota%3A-hay-que-convertir-el-procedimiento-en-funci%C3%B3n">Modificar el procedimiento anterior para que haga lo mismo pero devolviendo el número de usuarios que tienen ese tablespace como tablespace por defecto. Nota: Hay que convertir el procedimiento en función</a>
+            		</li>
+
+                    <li><a href="#hacer-un-procedimiento-llamado-mostrar_usuarios_por_tablespace-que-muestre-por-pantalla-un-listado-de-los-tablespaces-existentes-con-la-lista-de-usuarios-de-cada-uno-y-el-n%C3%BAmero-de-los-mismos%2C-as%C3%AD%3A-(vistas-dba_tablespaces-y-dba_users)">Hacer un procedimiento llamado mostrar_usuarios_por_tablespace que muestre por pantalla un listado de los tablespaces existentes con la lista de usuarios de cada uno y el número de los mismos, así: (Vistas DBA_TABLESPACES y DBA_USERS)</a>
+            		</li>
+
+                    <li><a href="#hacer-un-procedimiento-llamado-mostrar_codigo_fuente-que-reciba-el-nombre-de-otro-procedimiento-y-muestre-su-c%C3%B3digo-fuente.-(dba_source)">Hacer un procedimiento llamado mostrar_codigo_fuente  que reciba el nombre de otro procedimiento y muestre su código fuente. (DBA_SOURCE)</a>
+            		</li>
+
+                    <li><a href="#hacer-un-procedimiento-llamado-mostrar_privilegios_usuario-que-reciba-el-nombre-de-un-usuario-y-muestre-sus-privilegios-de-sistema-y-sus-privilegios-sobre-objetos.-(dba_sys_privs-y-dba_tab_privs)">Hacer un procedimiento llamado mostrar_privilegios_usuario que reciba el nombre de un usuario y muestre sus privilegios de sistema y sus privilegios sobre objetos. (DBA_SYS_PRIVS y DBA_TAB_PRIVS)</a>
+            		</li>
+
+                    <li><a href="#realiza-un-procedimiento-llamado-listar_comisiones-que-nos-muestre-por-pantalla-un-listado-de-las-comisiones-de-los-empleados-agrupados-seg%C3%BAn-la-localidad-donde-est%C3%A1-ubicado-su-departamento-con-el-siguiente-formato%3A">Realiza un procedimiento llamado listar_comisiones que nos muestre por pantalla un listado de las comisiones de los empleados agrupados según la localidad donde está ubicado su departamento con el siguiente formato:</a>
+            		</li>
+
+                    <li><a href="#realiza-un-procedimiento-que-reciba-el-nombre-de-una-tabla-y-muestre-los-nombres-de-las-restricciones-que-tiene%2C-a-qu%C3%A9-columna-afectan-y-en-qu%C3%A9-consisten-exactamente.-(dba_tables%2C-dba_constraints%2C-dba_cons_columns)">Realiza un procedimiento que reciba el nombre de una tabla y muestre los nombres de las restricciones que tiene, a qué columna afectan y en qué consisten exactamente. (DBA_TABLES, DBA_CONSTRAINTS, DBA_CONS_COLUMNS)</a>
+            		</li>
+
+                    <li><a href="#realiza-al-menos-dos-de-los-ejercicios-anteriores-en-postgres-usando-pl%2Fpgsql.">Realiza al menos dos de los ejercicios anteriores en Postgres usando PL/pgSQL.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="hacer-un-procedimiento-que-muestre-el-nombre-y-el-salario-del-empleado-cuyo-c%C3%B3digo-es-7082" tabindex="-1">Hacer un procedimiento que muestre el nombre y el salario del empleado cuyo código es 7082</h3>
+<pre class="language-plsql"><code class="language-plsql"><span class="token keyword">DECLARE</span><br>    V_ENAME EMP<span class="token punctuation">.</span>ENAME<span class="token operator">%</span><span class="token keyword">TYPE</span><span class="token punctuation">;</span><br>    V_SAL EMP<span class="token punctuation">.</span>SAL<span class="token operator">%</span><span class="token keyword">TYPE</span><span class="token punctuation">;</span><br><span class="token keyword">BEGIN</span><br>    <span class="token keyword">SELECT</span> ENAME<span class="token punctuation">,</span> SAL <span class="token keyword">INTO</span> V_ENAME<span class="token punctuation">,</span> V_SAL<br>    <span class="token keyword">FROM</span> EMP <span class="token keyword">WHERE</span> EMPNO <span class="token operator">=</span> <span class="token number">7082</span><span class="token punctuation">;</span><br>    <br>    DBMS_OUTPUT<span class="token punctuation">.</span>PUT_LINE<span class="token punctuation">(</span><span class="token string">'Nombre: '</span><span class="token operator">||</span> v_ename<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    DBMS_OUTPUT<span class="token punctuation">.</span>PUT_LINE<span class="token punctuation">(</span><span class="token string">'Salario: '</span><span class="token operator">||</span> v_sal<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">END</span><span class="token punctuation">;</span><br><span class="token operator">/</span></code></pre>
+<h3 id="hacer-un-procedimiento-que-reciba-como-par%C3%A1metro-un-c%C3%B3digo-de-empleado-y-devuelva-su-nombre" tabindex="-1">Hacer un procedimiento que reciba como parámetro un código de empleado y devuelva su nombre</h3>
+<pre class="language-plsql"><code class="language-plsql"><span class="token keyword">CREATE</span> <span class="token keyword">OR</span> REPLACE <span class="token keyword">PROCEDURE</span> MUESTRA_NOMBRE <span class="token punctuation">(</span>P_EMPNO EMP<span class="token punctuation">.</span>EMPNO<span class="token operator">%</span><span class="token keyword">TYPE</span><span class="token punctuation">)</span><br><span class="token keyword">IS</span><br>    V_NOMBRE EMP<span class="token punctuation">.</span>ENAME<span class="token operator">%</span><span class="token keyword">TYPE</span><span class="token punctuation">;</span><br><span class="token keyword">BEGIN</span><br>    <span class="token keyword">SELECT</span> ENAME <span class="token keyword">INTO</span> V_NOMBRE <br>    <span class="token keyword">FROM</span> EMP <span class="token keyword">WHERE</span> EMPNO<span class="token operator">=</span>P_EMPNO<span class="token punctuation">;</span><br><br>    DBMS_OUTPUT<span class="token punctuation">.</span>PUT_LINE<span class="token punctuation">(</span><span class="token string">'Nombre: '</span><span class="token operator">||</span> V_NOMBRE<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">END</span><span class="token punctuation">;</span><br><span class="token operator">/</span></code></pre>
+<h3 id="hacer-un-procedimiento-que-devuelva-los-nombres-de-los-tres-empleados-m%C3%A1s-antiguos" tabindex="-1">Hacer un procedimiento que devuelva los nombres de los tres empleados más antiguos</h3>
+<pre class="language-plsql"><code class="language-plsql"><span class="token keyword">CREATE</span> <span class="token keyword">OR</span> REPLACE <span class="token keyword">PROCEDURE</span> TRES_MAS_ANTIGUOS<br><span class="token keyword">AS</span><br><span class="token keyword">BEGIN</span><br>  <span class="token keyword">FOR</span> emp <span class="token keyword">IN</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> ENAME<br>              <span class="token keyword">FROM</span> EMP<br>              <span class="token keyword">ORDER</span> <span class="token keyword">BY</span> HIREDATE <span class="token keyword">ASC</span><br>              <span class="token keyword">FETCH</span> <span class="token keyword">FIRST</span> <span class="token number">3</span> ROWS <span class="token keyword">ONLY</span><span class="token punctuation">)</span><br>  <span class="token keyword">LOOP</span><br>    DBMS_OUTPUT<span class="token punctuation">.</span>PUT_LINE<span class="token punctuation">(</span>emp<span class="token punctuation">.</span>ENAME<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">END</span> <span class="token keyword">LOOP</span><span class="token punctuation">;</span><br><span class="token keyword">END</span><span class="token punctuation">;</span><br><span class="token operator">/</span></code></pre>
+<h3 id="hacer-un-procedimiento-que-reciba-el-nombre-de-un-tablespace-y-muestre-los-nombres-de-los-usuarios-que-lo-tienen-como-tablespace-por-defecto-(vista-dba_users)" tabindex="-1">Hacer un procedimiento que reciba el nombre de un tablespace y muestre los nombres de los usuarios que lo tienen como tablespace por defecto (Vista DBA_USERS)</h3>
+<pre class="language-plsql"><code class="language-plsql"></code></pre>
+<h3 id="modificar-el-procedimiento-anterior-para-que-haga-lo-mismo-pero-devolviendo-el-n%C3%BAmero-de-usuarios-que-tienen-ese-tablespace-como-tablespace-por-defecto.-nota%3A-hay-que-convertir-el-procedimiento-en-funci%C3%B3n" tabindex="-1">Modificar el procedimiento anterior para que haga lo mismo pero devolviendo el número de usuarios que tienen ese tablespace como tablespace por defecto. Nota: Hay que convertir el procedimiento en función</h3>
+<h3 id="hacer-un-procedimiento-llamado-mostrar_usuarios_por_tablespace-que-muestre-por-pantalla-un-listado-de-los-tablespaces-existentes-con-la-lista-de-usuarios-de-cada-uno-y-el-n%C3%BAmero-de-los-mismos%2C-as%C3%AD%3A-(vistas-dba_tablespaces-y-dba_users)" tabindex="-1">Hacer un procedimiento llamado mostrar_usuarios_por_tablespace que muestre por pantalla un listado de los tablespaces existentes con la lista de usuarios de cada uno y el número de los mismos, así: (Vistas DBA_TABLESPACES y DBA_USERS)</h3>
+<pre class="language-txt"><code class="language-txt">Tablespace xxxx:<br><br>	Usr1<br>	Usr2<br>	...<br><br>Total Usuarios Tablespace xxxx: n1<br><br>Tablespace yyyy:<br><br>	Usr1<br>	Usr2<br>	...<br><br>Total Usuarios Tablespace yyyy: n2<br>....<br>Total Usuarios BD: nn</code></pre>
+<h3 id="hacer-un-procedimiento-llamado-mostrar_codigo_fuente-que-reciba-el-nombre-de-otro-procedimiento-y-muestre-su-c%C3%B3digo-fuente.-(dba_source)" tabindex="-1">Hacer un procedimiento llamado mostrar_codigo_fuente  que reciba el nombre de otro procedimiento y muestre su código fuente. (DBA_SOURCE)</h3>
+<h3 id="hacer-un-procedimiento-llamado-mostrar_privilegios_usuario-que-reciba-el-nombre-de-un-usuario-y-muestre-sus-privilegios-de-sistema-y-sus-privilegios-sobre-objetos.-(dba_sys_privs-y-dba_tab_privs)" tabindex="-1">Hacer un procedimiento llamado mostrar_privilegios_usuario que reciba el nombre de un usuario y muestre sus privilegios de sistema y sus privilegios sobre objetos. (DBA_SYS_PRIVS y DBA_TAB_PRIVS)</h3>
+<h3 id="realiza-un-procedimiento-llamado-listar_comisiones-que-nos-muestre-por-pantalla-un-listado-de-las-comisiones-de-los-empleados-agrupados-seg%C3%BAn-la-localidad-donde-est%C3%A1-ubicado-su-departamento-con-el-siguiente-formato%3A" tabindex="-1">Realiza un procedimiento llamado listar_comisiones que nos muestre por pantalla un listado de las comisiones de los empleados agrupados según la localidad donde está ubicado su departamento con el siguiente formato:</h3>
+<pre class="language-txt"><code class="language-txt">Localidad NombreLocalidad<br>	<br>Departamento: NombreDepartamento<br><br>		Empleado1 ……. Comisión 1<br>		Empleado2 ……. Comisión 2<br>		.	<br>		.<br>		.<br>		Empleadon ……. Comision n<br><br>	Total Comisiones en el Departamento NombreDepartamento: SumaComisiones<br><br>	Departamento: NombreDepartamento<br><br>		Empleado1 ……. Comisión 1<br>		Empleado2 ……. Comisión 2<br>		.	<br>		.		.<br>		Empleadon ……. Comision n<br><br>	Total Comisiones en el Departamento NombreDepartamento: SumaComisiones<br>	.	<br>	.<br>Total Comisiones en la Localidad NombreLocalidad: SumaComisionesLocalidad<br><br>Localidad NombreLocalidad<br>.<br>.<br><br>Total Comisiones en la Empresa: TotalComisiones</code></pre>
+<p>Nota: Los nombres de localidades, departamentos y empleados deben aparecer por orden alfabético.</p>
+<p>Si alguno de los departamentos no tiene ningún empleado con comisiones, aparecerá un mensaje informando de ello en lugar de la lista de empleados.</p>
+<p>El procedimiento debe gestionar adecuadamente las siguientes excepciones:</p>
+<pre><code>a) La tabla Empleados está vacía.
+b) Alguna comisión es mayor que 10000.
+</code></pre>
+<h3 id="realiza-un-procedimiento-que-reciba-el-nombre-de-una-tabla-y-muestre-los-nombres-de-las-restricciones-que-tiene%2C-a-qu%C3%A9-columna-afectan-y-en-qu%C3%A9-consisten-exactamente.-(dba_tables%2C-dba_constraints%2C-dba_cons_columns)" tabindex="-1">Realiza un procedimiento que reciba el nombre de una tabla y muestre los nombres de las restricciones que tiene, a qué columna afectan y en qué consisten exactamente. (DBA_TABLES, DBA_CONSTRAINTS, DBA_CONS_COLUMNS)</h3>
+<h3 id="realiza-al-menos-dos-de-los-ejercicios-anteriores-en-postgres-usando-pl%2Fpgsql." tabindex="-1">Realiza al menos dos de los ejercicios anteriores en Postgres usando PL/pgSQL.</h3>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/cifrado-asimetrico-con-gpg-y-openssl./">Cifrado asimétrico con gpg y openssl.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
