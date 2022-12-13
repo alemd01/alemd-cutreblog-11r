@@ -5,7 +5,7 @@
 	
 	<link href="https://reeseschultz.github.io/feed/feed.xml" rel="self"/>
 	<link href="https://reeseschultz.github.io"/>
-	<updated>2022-12-04T00:00:00Z</updated>
+	<updated>2022-12-08T00:00:00Z</updated>
 	<id>https://example.com/</id>
 	<author> 
 		<name>Reese Schultz</name>
@@ -14,75 +14,91 @@
 	<entry>
 		<title>Criptografía II: Integridad, firmas y autenticación</title>
 		<link href="https://reeseschultz.github.io/post/criptografia-ii:-integridad-firmas-y-autenticacion/"/>
-		<updated>2022-12-04T00:00:00Z</updated>
+		<updated>2022-12-08T00:00:00Z</updated>
 		<id>https://reeseschultz.github.io/post/criptografia-ii:-integridad-firmas-y-autenticacion/</id>
 		<content type="html">&lt;h3 id=&quot;tarea-1%3A-firmas-electr%C3%B3nicas&quot; tabindex=&quot;-1&quot;&gt;Tarea 1: Firmas electrónicas&lt;/h3&gt;
-&lt;h4 id=&quot;manda-un-documento-y-la-firma-electr%C3%B3nica-del-mismo-a-un-compa%C3%B1ero.-verifica-la-firma-que-tu-has-recibido.&quot; tabindex=&quot;-1&quot;&gt;Manda un documento y la firma electrónica del mismo a un compañero. Verifica la firma que tu has recibido.&lt;/h4&gt;
+&lt;h4 id=&quot;1.-manda-un-documento-y-la-firma-electr%C3%B3nica-del-mismo-a-un-compa%C3%B1ero.-verifica-la-firma-que-tu-has-recibido.&quot; tabindex=&quot;-1&quot;&gt;1. Manda un documento y la firma electrónica del mismo a un compañero. Verifica la firma que tu has recibido.&lt;/h4&gt;
 &lt;p&gt;Para generar la firma de un documento, usamos el siguiente comando:&lt;/p&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;gpg --detach-sign prueba.txt&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Le enviamos al compañero el documento con la firma y saldrá el error del siguiente apratado.&lt;/p&gt;
-&lt;h4 id=&quot;%C2%BFqu%C3%A9-significa-el-mensaje-que-aparece-en-el-momento-de-verificar-la-firma%3F&quot; tabindex=&quot;-1&quot;&gt;¿Qué significa el mensaje que aparece en el momento de verificar la firma?&lt;/h4&gt;
+&lt;h4 id=&quot;2.-%C2%BFqu%C3%A9-significa-el-mensaje-que-aparece-en-el-momento-de-verificar-la-firma%3F&quot; tabindex=&quot;-1&quot;&gt;2. ¿Qué significa el mensaje que aparece en el momento de verificar la firma?&lt;/h4&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt; gpg: Firma correcta de &quot;Pepe D &amp;lt;josedom24@gmail.com&gt;&quot; [desconocido]&lt;br /&gt; gpg: ATENCIÓN: ¡Esta clave no está certificada por una firma de confianza!&lt;br /&gt; gpg:          No hay indicios de que la firma pertenezca al propietario.&lt;br /&gt; Huellas dactilares de la clave primaria: E8DD 5DA9 3B88 F08A DA1D  26BF 5141 3DDB 0C99 55FC&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Este mensaje sale porque no tenemos un anillo de confianza. El error, nos hace referencia a que nuestra clave no está en ningun anillo de confianza.&lt;/p&gt;
-&lt;h4 id=&quot;vamos-a-crear-un-anillo-de-confianza-entre-los-miembros-de-nuestra-clase%2C-para-ello.&quot; tabindex=&quot;-1&quot;&gt;Vamos a crear un anillo de confianza entre los miembros de nuestra clase, para ello.&lt;/h4&gt;
+&lt;h4 id=&quot;3.-vamos-a-crear-un-anillo-de-confianza-entre-los-miembros-de-nuestra-clase%2C-para-ello.&quot; tabindex=&quot;-1&quot;&gt;3. Vamos a crear un anillo de confianza entre los miembros de nuestra clase, para ello.&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;Tu clave pública debe estar en un servidor de claves.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Tengo la clave subida al servidor mit.&lt;/p&gt;
+&lt;p&gt;Tengo la clave subida al servidor de ubuntu.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Escribe tu fingerprint en un papel y dárselo a tu compañero, para que puede descargarse tu clave pública.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Mi fingerprint es:&lt;/p&gt;
-&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;2DE419F3DD4DC75625C2315D53084FD038A86901&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;A24B1921B28D5F7BA7320497E29C0E02DE5CF68C&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;Te debes bajar al menos tres claves públicas de compañeros. Firma estas claves.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Clave de ivan
-gpg --keyserver &lt;a href=&quot;http://keyserver.ubuntu.com/&quot;&gt;keyserver.ubuntu.com&lt;/a&gt; --recv-keys A2DAE43E6A5A500D2A470B5ED4E560F662A51317
-gpg --sign-key A2DAE43E6A5A500D2A470B5ED4E560F662A51317
-Exporto la clave y se la envío
-gpg --export -a A2DAE43E6A5A500D2A470B5ED4E560F662A51317 &amp;gt; ivan2.key&lt;/p&gt;
-&lt;p&gt;Clave de paco
-gpg --keyserver &lt;a href=&quot;http://pgp.mit.edu/&quot;&gt;pgp.mit.edu&lt;/a&gt; --recv-keys D5DF96E1BBD7DB81
-gpg --sign-key 7C499EE49A10C836480FCC9CD5DF96E1BBD7DB81
-gpg --export -a 7C499EE49A10C836480FCC9CD5DF96E1BBD7DB81 &amp;gt; paco.key&lt;/p&gt;
-&lt;p&gt;Clave de
-gpg --sign-key&lt;/p&gt;
+&lt;p&gt;-Clave de Alfonso.&lt;/p&gt;
+&lt;p&gt;gpg --keyserver &lt;a href=&quot;http://keyserver.ubuntu.com/&quot;&gt;keyserver.ubuntu.com&lt;/a&gt; --recv-keys DA5E8263079216E8&lt;/p&gt;
+&lt;p&gt;gpg --sign-key DA5E8263079216E8&lt;/p&gt;
+&lt;p&gt;-Clave de Paco.&lt;/p&gt;
+&lt;p&gt;gpg --keyserver &lt;a href=&quot;http://gpg.mit.edu/&quot;&gt;gpg.mit.edu&lt;/a&gt; --recv-keys D5DF96E1BBD7DB81&lt;/p&gt;
+&lt;p&gt;gpg --sign-key 7C499EE49A10C836480FCC9CD5DF96E1BBD7DB81&lt;/p&gt;
+&lt;p&gt;Exporto la clave y se la envío&lt;/p&gt;
+&lt;p&gt;gpg --export -a 7C499EE49A10C836480FCC9CD5DF96E1BBD7DB81 &amp;gt; paco.key&lt;/p&gt;
+&lt;p&gt;-Clave de Óscar.&lt;/p&gt;
+&lt;p&gt;gpg --keyserver &lt;a href=&quot;http://keyserver.ubuntu.com/&quot;&gt;keyserver.ubuntu.com&lt;/a&gt; --recv-keys A8544395EB1796857BC8C1309E4B2C4247B5AA59
+gpg --sign-key A8544395EB1796857BC8C1309E4B2C4247B5AA59&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Tu te debes asegurar que tu clave pública es firmada por al menos tres compañeros de la clase.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;gpg --list-sig&lt;/p&gt;
+&lt;p&gt;Mi clave pública ha sido firmada por Alfonso, Paco y Óscar.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Una vez que firmes una clave se la tendrás que devolver a su dueño, para que otra persona se la firme.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Exporto la clave de Alfonso y se la envío.&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;gpg --export -a DA5E8263079216E8 &gt; clave_alfonso.asc&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Exporto la clave de Paco y se la envío&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;gpg --export -a 7C499EE49A10C836480FCC9CD5DF96E1BBD7DB81 &gt; paco.key&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Exporto la clave de Óscar y se la envío&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;gpg --export -a A8544395EB1796857BC8C1309E4B2C4247B5AA59 &gt; oscar.key&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
 &lt;li&gt;Cuando tengas las tres firmas sube la clave al servidor de claves y rellena tus datos en la tabla Claves públicas PGP 2020-2021&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Subido.&lt;/p&gt;
+&lt;ul&gt;
 &lt;li&gt;Asegurate que te vuelves a bajar las claves públicas de tus compañeros que tengan las tres firmas.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&quot;muestra-las-firmas-que-tiene-tu-clave-p%C3%BAblica.&quot; tabindex=&quot;-1&quot;&gt;Muestra las firmas que tiene tu clave pública.&lt;/h4&gt;
-&lt;h4 id=&quot;comprueba-que-ya-puedes-verificar-sin-%E2%80%9Cproblemas%E2%80%9D-una-firma-recibida-por-una-persona-en-la-que-conf%C3%ADas.&quot; tabindex=&quot;-1&quot;&gt;Comprueba que ya puedes verificar sin “problemas” una firma recibida por una persona en la que confías.&lt;/h4&gt;
-&lt;h4 id=&quot;comprueba-que-puedes-verificar-con-confianza-una-firma-de-una-persona-en-las-que-no-conf%C3%ADas%2C-pero-sin-embargo-si-conf%C3%ADa-otra-persona-en-la-que-tu-tienes-confianza-total.&quot; tabindex=&quot;-1&quot;&gt;Comprueba que puedes verificar con confianza una firma de una persona en las que no confías, pero sin embargo si confía otra persona en la que tu tienes confianza total.&lt;/h4&gt;
+&lt;p&gt;Me he tenido que bajar manualmente las claves, ya que desde la terminal no se actualizaba.&lt;/p&gt;
+&lt;h4 id=&quot;4.-muestra-las-firmas-que-tiene-tu-clave-p%C3%BAblica.&quot; tabindex=&quot;-1&quot;&gt;4. Muestra las firmas que tiene tu clave pública.&lt;/h4&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;gpg --list-sig&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P4.1.png&quot; alt=&quot;SAD-P4.1.png&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;5.-comprueba-que-ya-puedes-verificar-sin-%E2%80%9Cproblemas%E2%80%9D-una-firma-recibida-por-una-persona-en-la-que-conf%C3%ADas.&quot; tabindex=&quot;-1&quot;&gt;5. Comprueba que ya puedes verificar sin “problemas” una firma recibida por una persona en la que confías.&lt;/h4&gt;
+&lt;p&gt;Alfonso me ha enviado un documento con su firma. Muestro que se ha verificado correctamente.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P4.2.png&quot; alt=&quot;SAD-P4.2.png&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;6.-comprueba-que-puedes-verificar-con-confianza-una-firma-de-una-persona-en-las-que-no-conf%C3%ADas%2C-pero-sin-embargo-si-conf%C3%ADa-otra-persona-en-la-que-tu-tienes-confianza-total.&quot; tabindex=&quot;-1&quot;&gt;6. Comprueba que puedes verificar con confianza una firma de una persona en las que no confías, pero sin embargo si confía otra persona en la que tu tienes confianza total.&lt;/h4&gt;
 &lt;h3 id=&quot;tarea-2%3A-correo-seguro-con-evolution%2Fthunderbird&quot; tabindex=&quot;-1&quot;&gt;Tarea 2: Correo seguro con evolution/thunderbird&lt;/h3&gt;
-&lt;h4 id=&quot;configura-el-cliente-de-correo-evolution-con-tu-cuenta-de-correo-habitual&quot; tabindex=&quot;-1&quot;&gt;Configura el cliente de correo evolution con tu cuenta de correo habitual&lt;/h4&gt;
-&lt;h4 id=&quot;a%C3%B1ade-a-la-cuenta-las-opciones-de-seguridad-para-poder-enviar-correos-firmados-con-tu-clave-privada-o-cifrar-los-mensajes-para-otros-destinatarios&quot; tabindex=&quot;-1&quot;&gt;Añade a la cuenta las opciones de seguridad para poder enviar correos firmados con tu clave privada o cifrar los mensajes para otros destinatarios&lt;/h4&gt;
-&lt;h4 id=&quot;env%C3%ADa-y-recibe-varios-mensajes-con-tus-compa%C3%B1eros-y-comprueba-el-funcionamiento-adecuado-de-gpg.&quot; tabindex=&quot;-1&quot;&gt;Envía y recibe varios mensajes con tus compañeros y comprueba el funcionamiento adecuado de GPG.&lt;/h4&gt;
+&lt;h4 id=&quot;1.-configura-el-cliente-de-correo-evolution-con-tu-cuenta-de-correo-habitual&quot; tabindex=&quot;-1&quot;&gt;1. Configura el cliente de correo evolution con tu cuenta de correo habitual&lt;/h4&gt;
+&lt;h4 id=&quot;2.-a%C3%B1ade-a-la-cuenta-las-opciones-de-seguridad-para-poder-enviar-correos-firmados-con-tu-clave-privada-o-cifrar-los-mensajes-para-otros-destinatarios&quot; tabindex=&quot;-1&quot;&gt;2. Añade a la cuenta las opciones de seguridad para poder enviar correos firmados con tu clave privada o cifrar los mensajes para otros destinatarios&lt;/h4&gt;
+&lt;h4 id=&quot;3.-env%C3%ADa-y-recibe-varios-mensajes-con-tus-compa%C3%B1eros-y-comprueba-el-funcionamiento-adecuado-de-gpg.&quot; tabindex=&quot;-1&quot;&gt;3. Envía y recibe varios mensajes con tus compañeros y comprueba el funcionamiento adecuado de GPG.&lt;/h4&gt;
 &lt;h3 id=&quot;tarea-3%3A-integridad-de-ficheros&quot; tabindex=&quot;-1&quot;&gt;Tarea 3: Integridad de ficheros&lt;/h3&gt;
-&lt;h4 id=&quot;para-validar-el-contenido-de-la-imagen-cd%2C-solo-aseg%C3%BArese-de-usar-la-herramienta-apropiada-para-sumas-de-verificaci%C3%B3n.-para-cada-versi%C3%B3n-publicada-existen-archivos-de-suma-de-comprobaci%C3%B3n-con-algoritmos-fuertes-(sha256-y-sha512)%3B-deber%C3%ADa-usar-las-herramientas-sha256sum-o-sha512sum-para-trabajar-con-ellos.&quot; tabindex=&quot;-1&quot;&gt;Para validar el contenido de la imagen CD, solo asegúrese de usar la herramienta apropiada para sumas de verificación. Para cada versión publicada existen archivos de suma de comprobación con algoritmos fuertes (SHA256 y SHA512); debería usar las herramientas sha256sum o sha512sum para trabajar con ellos.&lt;/h4&gt;
-&lt;h4 id=&quot;verifica-que-el-contenido-del-hash-que-has-utilizado-no-ha-sido-manipulado%2C-usando-la-firma-digital-que-encontrar%C3%A1s-en-el-repositorio.-puedes-encontrar-una-gu%C3%ADa-para-realizarlo-en-este-art%C3%ADculo%3A-how-to-verify-an-authenticity-of-downloaded-debian-iso-images&quot; tabindex=&quot;-1&quot;&gt;Verifica que el contenido del hash que has utilizado no ha sido manipulado, usando la firma digital que encontrarás en el repositorio. Puedes encontrar una guía para realizarlo en este artículo: How to verify an authenticity of downloaded Debian ISO images&lt;/h4&gt;
+&lt;h4 id=&quot;1.-para-validar-el-contenido-de-la-imagen-cd%2C-solo-aseg%C3%BArese-de-usar-la-herramienta-apropiada-para-sumas-de-verificaci%C3%B3n.-para-cada-versi%C3%B3n-publicada-existen-archivos-de-suma-de-comprobaci%C3%B3n-con-algoritmos-fuertes-(sha256-y-sha512)%3B-deber%C3%ADa-usar-las-herramientas-sha256sum-o-sha512sum-para-trabajar-con-ellos.&quot; tabindex=&quot;-1&quot;&gt;1. Para validar el contenido de la imagen CD, solo asegúrese de usar la herramienta apropiada para sumas de verificación. Para cada versión publicada existen archivos de suma de comprobación con algoritmos fuertes (SHA256 y SHA512); debería usar las herramientas sha256sum o sha512sum para trabajar con ellos.&lt;/h4&gt;
+&lt;h4 id=&quot;2.-verifica-que-el-contenido-del-hash-que-has-utilizado-no-ha-sido-manipulado%2C-usando-la-firma-digital-que-encontrar%C3%A1s-en-el-repositorio.-puedes-encontrar-una-gu%C3%ADa-para-realizarlo-en-este-art%C3%ADculo%3A-how-to-verify-an-authenticity-of-downloaded-debian-iso-images&quot; tabindex=&quot;-1&quot;&gt;2. Verifica que el contenido del hash que has utilizado no ha sido manipulado, usando la firma digital que encontrarás en el repositorio. Puedes encontrar una guía para realizarlo en este artículo: How to verify an authenticity of downloaded Debian ISO images&lt;/h4&gt;
 &lt;h3 id=&quot;tarea-4%3A-integridad-y-autenticidad-(apt-secure)&quot; tabindex=&quot;-1&quot;&gt;Tarea 4: Integridad y autenticidad (apt secure)&lt;/h3&gt;
-&lt;h4 id=&quot;%C2%BFqu%C3%A9-software-utiliza-apt-secure-para-realizar-la-criptograf%C3%ADa-asim%C3%A9trica%3F&quot; tabindex=&quot;-1&quot;&gt;¿Qué software utiliza apt secure para realizar la criptografía asimétrica?&lt;/h4&gt;
-&lt;h4 id=&quot;%C2%BFpara-que-sirve-el-comando-apt-key%3F-%C2%BFqu%C3%A9-muestra-el-comando-apt-key-list%3F&quot; tabindex=&quot;-1&quot;&gt;¿Para que sirve el comando apt-key? ¿Qué muestra el comando apt-key list?&lt;/h4&gt;
-&lt;h4 id=&quot;en-que-fichero-se-guarda-el-anillo-de-claves-que-guarda-la-herramienta-apt-key%3F&quot; tabindex=&quot;-1&quot;&gt;En que fichero se guarda el anillo de claves que guarda la herramienta apt-key?&lt;/h4&gt;
-&lt;h4 id=&quot;%C2%BFqu%C3%A9-contiene-el-archivo-release-de-un-repositorio-de-paquetes%3F.-%C2%BFy-el-archivo-release.gpg%3F.-puedes-ver-estos-archivos-en-el-repositorio-http%3A%2F%2Fftp.debian.org%2Fdebian%2Fdists%2Fdebian10.1%2F.-estos-archivos-se-descargan-cuando-hacemos-un-apt-update.&quot; tabindex=&quot;-1&quot;&gt;¿Qué contiene el archivo Release de un repositorio de paquetes?. ¿Y el archivo Release.gpg?. Puedes ver estos archivos en el repositorio &lt;a href=&quot;http://ftp.debian.org/debian/dists/Debian10.1/&quot;&gt;http://ftp.debian.org/debian/dists/Debian10.1/&lt;/a&gt;. Estos archivos se descargan cuando hacemos un apt update.&lt;/h4&gt;
-&lt;h4 id=&quot;explica-el-proceso-por-el-cual-el-sistema-nos-asegura-que-los-ficheros-que-estamos-descargando-son-leg%C3%ADtimos.&quot; tabindex=&quot;-1&quot;&gt;Explica el proceso por el cual el sistema nos asegura que los ficheros que estamos descargando son legítimos.&lt;/h4&gt;
-&lt;h4 id=&quot;a%C3%B1ade-de-forma-correcta-el-repositorio-de-virtualbox-a%C3%B1adiendo-la-clave-p%C3%BAblica-de-virtualbox-como-se-indica-en-la-documentaci%C3%B3n.&quot; tabindex=&quot;-1&quot;&gt;Añade de forma correcta el repositorio de virtualbox añadiendo la clave pública de virtualbox como se indica en la documentación.&lt;/h4&gt;
+&lt;h4 id=&quot;1.-%C2%BFqu%C3%A9-software-utiliza-apt-secure-para-realizar-la-criptograf%C3%ADa-asim%C3%A9trica%3F&quot; tabindex=&quot;-1&quot;&gt;1. ¿Qué software utiliza apt secure para realizar la criptografía asimétrica?&lt;/h4&gt;
+&lt;h4 id=&quot;2.-%C2%BFpara-que-sirve-el-comando-apt-key%3F-%C2%BFqu%C3%A9-muestra-el-comando-apt-key-list%3F&quot; tabindex=&quot;-1&quot;&gt;2. ¿Para que sirve el comando apt-key? ¿Qué muestra el comando apt-key list?&lt;/h4&gt;
+&lt;h4 id=&quot;3.-en-que-fichero-se-guarda-el-anillo-de-claves-que-guarda-la-herramienta-apt-key%3F&quot; tabindex=&quot;-1&quot;&gt;3. En que fichero se guarda el anillo de claves que guarda la herramienta apt-key?&lt;/h4&gt;
+&lt;h4 id=&quot;4.-%C2%BFqu%C3%A9-contiene-el-archivo-release-de-un-repositorio-de-paquetes%3F.-%C2%BFy-el-archivo-release.gpg%3F.-puedes-ver-estos-archivos-en-el-repositorio-http%3A%2F%2Fftp.debian.org%2Fdebian%2Fdists%2Fdebian10.1%2F.-estos-archivos-se-descargan-cuando-hacemos-un-apt-update.&quot; tabindex=&quot;-1&quot;&gt;4. ¿Qué contiene el archivo Release de un repositorio de paquetes?. ¿Y el archivo Release.gpg?. Puedes ver estos archivos en el repositorio &lt;a href=&quot;http://ftp.debian.org/debian/dists/Debian10.1/&quot;&gt;http://ftp.debian.org/debian/dists/Debian10.1/&lt;/a&gt;. Estos archivos se descargan cuando hacemos un apt update.&lt;/h4&gt;
+&lt;h4 id=&quot;5.-explica-el-proceso-por-el-cual-el-sistema-nos-asegura-que-los-ficheros-que-estamos-descargando-son-leg%C3%ADtimos.&quot; tabindex=&quot;-1&quot;&gt;5. Explica el proceso por el cual el sistema nos asegura que los ficheros que estamos descargando son legítimos.&lt;/h4&gt;
+&lt;h4 id=&quot;6.-a%C3%B1ade-de-forma-correcta-el-repositorio-de-virtualbox-a%C3%B1adiendo-la-clave-p%C3%BAblica-de-virtualbox-como-se-indica-en-la-documentaci%C3%B3n.&quot; tabindex=&quot;-1&quot;&gt;6. Añade de forma correcta el repositorio de virtualbox añadiendo la clave pública de virtualbox como se indica en la documentación.&lt;/h4&gt;
 &lt;h3 id=&quot;tarea-5%3A-autentificaci%C3%B3n%3A-ejemplo-ssh&quot; tabindex=&quot;-1&quot;&gt;Tarea 5: Autentificación: ejemplo SSH&lt;/h3&gt;
-&lt;h4 id=&quot;explica-los-pasos-que-se-producen-entre-el-cliente-y-el-servidor-para-que-el-protocolo-cifre-la-informaci%C3%B3n-que-se-transmite%3F-%C2%BFpara-qu%C3%A9-se-utiliza-la-criptograf%C3%ADa-sim%C3%A9trica%3F-%C2%BFy-la-asim%C3%A9trica%3F&quot; tabindex=&quot;-1&quot;&gt;Explica los pasos que se producen entre el cliente y el servidor para que el protocolo cifre la información que se transmite? ¿Para qué se utiliza la criptografía simétrica? ¿Y la asimétrica?&lt;/h4&gt;
-&lt;h4 id=&quot;explica-los-dos-m%C3%A9todos-principales-de-autentificaci%C3%B3n%3A-por-contrase%C3%B1a-y-utilizando-un-par-de-claves-p%C3%BAblicas-y-privadas.&quot; tabindex=&quot;-1&quot;&gt;Explica los dos métodos principales de autentificación: por contraseña y utilizando un par de claves públicas y privadas.&lt;/h4&gt;
-&lt;h4 id=&quot;en-el-cliente-para-que-sirve-el-contenido-que-se-guarda-en-el-fichero-~%2F.ssh%2Fknow_hosts%3F&quot; tabindex=&quot;-1&quot;&gt;En el cliente para que sirve el contenido que se guarda en el fichero ~/.ssh/know_hosts?&lt;/h4&gt;
-&lt;h4 id=&quot;%C2%BFqu%C3%A9-significa-este-mensaje-que-aparece-la-primera-vez-que-nos-conectamos-a-un-servidor%3F&quot; tabindex=&quot;-1&quot;&gt;¿Qué significa este mensaje que aparece la primera vez que nos conectamos a un servidor?&lt;/h4&gt;
+&lt;h4 id=&quot;1.-explica-los-pasos-que-se-producen-entre-el-cliente-y-el-servidor-para-que-el-protocolo-cifre-la-informaci%C3%B3n-que-se-transmite%3F-%C2%BFpara-qu%C3%A9-se-utiliza-la-criptograf%C3%ADa-sim%C3%A9trica%3F-%C2%BFy-la-asim%C3%A9trica%3F&quot; tabindex=&quot;-1&quot;&gt;1. Explica los pasos que se producen entre el cliente y el servidor para que el protocolo cifre la información que se transmite? ¿Para qué se utiliza la criptografía simétrica? ¿Y la asimétrica?&lt;/h4&gt;
+&lt;h4 id=&quot;2.-explica-los-dos-m%C3%A9todos-principales-de-autentificaci%C3%B3n%3A-por-contrase%C3%B1a-y-utilizando-un-par-de-claves-p%C3%BAblicas-y-privadas.&quot; tabindex=&quot;-1&quot;&gt;2. Explica los dos métodos principales de autentificación: por contraseña y utilizando un par de claves públicas y privadas.&lt;/h4&gt;
+&lt;h4 id=&quot;3.-en-el-cliente-para-que-sirve-el-contenido-que-se-guarda-en-el-fichero-~%2F.ssh%2Fknow_hosts%3F&quot; tabindex=&quot;-1&quot;&gt;3. En el cliente para que sirve el contenido que se guarda en el fichero ~/.ssh/know_hosts?&lt;/h4&gt;
+&lt;h4 id=&quot;4.-%C2%BFqu%C3%A9-significa-este-mensaje-que-aparece-la-primera-vez-que-nos-conectamos-a-un-servidor%3F&quot; tabindex=&quot;-1&quot;&gt;4. ¿Qué significa este mensaje que aparece la primera vez que nos conectamos a un servidor?&lt;/h4&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt; $ ssh debian@172.22.200.74&lt;br /&gt; The authenticity of host &#39;172.22.200.74 (172.22.200.74)&#39; can&#39;t be established.&lt;br /&gt; ECDSA key fingerprint is SHA256:7ZoNZPCbQTnDso1meVSNoKszn38ZwUI4i6saebbfL4M.&lt;br /&gt; Are you sure you want to continue connecting (yes/no)? &lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&quot;en-ocasiones-cuando-estamos-trabajando-en-el-cloud%2C-y-reutilizamos-una-ip-flotante-nos-aparece-este-mensaje%3A&quot; tabindex=&quot;-1&quot;&gt;En ocasiones cuando estamos trabajando en el cloud, y reutilizamos una ip flotante nos aparece este mensaje:&lt;/h4&gt;
+&lt;h4 id=&quot;5.-en-ocasiones-cuando-estamos-trabajando-en-el-cloud%2C-y-reutilizamos-una-ip-flotante-nos-aparece-este-mensaje%3A&quot; tabindex=&quot;-1&quot;&gt;5. En ocasiones cuando estamos trabajando en el cloud, y reutilizamos una ip flotante nos aparece este mensaje:&lt;/h4&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt; $ ssh debian@172.22.200.74&lt;br /&gt; @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&lt;br /&gt; @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @&lt;br /&gt; @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&lt;br /&gt; IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!&lt;br /&gt; Someone could be eavesdropping on you right now (man-in-the-middle attack)!&lt;br /&gt; It is also possible that a host key has just been changed.&lt;br /&gt; The fingerprint for the ECDSA key sent by the remote host is&lt;br /&gt; SHA256:W05RrybmcnJxD3fbwJOgSNNWATkVftsQl7EzfeKJgNc.&lt;br /&gt; Please contact your system administrator.&lt;br /&gt; Add correct host key in /home/jose/.ssh/known_hosts to get rid of this message.&lt;br /&gt; Offending ECDSA key in /home/jose/.ssh/known_hosts:103&lt;br /&gt;   remove with:&lt;br /&gt;   ssh-keygen -f &quot;/home/jose/.ssh/known_hosts&quot; -R &quot;172.22.200.74&quot;&lt;br /&gt; ECDSA host key for 172.22.200.74 has changed and you have requested strict checking.&lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&quot;%C2%BFqu%C3%A9-guardamos-y-para-qu%C3%A9-sirve-el-fichero-en-el-servidor-~%2F.ssh%2Fauthorized_keys%3F&quot; tabindex=&quot;-1&quot;&gt;¿Qué guardamos y para qué sirve el fichero en el servidor ~/.ssh/authorized_keys?&lt;/h4&gt;
+&lt;h4 id=&quot;6.-%C2%BFqu%C3%A9-guardamos-y-para-qu%C3%A9-sirve-el-fichero-en-el-servidor-~%2F.ssh%2Fauthorized_keys%3F&quot; tabindex=&quot;-1&quot;&gt;6. ¿Qué guardamos y para qué sirve el fichero en el servidor ~/.ssh/authorized_keys?&lt;/h4&gt;
 &lt;hr /&gt;
 &lt;h2 id=&quot;documento-realizado-por%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Documento realizado por:&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;✒️ &lt;strong&gt;Alejandro Montes Delgado&lt;/strong&gt; - &lt;em&gt;2º ASIR&lt;/em&gt;&lt;/p&gt;
