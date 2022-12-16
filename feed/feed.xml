@@ -125,11 +125,13 @@
 &lt;h4 id=&quot;1.-explica-los-pasos-que-se-producen-entre-el-cliente-y-el-servidor-para-que-el-protocolo-cifre-la-informaci%C3%B3n-que-se-transmite%3F-%C2%BFpara-qu%C3%A9-se-utiliza-la-criptograf%C3%ADa-sim%C3%A9trica%3F-%C2%BFy-la-asim%C3%A9trica%3F&quot; tabindex=&quot;-1&quot;&gt;1. Explica los pasos que se producen entre el cliente y el servidor para que el protocolo cifre la información que se transmite? ¿Para qué se utiliza la criptografía simétrica? ¿Y la asimétrica?&lt;/h4&gt;
 &lt;p&gt;Son 2 pasos los que se realizan antes de que se cifre una comunicación ssh:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Conexión:
-El cliente establece una conexión TCP con l servidor, y este responde con las versiones del protocolo que soporta. El cliente tiene que usar unas de las versiones que soporta el servidor para continuar. El servidor comparte su clave pública con el cliente para que compruebe si es la máquina ala que quería conectarse. Ahora, ambas partes están preparadas para la negociación de una clave de sesión usando Diffie-Hellman.&lt;/li&gt;
+&lt;li&gt;Conexión:&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;-Negociación:
-El cliente y el servidor, se ponen de acuerdo en un número primo alto, que servirá como seed value, también se ponen de acuerdo en un tipo de cifrado, generan un número primo por separado, que mantienen en secreto de la otra parte que lo usan como una clave privada de la negociación, intercambian sus claves públicas generadas(no son las mismas que usan para la autenticación). Cada parte usa su clave privada más la clave pública de la otra parte más el número primo compartido original para calcular una clave compartida llamada shared secret. Este shared secret se usa para encriptar toda la comunicación a partir de ahora.&lt;/p&gt;
+&lt;p&gt;El cliente establece una conexión TCP con l servidor, y este responde con las versiones del protocolo que soporta. El cliente tiene que usar unas de las versiones que soporta el servidor para continuar. El servidor comparte su clave pública con el cliente para que compruebe si es la máquina ala que quería conectarse. Ahora, ambas partes están preparadas para la negociación de una clave de sesión usando Diffie-Hellman.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Negociación:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;El cliente y el servidor, se ponen de acuerdo en un número primo alto, que servirá como seed value, también se ponen de acuerdo en un tipo de cifrado, generan un número primo por separado, que mantienen en secreto de la otra parte que lo usan como una clave privada de la negociación, intercambian sus claves públicas generadas(no son las mismas que usan para la autenticación). Cada parte usa su clave privada más la clave pública de la otra parte más el número primo compartido original para calcular una clave compartida llamada shared secret. Este shared secret se usa para encriptar toda la comunicación a partir de ahora.&lt;/p&gt;
 &lt;p&gt;La criptografía simétrica se usa para encriptar conexiones mediante una clave secreta.&lt;/p&gt;
 &lt;p&gt;La criptografía asimétrica se usa durante el intercambio de claves, se usa en la autenticación del cliente con el servidor.&lt;/p&gt;
 &lt;h4 id=&quot;2.-explica-los-dos-m%C3%A9todos-principales-de-autentificaci%C3%B3n%3A-por-contrase%C3%B1a-y-utilizando-un-par-de-claves-p%C3%BAblicas-y-privadas.&quot; tabindex=&quot;-1&quot;&gt;2. Explica los dos métodos principales de autentificación: por contraseña y utilizando un par de claves públicas y privadas.&lt;/h4&gt;
