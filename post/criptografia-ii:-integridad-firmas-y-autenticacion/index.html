@@ -123,6 +123,9 @@
 
                     <li><a href="#3.-env%C3%ADa-y-recibe-varios-mensajes-con-tus-compa%C3%B1eros-y-comprueba-el-funcionamiento-adecuado-de-gpg.">3. Envía y recibe varios mensajes con tus compañeros y comprueba el funcionamiento adecuado de GPG.</a>
             		</li>
+
+                    <li><a href="#4.-correo-firmado-para-ra%C3%BAl.">4. Correo firmado para Raúl.</a>
+            		</li>
                 </ol>
             		</li>
 
@@ -200,49 +203,30 @@
 <pre class="language-txt"><code class="language-txt"> gpg: Firma correcta de "Pepe D &lt;josedom24@gmail.com>" [desconocido]<br> gpg: ATENCIÓN: ¡Esta clave no está certificada por una firma de confianza!<br> gpg:          No hay indicios de que la firma pertenezca al propietario.<br> Huellas dactilares de la clave primaria: E8DD 5DA9 3B88 F08A DA1D  26BF 5141 3DDB 0C99 55FC</code></pre>
 <p>Este mensaje sale porque no tenemos un anillo de confianza. El error, nos hace referencia a que nuestra clave no está en ningun anillo de confianza.</p>
 <h4 id="3.-vamos-a-crear-un-anillo-de-confianza-entre-los-miembros-de-nuestra-clase%2C-para-ello." tabindex="-1">3. Vamos a crear un anillo de confianza entre los miembros de nuestra clase, para ello.</h4>
-<ul>
-<li>Tu clave pública debe estar en un servidor de claves.</li>
-</ul>
+<p><strong>Tu clave pública debe estar en un servidor de claves.</strong></p>
 <p>Tengo la clave subida al servidor de ubuntu.</p>
-<ul>
-<li>Escribe tu fingerprint en un papel y dárselo a tu compañero, para que puede descargarse tu clave pública.</li>
-</ul>
+<p><strong>Escribe tu fingerprint en un papel y dárselo a tu compañero, para que puede descargarse tu clave pública.</strong></p>
 <p>Mi fingerprint es:</p>
 <pre class="language-txt"><code class="language-txt">A24B1921B28D5F7BA7320497E29C0E02DE5CF68C</code></pre>
-<ul>
-<li>Te debes bajar al menos tres claves públicas de compañeros. Firma estas claves.</li>
-</ul>
-<p>-Clave de Alfonso.</p>
-<p>gpg --keyserver <a href="http://keyserver.ubuntu.com">keyserver.ubuntu.com</a> --recv-keys DA5E8263079216E8</p>
-<p>gpg --sign-key DA5E8263079216E8</p>
-<p>-Clave de Paco.</p>
-<p>gpg --keyserver <a href="http://gpg.mit.edu">gpg.mit.edu</a> --recv-keys D5DF96E1BBD7DB81</p>
-<p>gpg --sign-key 7C499EE49A10C836480FCC9CD5DF96E1BBD7DB81</p>
-<p>Exporto la clave y se la envío</p>
-<p>gpg --export -a 7C499EE49A10C836480FCC9CD5DF96E1BBD7DB81 &gt; paco.key</p>
-<p>-Clave de Óscar.</p>
-<p>gpg --keyserver <a href="http://keyserver.ubuntu.com">keyserver.ubuntu.com</a> --recv-keys A8544395EB1796857BC8C1309E4B2C4247B5AA59
-gpg --sign-key A8544395EB1796857BC8C1309E4B2C4247B5AA59</p>
-<ul>
-<li>Tu te debes asegurar que tu clave pública es firmada por al menos tres compañeros de la clase.</li>
-</ul>
+<p><strong>Te debes bajar al menos tres claves públicas de compañeros. Firma estas claves.</strong></p>
+<p>Clave de Alfonso.</p>
+<pre class="language-txt"><code class="language-txt">gpg --keyserver keyserver.ubuntu.com --recv-keys DA5E8263079216E8<br>gpg --sign-key DA5E8263079216E8</code></pre>
+<p>Clave de Paco.</p>
+<pre class="language-txt"><code class="language-txt">gpg --keyserver gpg.mit.edu --recv-keys D5DF96E1BBD7DB81<br>gpg --sign-key 7C499EE49A10C836480FCC9CD5DF96E1BBD7DB81</code></pre>
+<p>Clave de Óscar.</p>
+<pre class="language-txt"><code class="language-txt">gpg --keyserver keyserver.ubuntu.com --recv-keys A8544395EB1796857BC8C1309E4B2C4247B5AA59<br>gpg --sign-key A8544395EB1796857BC8C1309E4B2C4247B5AA59</code></pre>
+<p><strong>Tu te debes asegurar que tu clave pública es firmada por al menos tres compañeros de la clase.</strong></p>
 <p>Mi clave pública ha sido firmada por Alfonso, Paco y Óscar.</p>
-<ul>
-<li>Una vez que firmes una clave se la tendrás que devolver a su dueño, para que otra persona se la firme.</li>
-</ul>
+<p><strong>Una vez que firmes una clave se la tendrás que devolver a su dueño, para que otra persona se la firme.</strong></p>
 <p>Exporto la clave de Alfonso y se la envío.</p>
 <pre class="language-txt"><code class="language-txt">gpg --export -a DA5E8263079216E8 > clave_alfonso.asc</code></pre>
 <p>Exporto la clave de Paco y se la envío</p>
 <pre class="language-txt"><code class="language-txt">gpg --export -a 7C499EE49A10C836480FCC9CD5DF96E1BBD7DB81 > paco.key</code></pre>
 <p>Exporto la clave de Óscar y se la envío</p>
 <pre class="language-txt"><code class="language-txt">gpg --export -a A8544395EB1796857BC8C1309E4B2C4247B5AA59 > oscar.key</code></pre>
-<ul>
-<li>Cuando tengas las tres firmas sube la clave al servidor de claves y rellena tus datos en la tabla Claves públicas PGP 2020-2021</li>
-</ul>
+<p><strong>Cuando tengas las tres firmas sube la clave al servidor de claves y rellena tus datos en la tabla Claves públicas PGP 2020-2021</strong></p>
 <p>Subido.</p>
-<ul>
-<li>Asegurate que te vuelves a bajar las claves públicas de tus compañeros que tengan las tres firmas.</li>
-</ul>
+<p><strong>Asegurate que te vuelves a bajar las claves públicas de tus compañeros que tengan las tres firmas.</strong></p>
 <p>Me he tenido que bajar manualmente las claves, ya que desde la terminal no se actualizaba.</p>
 <h4 id="4.-muestra-las-firmas-que-tiene-tu-clave-p%C3%BAblica." tabindex="-1">4. Muestra las firmas que tiene tu clave pública.</h4>
 <pre class="language-txt"><code class="language-txt">gpg --list-sig</code></pre>
@@ -262,6 +246,10 @@ gpg --sign-key A8544395EB1796857BC8C1309E4B2C4247B5AA59</p>
 <h4 id="3.-env%C3%ADa-y-recibe-varios-mensajes-con-tus-compa%C3%B1eros-y-comprueba-el-funcionamiento-adecuado-de-gpg." tabindex="-1">3. Envía y recibe varios mensajes con tus compañeros y comprueba el funcionamiento adecuado de GPG.</h4>
 <p>Aquí muestro como Alfonso me ha enviado un correo cifrado por mi clave pública y lo puedo visualizar correctamente.</p>
 <p><img src="/img/SAD-P4.4.png" alt="SAD-P4.4.png"></p>
+<p>Como podemos ver en la siguiente captura le he enviado correctamente un correo cifrado a Paco.</p>
+<p><img src="/img/SAD-P4.7.jpg" alt="SAD-P4.7.png"></p>
+<h4 id="4.-correo-firmado-para-ra%C3%BAl." tabindex="-1">4. Correo firmado para Raúl.</h4>
+<p>Enviado el correo a Raúl, mi correo es <a href="mailto:alemd01@outlook.com">alemd01@outlook.com</a> para que lo puedas verificar.</p>
 <hr>
 <h3 id="tarea-3%3A-integridad-de-ficheros" tabindex="-1">Tarea 3: Integridad de ficheros</h3>
 <h4 id="1.-para-validar-el-contenido-de-la-imagen-cd%2C-solo-aseg%C3%BArese-de-usar-la-herramienta-apropiada-para-sumas-de-verificaci%C3%B3n.-para-cada-versi%C3%B3n-publicada-existen-archivos-de-suma-de-comprobaci%C3%B3n-con-algoritmos-fuertes-(sha256-y-sha512)%3B-deber%C3%ADa-usar-las-herramientas-sha256sum-o-sha512sum-para-trabajar-con-ellos." tabindex="-1">1. Para validar el contenido de la imagen CD, solo asegúrese de usar la herramienta apropiada para sumas de verificación. Para cada versión publicada existen archivos de suma de comprobación con algoritmos fuertes (SHA256 y SHA512); debería usar las herramientas sha256sum o sha512sum para trabajar con ellos.</h4>
@@ -337,6 +325,11 @@ El cliente y el servidor, se ponen de acuerdo en un número primo alto, que serv
 <p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
 
         </div>
+            <p class="uppercase text-xs mt-6">Siguiente post</p>
+            <p class="font-bold mb-2">
+                <a href="/post/montaje-nfs-mediante-systemd./">Montaje NFS mediante Systemd.</a>
+            </p>
+        
             <p class="uppercase text-xs mt-6">Post anterior.</p>
 
             <p class="font-bold">
