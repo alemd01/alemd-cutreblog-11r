@@ -12,11 +12,74 @@
 	</author>
 	
 	<entry>
-		<title>Montaje NFS mediante Systemd.</title>
-		<link href="https://reeseschultz.github.io/post/montaje-nfs-mediante-systemd./"/>
+		<title>Montaje Servidor y cliente NFS mediante Systemd.</title>
+		<link href="https://reeseschultz.github.io/post/montaje-servidor-y-cliente-nfs-mediante-systemd./"/>
 		<updated>2022-12-15T00:00:00Z</updated>
-		<id>https://reeseschultz.github.io/post/montaje-nfs-mediante-systemd./</id>
-		<content type="html">&lt;p&gt;Lo primero que he hecho ha sido añadir un volumen de 2Gb a la máquina &lt;code&gt;Alfa&lt;/code&gt; de mi escenario en OpenStack.&lt;/p&gt;
+		<id>https://reeseschultz.github.io/post/montaje-servidor-y-cliente-nfs-mediante-systemd./</id>
+		<content type="html">&lt;h3 id=&quot;creaci%C3%B3n-del-volumen-y-particionado.&quot; tabindex=&quot;-1&quot;&gt;Creación del volumen y particionado.&lt;/h3&gt;
+&lt;p&gt;Lo primero que he hecho ha sido añadir un volumen de 2Gb a la máquina &lt;code&gt;Alfa&lt;/code&gt; de mi escenario en OpenStack. Una vex añadido el volumen, crearemos una partición y le daremos formato ext4.&lt;/p&gt;
+&lt;p&gt;Para crear la partición he usado el siguiente comando:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@alfa:/media/Archivos# fdisk /dev/vdb&lt;br /&gt;&lt;br /&gt;Welcome to fdisk (util-linux 2.36.1).&lt;br /&gt;Changes will remain in memory only, until you decide to write them.&lt;br /&gt;Be careful before using the write command.&lt;br /&gt;&lt;br /&gt;Device does not contain a recognized partition table.&lt;br /&gt;Created a new DOS disklabel with disk identifier 0x04ba1fd8.&lt;br /&gt;&lt;br /&gt;Command (m for help): n&lt;br /&gt;Partition type&lt;br /&gt;   p   primary (0 primary, 0 extended, 4 free)&lt;br /&gt;   e   extended (container for logical partitions)&lt;br /&gt;Select (default p): p&lt;br /&gt;Partition number (1-4, default 1): &lt;br /&gt;First sector (2048-4194303, default 2048): &lt;br /&gt;Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-4194303, default 4194303): &lt;br /&gt;&lt;br /&gt;Created a new partition 1 of type &#39;Linux&#39; and of size 2 GiB.&lt;br /&gt;&lt;br /&gt;Command (m for help): w&lt;br /&gt;The partition table has been altered.&lt;br /&gt;Calling ioctl() to re-read partition table.&lt;br /&gt;Syncing disks.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Una vez creada la partición con el siguiente comando, le asignaremos el formato ext4.&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@alfa:/media/Archivos# mkfs.ext4 /dev/vdb1&lt;br /&gt;mke2fs 1.46.2 (28-Feb-2021)&lt;br /&gt;Discarding device blocks: done                            &lt;br /&gt;Creating filesystem with 524032 4k blocks and 131072 inodes&lt;br /&gt;Filesystem UUID: faa25fa0-cffb-4494-b586-bdbe74f845aa&lt;br /&gt;Superblock backups stored on blocks: &lt;br /&gt;	32768, 98304, 163840, 229376, 294912&lt;br /&gt;&lt;br /&gt;Allocating group tables: done                            &lt;br /&gt;Writing inode tables: done                            &lt;br /&gt;Creating journal (8192 blocks): done&lt;br /&gt;Writing superblocks and filesystem accounting information: done &lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;creaci%C3%B3n-de-la-unidad-en-systemd.&quot; tabindex=&quot;-1&quot;&gt;Creación de la unidad en systemd.&lt;/h3&gt;
+&lt;p&gt;Primero de todo crearemos el directorio donde se montará el volumen en mi caso es el siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@alfa:/media/Archivos# mkdir /media/Archivos&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora crearemos la unidad de systemd para montar el volumen en el servidor Alfa.&lt;/p&gt;
+&lt;p&gt;Creamos el siguiente fichero:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@alfa:/media/Archivos# nano /etc/systemd/system/media-Archivos.mount&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;El fichero tiene dicho ya que debe de llamarse igual que la ruta donde se monta el volumen cambiando las barras &lt;code&gt;/&lt;/code&gt; por guiones &lt;code&gt;-&lt;/code&gt; y es &lt;code&gt;.mount&lt;/code&gt; porque es una unidad de montaje. Añadiremos lo siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[Unit]&lt;br /&gt;Description=Disco montado para practica ASO&lt;br /&gt;[Mount]&lt;br /&gt;What=/dev/vdb1&lt;br /&gt;Where=/media/Archivos&lt;br /&gt;Type=ext4&lt;br /&gt;Options=defaults&lt;br /&gt;[Install]&lt;br /&gt;WantedBy=multi-user.target&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Description como su nombre indica es una descripción del volumen montado.&lt;/li&gt;
+&lt;li&gt;En What debemos indicar la ruta del volumen que queremos montar.&lt;/li&gt;
+&lt;li&gt;En Where es donde lo hemos montado, es decir, la ruta donde se monta el volumen.&lt;/li&gt;
+&lt;li&gt;La opción Type es el formato que tendra el volumen.&lt;/li&gt;
+&lt;li&gt;En Options indicamos las opciones por defecto.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Una vez hecho esto, la unidad estaría creada. Ahora procederemos a activarlo.&lt;/p&gt;
+&lt;h3 id=&quot;activaci%C3%B3n-de-la-unidad-de-montaje.&quot; tabindex=&quot;-1&quot;&gt;Activación de la unidad de montaje.&lt;/h3&gt;
+&lt;p&gt;Para activar la unidad de montaje, tenemos que recargar el daemon de systemd antes para que detecto los nuevos cambios y la nueva unidad. Para ello usamos el siguiente comando:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@alfa:/media/Archivos# systemctl daemon-reload&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora ejecutamos el siguiente comando para iniciar la unidad creada:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@alfa:/media/Archivos# systemctl start media-Archivos.mount&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Para habilitar que la unidad se inicie automáticamente al inicio del sistema usamos el siguiente comando:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@alfa:/media/Archivos# systemctl enable media-Archivos.mount&lt;br /&gt;Created symlink /etc/systemd/system/multi-user.target.wants/media-Archivos.mount → /etc/systemd/system/media-Archivos.mount.&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;configuraci%C3%B3n-servidor-nfs.&quot; tabindex=&quot;-1&quot;&gt;Configuración servidor NFS.&lt;/h3&gt;
+&lt;p&gt;Lo primero que tenemos que hacer es instalar los paquetes necesarios. Son los siguientes paquetes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;nfs-kernel-server&lt;/li&gt;
+&lt;li&gt;nfs-common&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Una vez instalados los paquetes, editaremos el fichero exports.&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@alfa:/media/Archivos# nano /etc/exports&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Añadiremos lo siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;/media/Archivos *(rw,no_root_squash)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Activamos el servicio:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@alfa:/media/Archivos# service nfs-kernel-server start&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora comprobamos los directorios exportados:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@alfa:/media/Archivos# showmount --exports localhost&lt;br /&gt;Export list for localhost:&lt;br /&gt;/media/Archivos *&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;configuraci%C3%B3n-cliente-nfs.&quot; tabindex=&quot;-1&quot;&gt;Configuración cliente NFS.&lt;/h3&gt;
+&lt;p&gt;El cliente que configuraré será bravo. Lo primero que haremos será instalar el cliente nfs-utils:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[usuario@bravo system]$ sudo dnf install nfs-utils&lt;br /&gt;Failed to set locale, defaulting to C.UTF-8&lt;br /&gt;Last metadata expiration check: 1:58:56 ago on Tue Dec 27 15:52:39 2022.&lt;br /&gt;Package nfs-utils-1:2.5.4-15.el9.x86_64 is already installed.&lt;br /&gt;Dependencies resolved.&lt;br /&gt;Nothing to do.&lt;br /&gt;Complete!&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora crearemos una unidad de montaje del volumen nfs:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[usuario@bravo system]$ sudo nano /etc/systemd/system/home-usuario-archivos.mount&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Añadimos lo siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[Unit]&lt;br /&gt;Description= cliente NFS&lt;br /&gt;[Mount]&lt;br /&gt;What=172.16.0.1:/media/Archivos&lt;br /&gt;Where=/home/usuario/archivos&lt;br /&gt;Type=nfs&lt;br /&gt;Options=defaults&lt;br /&gt;[Install]&lt;br /&gt;WantedBy=multi-user.target&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Reiniciamos el demonio de systemctl:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[usuario@bravo system]$ sudo systemctl daemon-reload&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Arrancamos la unidad que hemos creado:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[usuario@bravo system]$ sudo systemctl start home-usuario-archivos.mount &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Como podemos ver se ha montado correctamente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[usuario@bravo system]$ df -h&lt;br /&gt;Filesystem                  Size  Used Avail Use% Mounted on&lt;br /&gt;devtmpfs                    4.0M     0  4.0M   0% /dev&lt;br /&gt;tmpfs                       383M     0  383M   0% /dev/shm&lt;br /&gt;tmpfs                       153M   14M  140M   9% /run&lt;br /&gt;/dev/vda5                    29G  1.3G   28G   5% /&lt;br /&gt;/dev/vda2                   994M  267M  728M  27% /boot&lt;br /&gt;/dev/vda1                   100M  7.0M   93M   7% /boot/efi&lt;br /&gt;tmpfs                        77M     0   77M   0% /run/user/1000&lt;br /&gt;172.16.0.1:/media/Archivos  2.0G     0  1.9G   0% /home/usuario/archivos&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora hacemos una prueba para ver que está montado correctamente. Desde el servidor crearemos una carpeta en el volumen:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@alfa:/media/Archivos$ sudo mkdir prueba&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora en el cliente listaremos los archivos para ver que se ha creado el directorio.&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[usuario@bravo ~]$ cd archivos/&lt;br /&gt;[usuario@bravo archivos]$ ls&lt;br /&gt;lost+found  prueba&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Hacemos la prueba del revés para ver que se pueden crear carpetas y ficheros desde el cliente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[usuario@bravo archivos]$ sudo mkdir prueba2&lt;br /&gt;[usuario@bravo archivos]$ ls&lt;br /&gt;lost+found  prueba  prueba2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora listamos desde el servidor para ver que se ha creado correctamente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@alfa:/media/Archivos$ ls&lt;br /&gt;lost+found  prueba  prueba2&lt;/code&gt;&lt;/pre&gt;
 &lt;hr /&gt;
 &lt;h2 id=&quot;documento-realizado-por%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Documento realizado por:&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;✒️ &lt;strong&gt;Alejandro Montes Delgado&lt;/strong&gt; - &lt;em&gt;2º ASIR&lt;/em&gt;&lt;/p&gt;

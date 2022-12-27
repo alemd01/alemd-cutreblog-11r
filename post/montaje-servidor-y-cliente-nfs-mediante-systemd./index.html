@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Montaje Servidor y cliente NFS mediante Systemd. | Cutreblog">
+    <meta itemprop="description" content="En esta práctica configuraremos un servidor y un cliente NFS mediante systemd.">
+
+    
+    <meta name="twitter:title" content="Montaje Servidor y cliente NFS mediante Systemd. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="En esta práctica configuraremos un servidor y un cliente NFS mediante systemd.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Montaje Servidor y cliente NFS mediante Systemd. | Cutreblog">
+    <meta name="og:description" content="En esta práctica configuraremos un servidor y un cliente NFS mediante systemd.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Montaje Servidor y cliente NFS mediante Systemd. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">About</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Montaje Servidor y cliente NFS mediante Systemd.</h2>
+
+        
+            <p class="excerpt">En esta práctica configuraremos un servidor y un cliente NFS mediante systemd.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag ASO" href="/tag/ASO">ASO</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Thu Dec 15 2022 01:00:00 GMT+0100 (hora estándar de Europa central)">December 15, 2022</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#creaci%C3%B3n-del-volumen-y-particionado.">Creación del volumen y particionado.</a>
+            		</li>
+
+                    <li><a href="#creaci%C3%B3n-de-la-unidad-en-systemd.">Creación de la unidad en systemd.</a>
+            		</li>
+
+                    <li><a href="#activaci%C3%B3n-de-la-unidad-de-montaje.">Activación de la unidad de montaje.</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-servidor-nfs.">Configuración servidor NFS.</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-cliente-nfs.">Configuración cliente NFS.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="creaci%C3%B3n-del-volumen-y-particionado." tabindex="-1">Creación del volumen y particionado.</h3>
+<p>Lo primero que he hecho ha sido añadir un volumen de 2Gb a la máquina <code>Alfa</code> de mi escenario en OpenStack. Una vex añadido el volumen, crearemos una partición y le daremos formato ext4.</p>
+<p>Para crear la partición he usado el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/media/Archivos# fdisk /dev/vdb<br><br>Welcome to fdisk (util-linux 2.36.1).<br>Changes will remain in memory only, until you decide to write them.<br>Be careful before using the write command.<br><br>Device does not contain a recognized partition table.<br>Created a new DOS disklabel with disk identifier 0x04ba1fd8.<br><br>Command (m for help): n<br>Partition type<br>   p   primary (0 primary, 0 extended, 4 free)<br>   e   extended (container for logical partitions)<br>Select (default p): p<br>Partition number (1-4, default 1): <br>First sector (2048-4194303, default 2048): <br>Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-4194303, default 4194303): <br><br>Created a new partition 1 of type 'Linux' and of size 2 GiB.<br><br>Command (m for help): w<br>The partition table has been altered.<br>Calling ioctl() to re-read partition table.<br>Syncing disks.</code></pre>
+<p>Una vez creada la partición con el siguiente comando, le asignaremos el formato ext4.</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/media/Archivos# mkfs.ext4 /dev/vdb1<br>mke2fs 1.46.2 (28-Feb-2021)<br>Discarding device blocks: done                            <br>Creating filesystem with 524032 4k blocks and 131072 inodes<br>Filesystem UUID: faa25fa0-cffb-4494-b586-bdbe74f845aa<br>Superblock backups stored on blocks: <br>	32768, 98304, 163840, 229376, 294912<br><br>Allocating group tables: done                            <br>Writing inode tables: done                            <br>Creating journal (8192 blocks): done<br>Writing superblocks and filesystem accounting information: done </code></pre>
+<h3 id="creaci%C3%B3n-de-la-unidad-en-systemd." tabindex="-1">Creación de la unidad en systemd.</h3>
+<p>Primero de todo crearemos el directorio donde se montará el volumen en mi caso es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/media/Archivos# mkdir /media/Archivos</code></pre>
+<p>Ahora crearemos la unidad de systemd para montar el volumen en el servidor Alfa.</p>
+<p>Creamos el siguiente fichero:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/media/Archivos# nano /etc/systemd/system/media-Archivos.mount</code></pre>
+<p>El fichero tiene dicho ya que debe de llamarse igual que la ruta donde se monta el volumen cambiando las barras <code>/</code> por guiones <code>-</code> y es <code>.mount</code> porque es una unidad de montaje. Añadiremos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">[Unit]<br>Description=Disco montado para practica ASO<br>[Mount]<br>What=/dev/vdb1<br>Where=/media/Archivos<br>Type=ext4<br>Options=defaults<br>[Install]<br>WantedBy=multi-user.target</code></pre>
+<ul>
+<li>Description como su nombre indica es una descripción del volumen montado.</li>
+<li>En What debemos indicar la ruta del volumen que queremos montar.</li>
+<li>En Where es donde lo hemos montado, es decir, la ruta donde se monta el volumen.</li>
+<li>La opción Type es el formato que tendra el volumen.</li>
+<li>En Options indicamos las opciones por defecto.</li>
+</ul>
+<p>Una vez hecho esto, la unidad estaría creada. Ahora procederemos a activarlo.</p>
+<h3 id="activaci%C3%B3n-de-la-unidad-de-montaje." tabindex="-1">Activación de la unidad de montaje.</h3>
+<p>Para activar la unidad de montaje, tenemos que recargar el daemon de systemd antes para que detecto los nuevos cambios y la nueva unidad. Para ello usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/media/Archivos# systemctl daemon-reload</code></pre>
+<p>Ahora ejecutamos el siguiente comando para iniciar la unidad creada:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/media/Archivos# systemctl start media-Archivos.mount</code></pre>
+<p>Para habilitar que la unidad se inicie automáticamente al inicio del sistema usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/media/Archivos# systemctl enable media-Archivos.mount<br>Created symlink /etc/systemd/system/multi-user.target.wants/media-Archivos.mount → /etc/systemd/system/media-Archivos.mount.</code></pre>
+<h3 id="configuraci%C3%B3n-servidor-nfs." tabindex="-1">Configuración servidor NFS.</h3>
+<p>Lo primero que tenemos que hacer es instalar los paquetes necesarios. Son los siguientes paquetes:</p>
+<ul>
+<li>nfs-kernel-server</li>
+<li>nfs-common</li>
+</ul>
+<p>Una vez instalados los paquetes, editaremos el fichero exports.</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/media/Archivos# nano /etc/exports</code></pre>
+<p>Añadiremos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">/media/Archivos *(rw,no_root_squash)</code></pre>
+<p>Activamos el servicio:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/media/Archivos# service nfs-kernel-server start</code></pre>
+<p>Ahora comprobamos los directorios exportados:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/media/Archivos# showmount --exports localhost<br>Export list for localhost:<br>/media/Archivos *</code></pre>
+<h3 id="configuraci%C3%B3n-cliente-nfs." tabindex="-1">Configuración cliente NFS.</h3>
+<p>El cliente que configuraré será bravo. Lo primero que haremos será instalar el cliente nfs-utils:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo system]$ sudo dnf install nfs-utils<br>Failed to set locale, defaulting to C.UTF-8<br>Last metadata expiration check: 1:58:56 ago on Tue Dec 27 15:52:39 2022.<br>Package nfs-utils-1:2.5.4-15.el9.x86_64 is already installed.<br>Dependencies resolved.<br>Nothing to do.<br>Complete!</code></pre>
+<p>Ahora crearemos una unidad de montaje del volumen nfs:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo system]$ sudo nano /etc/systemd/system/home-usuario-archivos.mount</code></pre>
+<p>Añadimos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">[Unit]<br>Description= cliente NFS<br>[Mount]<br>What=172.16.0.1:/media/Archivos<br>Where=/home/usuario/archivos<br>Type=nfs<br>Options=defaults<br>[Install]<br>WantedBy=multi-user.target</code></pre>
+<p>Reiniciamos el demonio de systemctl:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo system]$ sudo systemctl daemon-reload</code></pre>
+<p>Arrancamos la unidad que hemos creado:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo system]$ sudo systemctl start home-usuario-archivos.mount </code></pre>
+<p>Como podemos ver se ha montado correctamente:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo system]$ df -h<br>Filesystem                  Size  Used Avail Use% Mounted on<br>devtmpfs                    4.0M     0  4.0M   0% /dev<br>tmpfs                       383M     0  383M   0% /dev/shm<br>tmpfs                       153M   14M  140M   9% /run<br>/dev/vda5                    29G  1.3G   28G   5% /<br>/dev/vda2                   994M  267M  728M  27% /boot<br>/dev/vda1                   100M  7.0M   93M   7% /boot/efi<br>tmpfs                        77M     0   77M   0% /run/user/1000<br>172.16.0.1:/media/Archivos  2.0G     0  1.9G   0% /home/usuario/archivos</code></pre>
+<p>Ahora hacemos una prueba para ver que está montado correctamente. Desde el servidor crearemos una carpeta en el volumen:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:/media/Archivos$ sudo mkdir prueba</code></pre>
+<p>Ahora en el cliente listaremos los archivos para ver que se ha creado el directorio.</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ cd archivos/<br>[usuario@bravo archivos]$ ls<br>lost+found  prueba</code></pre>
+<p>Hacemos la prueba del revés para ver que se pueden crear carpetas y ficheros desde el cliente:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo archivos]$ sudo mkdir prueba2<br>[usuario@bravo archivos]$ ls<br>lost+found  prueba  prueba2</code></pre>
+<p>Ahora listamos desde el servidor para ver que se ha creado correctamente:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:/media/Archivos$ ls<br>lost+found  prueba  prueba2</code></pre>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/criptografia-ii:-integridad-firmas-y-autenticacion/">Criptografía II: Integridad, firmas y autenticación</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
