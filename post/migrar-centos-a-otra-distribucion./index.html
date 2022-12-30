@@ -91,12 +91,30 @@
             		</li>
 
                     <li><a href="#crea-una-cuenta-en-red-hat-y-desc%C3%A1rgate-la-iso-de-red-hat-enterprise-linux-(rel)-y-eval%C3%BAa-el-producto.-comenta-el-procedimiento-de-alta.">Crea una cuenta en Red Hat y descárgate la iso de Red Hat Enterprise Linux (REL) y evalúa el producto. Comenta el procedimiento de alta.</a>
+            
+                <ol>
+                    
+                    <li><a href="#evaluaci%C3%B3n-del-producto.">Evaluación del producto.</a>
+            		</li>
+                </ol>
             		</li>
 
                     <li><a href="#descarga-la-iso-de-centos-stream-y-eval%C3%BAa-el-producto.">Descarga la iso de CentOS Stream y evalúa el producto.</a>
+            
+                <ol>
+                    
+                    <li><a href="#evaluaci%C3%B3n-del-producto.-1">Evaluación del producto.</a>
+            		</li>
+                </ol>
             		</li>
 
                     <li><a href="#descarga-iso-de-una-de-las-otras-distribuciones-candidatas%2C-indica-criterios-para-la-elecci%C3%B3n-de-la-nueva-distribuci%C3%B3n-y-eval%C3%BAa-el-producto.">Descarga iso de una de las otras distribuciones candidatas, indica criterios para la elección de la nueva distribución y evalúa el producto.</a>
+            
+                <ol>
+                    
+                    <li><a href="#evaluaci%C3%B3n-del-producto.-2">Evaluación del producto.</a>
+            		</li>
+                </ol>
             		</li>
 
                     <li><a href="#instala-centos-7%2C-y-eval%C3%BAa-la-herramientas-que-ofrecen-la-distribuci%C3%B3n-del-punto-3.">Instala CentOS 7, y evalúa la herramientas que ofrecen la distribución del punto 3.</a>
@@ -134,10 +152,37 @@
 <h3 id="crea-una-cuenta-en-red-hat-y-desc%C3%A1rgate-la-iso-de-red-hat-enterprise-linux-(rel)-y-eval%C3%BAa-el-producto.-comenta-el-procedimiento-de-alta." tabindex="-1">Crea una cuenta en Red Hat y descárgate la iso de Red Hat Enterprise Linux (REL) y evalúa el producto. Comenta el procedimiento de alta.</h3>
 <p>Lo primero que debemos de hacer es acceder a la página oficial de <a href="https://www.redhat.com/es/technologies/linux-platforms/enterprise-linux/server/trial?sc_cid=7013a000002pdRFAAY&amp;gclid=Cj0KCQiAg_KbBhDLARIsANx7wAz-LbYyFuxRlM2fU6aFLoXtvGOLRanBnxNm6uBHRNATDa0XvyGdkggaApVJEALw_wcB&amp;gclsrc=aw.ds">Red Hat</a>
 para iniciar el registro. Para el registro debemos de poner nuestra información personal y en el apartado de la organización no dejaba ponerlo en blanco y he puesto Gonzalo Nazareno.</p>
-<p>Una vez hecho el registro, se descargará automáticamente. Cuando se haya descargado la iso, Detallaré por encima la instalación de RHEL. Una vez descargada la iso la insertaremos en una máquina virtual.</p>
+<p>Una vez hecho el registro, se descargará automáticamente. Cuando se haya descargado la iso, Detallaré por encima la instalación de RHEL. Una vez descargada la iso la insertaremos en una máquina virtual. Al arrancar la máquina virtual, aparecerá el típico instalador de linux.</p>
+<p><img src="/img/aso5.3.png" alt="aso5.3.png"></p>
+<p>Simplemente tenemos que elegir el destino de la instalación, añadir una contraseña de root y comenzará la instalación.</p>
+<p><img src="/img/aso5.4.png" alt="aso5.4.png"></p>
+<h4 id="evaluaci%C3%B3n-del-producto." tabindex="-1">Evaluación del producto.</h4>
+<p>Red Hat Enterprise Linux es la version comercial de Red Hat basada en Fedora que a su vez está basada en el anterior Red Hat linux. Mientras que las versiones de fedora salen cada 6 meses aproximadamente, las de RHEL suelen hacerlo cada 18 o 24 meses. Cada una de estas versiones cuenta con una serie de servicios de valor añadido sobre la base de los que basa su negocio ya sea como soporte, formación, consultoría, certificación etc.</p>
+<p>Cada versión lanzada de RHEL cuenta por el momento con soporte durante al menos 10 años desde la fecha de lanzamiento de la GA (version que acaba en 0).</p>
+<p>En cuanto a la interfaz gráfica, podemos ver una interfaz gnome, bastante familiar ya que es la interfaz gráfica más usada o de las más usada en linux, la podemos ver comumente en debian.</p>
+<p>El gestor de paquetes de RHEL es yum y el administrador de paquetes RPM, no apt o dpkg como sería en el caso de Debian respectivamente. RHEL tiene muy pocos paquetes disponibles en su repositorio, si se quiere instalar algún paquete como el libreoffice por ejemplo, se debe de instalar desde repositorios de terceros o descargando directamente el paquete. Los paquetes de RHEL son RPM.</p>
+<p>Como conclusión propia, me parece la distribución de linux idónea para instalar en una empresa grande y con un buen desarrollo tecnológico aunque no debemos de pasar por alto que es un sistema operativo caro ya que no te “venden” únicamente el sistema operativo si no que te dan soportes, asesorías, formación y demás. Otro aspecto a tener en cuenta es que al ser un sistema operativo pensado para servidores pueden ser demasiado estables y quizás necesitemos que nuestros paquetes se actualicen más a menudo.</p>
 <h3 id="descarga-la-iso-de-centos-stream-y-eval%C3%BAa-el-producto." tabindex="-1">Descarga la iso de CentOS Stream y evalúa el producto.</h3>
+<p>Descargaremos la iso de la página oficial de <a href="https://www.centos.org/centos-stream/#tab-3">CentOS</a>. No pondré los pasos de la instalación ya que es exactamente igual que RHEL. Esperaremos a que se instale.</p>
+<p><img src="/img/aso5.5.png" alt="aso5.5.png"></p>
+<h4 id="evaluaci%C3%B3n-del-producto.-1" tabindex="-1">Evaluación del producto.</h4>
+<p>CentOS ya no es una distribución estable como RHEL, se ha convertido en una distribución de lanzamiento contínuo entonces para entornos de producción como servidores de empresas es inviable, la distribución de CentOS a pasado mas a un entorno de desarrollo o también a nivel usuario.</p>
+<p>Independientemente de que se actualice continuamente, el SO está basado en Red Hat por lo que es muy similar a RHEL.</p>
 <h3 id="descarga-iso-de-una-de-las-otras-distribuciones-candidatas%2C-indica-criterios-para-la-elecci%C3%B3n-de-la-nueva-distribuci%C3%B3n-y-eval%C3%BAa-el-producto." tabindex="-1">Descarga iso de una de las otras distribuciones candidatas, indica criterios para la elección de la nueva distribución y evalúa el producto.</h3>
+<p>La distribución que he elegido para migrar desde CentOS es Rocky Linux, ya que es una distribución muy estable y no recibe tantas actualizaciones como CentOS Stream por ejemplo, que estaría más enfocado a un entorno de desarrollo.</p>
+<h4 id="evaluaci%C3%B3n-del-producto.-2" tabindex="-1">Evaluación del producto.</h4>
+<p>En cuanto a sistema operativo es muy similar al resto de sistemas operativos que hemos visto anteriormente. Rocky Linux es un punto intermedio entre CentOS Stream y RHEL es decir, no es un sistema para un entorno de desarrollo ni tampoco es tan estable como RHEL.</p>
 <h3 id="instala-centos-7%2C-y-eval%C3%BAa-la-herramientas-que-ofrecen-la-distribuci%C3%B3n-del-punto-3." tabindex="-1">Instala CentOS 7, y evalúa la herramientas que ofrecen la distribución del punto 3.</h3>
+<p>A continuación, realizaré una migración de CentOS 8 a Rocky Linux 8. Detallaré todos los pasos que he seguido para realizar de forma correcta la migración.</p>
+<p>En nuestro servidor CentOS 8, como los repositorios de Centos 8 no funcionan, he pasado al servidor el script por correo.</p>
+<p>Cambiamos los permisos del script con el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">[root@localhost usuario]# chmod u+x migrate2rocky.sh</code></pre>
+<p>Ejecutamos el script:</p>
+<pre class="language-txt"><code class="language-txt">[root@localhost usuario]# ./migrate2rocky.sh -r</code></pre>
+<p><img src="/img/aso5.6.png" alt="aso5.6.png"></p>
+<p>Esperamos que el script se termine de ejecutar y se habrá actualizado correctamente.</p>
+<p><img src="/img/aso5.7.png" alt="aso5.7.png"></p>
+<p>como podemos apreciar el sistema se ha migrado correctamente a rocky linux.</p>
 <h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
 <p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
 
