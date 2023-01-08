@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Despliegue de aplicaciones python. | Cutreblog">
+    <meta itemprop="description" content="En esta práctica vamos a desplegar la aplicación del tutorial de django.">
+
+    
+    <meta name="twitter:title" content="Despliegue de aplicaciones python. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="En esta práctica vamos a desplegar la aplicación del tutorial de django.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Despliegue de aplicaciones python. | Cutreblog">
+    <meta name="og:description" content="En esta práctica vamos a desplegar la aplicación del tutorial de django.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Despliegue de aplicaciones python. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">About</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Despliegue de aplicaciones python.</h2>
+
+        
+            <p class="excerpt">En esta práctica vamos a desplegar la aplicación del tutorial de django.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag IAW" href="/tag/IAW">IAW</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Wed Jan 04 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">January 4, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#tarea-1%3A-entorno-de-desarrollo.">Tarea 1: Entorno de desarrollo.</a>
+            		</li>
+
+                    <li><a href="#tarea-2%3A-entorno-de-producci%C3%B3n.">Tarea 2: Entorno de producción.</a>
+            		</li>
+
+                    <li><a href="#tarea-3%3A-modificaci%C3%B3n-de-nuestra-aplicaci%C3%B3n.">Tarea 3: Modificación de nuestra aplicación.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="tarea-1%3A-entorno-de-desarrollo." tabindex="-1">Tarea 1: Entorno de desarrollo.</h3>
+<p>Lo primero que haremos será forkear el repositorio y clonarlo a bravo.</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ git clone https://github.com/alemd01/django_tutorial.git<br>Cloning into 'django_tutorial'...<br>remote: Enumerating objects: 158, done.<br>remote: Counting objects: 100% (5/5), done.<br>remote: Compressing objects: 100% (5/5), done.<br>remote: Total 158 (delta 0), reused 2 (delta 0), pack-reused 153<br>Receiving objects: 100% (158/158), 4.25 MiB | 6.63 MiB/s, done.<br>Resolving deltas: 100% (50/50), done.</code></pre>
+<p>Una vez clonado el repositorio, lo que haremos será crear un entorno virtual. para ello, Crearemos una carpeta donde guardaremos todos los entornos virtuales y dentro crearemos el entorno virtual.</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ mkdir venv<br>[usuario@bravo ~]$ cd venv<br>[usuario@bravo venv]$ python3 -m venv venv</code></pre>
+<p>Una vez creado el entorno virtual, lo activamos.</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo venv]$ source bin/activate<br>(venv) [usuario@bravo venv]$</code></pre>
+<p>Instalamos los requisitos usando el requirements.txt</p>
+<pre class="language-txt"><code class="language-txt">(venv) [usuario@bravo django_tutorial]$ pip install -r requirements.txt <br>Collecting Django<br>  Downloading Django-4.1.5-py3-none-any.whl (8.1 MB)<br>     |████████████████████████████████| 8.1 MB 1.7 MB/s <br>Collecting asgiref&lt;4,>=3.5.2<br>  Downloading asgiref-3.6.0-py3-none-any.whl (23 kB)<br>Collecting sqlparse>=0.2.2<br>  Downloading sqlparse-0.4.3-py3-none-any.whl (42 kB)<br>     |████████████████████████████████| 42 kB 946 kB/s <br>Installing collected packages: sqlparse, asgiref, Django<br>Successfully installed Django-4.1.5 asgiref-3.6.0 sqlparse-0.4.3</code></pre>
+<p>Como podemos observar en el fichero <a href="http://settings.py">settings.py</a>, usaremos sqlite y el nombre de la base de datos será db.sqlite3</p>
+<pre class="language-txt"><code class="language-txt">DATABASES = {<br>    'default': {<br>        'ENGINE': 'django.db.backends.sqlite3',<br>        'NAME': BASE_DIR / 'db.sqlite3',<br>    }<br>}</code></pre>
+<p>Para generar la base de datos, tenemos que realizar una migración del fichero <a href="http://manage.py">manage.py</a> y así se creará un archivo sqlite3.</p>
+<pre class="language-txt"><code class="language-txt">(venv) [usuario@bravo django_tutorial]$ python3 manage.py migrate<br>Operations to perform:<br>  Apply all migrations: admin, auth, contenttypes, polls, sessions<br>Running migrations:<br>  Applying contenttypes.0001_initial... OK<br>  Applying auth.0001_initial... OK<br>  Applying admin.0001_initial... OK<br>  Applying admin.0002_logentry_remove_auto_add... OK<br>  Applying admin.0003_logentry_add_action_flag_choices... OK<br>  Applying contenttypes.0002_remove_content_type_name... OK<br>  Applying auth.0002_alter_permission_name_max_length... OK<br>  Applying auth.0003_alter_user_email_max_length... OK<br>  Applying auth.0004_alter_user_username_opts... OK<br>  Applying auth.0005_alter_user_last_login_null... OK<br>  Applying auth.0006_require_contenttypes_0002... OK<br>  Applying auth.0007_alter_validators_add_error_messages... OK<br>  Applying auth.0008_alter_user_username_max_length... OK<br>  Applying auth.0009_alter_user_last_name_max_length... OK<br>  Applying auth.0010_alter_group_name_max_length... OK<br>  Applying auth.0011_update_proxy_permissions... OK<br>  Applying auth.0012_alter_user_first_name_max_length... OK<br>  Applying polls.0001_initial... OK<br>  Applying sessions.0001_initial... OK<br>(venv) [usuario@bravo django_tutorial]$ ls<br>README.md   django_tutorial  polls<br>db.sqlite3  manage.py        requirements.txt<br></code></pre>
+<p>Con el siguiente comando crearemos un usuario para la base de datos:</p>
+<pre class="language-txt"><code class="language-txt">(venv) [usuario@bravo django_tutorial]$ python3 manage.py createsuperuser<br>Username (leave blank to use 'usuario'): alejandro<br>Email address: aaleemd11@gmail.com<br>Password: <br>Password (again): <br>This password is too short. It must contain at least 8 characters.<br>Bypass password validation and create user anyway? [y/N]: y<br>Superuser created successfully.</code></pre>
+<p>Hasta que no termine la práctica de DNS, no puedo realizarlo en bravo porque no puedo realizar las comprobaciones pertinentes.</p>
+<h3 id="tarea-2%3A-entorno-de-producci%C3%B3n." tabindex="-1">Tarea 2: Entorno de producción.</h3>
+<h3 id="tarea-3%3A-modificaci%C3%B3n-de-nuestra-aplicaci%C3%B3n." tabindex="-1">Tarea 3: Modificación de nuestra aplicación.</h3>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Siguiente post</p>
+            <p class="font-bold mb-2">
+                <a href="/post/criptografia-iii.-certificados-digitales.-https./">Criptografía III. Certificados Digitales. HTTPS.</a>
+            </p>
+        
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/posts/comprobaciones/"></a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>

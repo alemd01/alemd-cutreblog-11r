@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Criptografía III. Certificados Digitales. HTTPS. | Cutreblog">
+    <meta itemprop="description" content="En este post realizaré la memoria de Criptografía 3.">
+
+    
+    <meta name="twitter:title" content="Criptografía III. Certificados Digitales. HTTPS. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="En este post realizaré la memoria de Criptografía 3.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Criptografía III. Certificados Digitales. HTTPS. | Cutreblog">
+    <meta name="og:description" content="En este post realizaré la memoria de Criptografía 3.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Criptografía III. Certificados Digitales. HTTPS. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">About</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Criptografía III. Certificados Digitales. HTTPS.</h2>
+
+        
+            <p class="excerpt">En este post realizaré la memoria de Criptografía 3.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SAD" href="/tag/SAD">SAD</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Thu Jan 05 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">January 5, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#tarea-1%3A-instalaci%C3%B3n-del-certificado.">Tarea 1: Instalación del certificado.</a>
+            
+                <ol>
+                    
+                    <li><a href="#una-vez-que-hayas-obtenido-tu-certificado%2C-explica-brevemente-como-se-instala-en-tu-navegador-favorito.">Una vez que hayas obtenido tu certificado, explica brevemente como se instala en tu navegador favorito.</a>
+            		</li>
+
+                    <li><a href="#muestra-una-captura-de-pantalla-donde-se-vea-las-preferencias-del-navegador-donde-se-ve-instalado-tu-certificado.">Muestra una captura de pantalla donde se vea las preferencias del navegador donde se ve instalado tu certificado.</a>
+            		</li>
+
+                    <li><a href="#%C2%BFc%C3%B3mo-puedes-hacer-una-copia-de-tu-certificado%3F%2C-%C2%BFcomo-vas-a-realizar-la-copia-de-seguridad-de-tu-certificado%3F.-razona-la-respuesta.">¿Cómo puedes hacer una copia de tu certificado?, ¿Como vas a realizar la copia de seguridad de tu certificado?. Razona la respuesta.</a>
+            		</li>
+
+                    <li><a href="#investiga-como-exportar-la-clave-p%C3%BAblica-de-tu-certificado.">Investiga como exportar la clave pública de tu certificado.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#tarea-2%3A-validaci%C3%B3n-del-certificado.">Tarea 2: Validación del certificado.</a>
+            
+                <ol>
+                    
+                    <li><a href="#instala-en-tu-ordenador-el-software-autofirma-y-desde-la-p%C3%A1gina-de-valide-valida-tu-certificado.-muestra-capturas-de-pantalla-donde-se-comprueba-la-validaci%C3%B3n.">Instala en tu ordenador el software autofirma y desde la página de VALIDe valida tu certificado. Muestra capturas de pantalla donde se comprueba la validación.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#tarea-3%3A-firma-electr%C3%B3nica.">Tarea 3: Firma electrónica.</a>
+            
+                <ol>
+                    
+                    <li><a href="#utilizando-la-p%C3%A1gina-valide-y-el-programa-autofirma%2C-firma-un-documento-con-tu-certificado-y-env%C3%ADalo-por-correo-a-un-compa%C3%B1ero.">Utilizando la página VALIDe y el programa autofirma, firma un documento con tu certificado y envíalo por correo a un compañero.</a>
+            		</li>
+
+                    <li><a href="#tu-debes-recibir-otro-documento-firmado-por-un-compa%C3%B1ero-y-utilizando-las-herramientas-anteriores-debes-visualizar-la-firma-(visualizar-firma)-y-(verificar-firma).-%C2%BFpuedes-verificar-la-firma-aunque-no-tengas-la-clave-p%C3%BAblica-de-tu-compa%C3%B1ero%3F%2C-%C2%BFes-necesario-estar-conectado-a-internet-para-hacer-la-validaci%C3%B3n-de-la-firma%3F.-razona-tus-respuestas.">Tu debes recibir otro documento firmado por un compañero y utilizando las herramientas anteriores debes visualizar la firma (Visualizar Firma) y (Verificar Firma). ¿Puedes verificar la firma aunque no tengas la clave pública de tu compañero?, ¿Es necesario estar conectado a internet para hacer la validación de la firma?. Razona tus respuestas.</a>
+            		</li>
+
+                    <li><a href="#entre-dos-compa%C3%B1eros%2C-firmar-los-dos-un-documento%2C-verificar-la-firma-para-comprobar-que-est%C3%A1-firmado-por-los-dos.">Entre dos compañeros, firmar los dos un documento, verificar la firma para comprobar que está firmado por los dos.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#tarea-4%3A-autentificaci%C3%B3n.">Tarea 4: Autentificación.</a>
+            
+                <ol>
+                    
+                    <li><a href="#utilizando-tu-certificado-accede-a-alguna-p%C3%A1gina-de-la-administraci%C3%B3n-p%C3%BAblica-)cita-m%C3%A9dica%2C-becas%2C-puntos-del-carnet%2C%E2%80%A6).-entrega-capturas-de-pantalla-donde-se-demuestre-el-acceso-a-ellas.">Utilizando tu certificado accede a alguna página de la administración pública )cita médica, becas, puntos del carnet,…). Entrega capturas de pantalla donde se demuestre el acceso a ellas.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#tarea-1%3A-certificado-autofirmado.-ca">Tarea 1: Certificado autofirmado. CA</a>
+            
+                <ol>
+                    
+                    <li><a href="#crear-su-autoridad-certificadora-(generar-el-certificado-digital-de-la-ca).-mostrar-el-fichero-de-configuraci%C3%B3n-de-la-ac.">Crear su autoridad certificadora (generar el certificado digital de la CA). Mostrar el fichero de configuración de la AC.</a>
+            		</li>
+
+                    <li><a href="#debe-recibir-el-fichero-csr-(solicitud-de-firmar-un-certificado)-de-su-compa%C3%B1ero%2C-debe-firmarlo-y-enviar-el-certificado-generado-a-su-compa%C3%B1ero.">Debe recibir el fichero CSR (Solicitud de Firmar un Certificado) de su compañero, debe firmarlo y enviar el certificado generado a su compañero.</a>
+            		</li>
+
+                    <li><a href="#%C2%BFqu%C3%A9-otra-informaci%C3%B3n-debes-aportar-a-tu-compa%C3%B1ero-para-que-%C3%A9ste-configure-de-forma-adecuada-su-servidor-web-con-el-certificado-generado%3F">¿Qué otra información debes aportar a tu compañero para que éste configure de forma adecuada su servidor web con el certificado generado?</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#tarea-1%3A-certificado-autofirmado.-administrador-web">Tarea 1: Certificado autofirmado. Administrador Web</a>
+            
+                <ol>
+                    
+                    <li><a href="#crea-una-clave-privada-rsa-de-4096-bits-para-identificar-el-servidor.">Crea una clave privada RSA de 4096 bits para identificar el servidor.</a>
+            		</li>
+
+                    <li><a href="#utiliza-la-clave-anterior-para-generar-un-csr%2C-considerando-que-deseas-acceder-al-servidor-con-el-fqdn-(tunombre.iesgn.org).">Utiliza la clave anterior para generar un CSR, considerando que deseas acceder al servidor con el FQDN (tunombre.iesgn.org).</a>
+            		</li>
+
+                    <li><a href="#env%C3%ADa-la-solicitud-de-firma-a-la-entidad-certificadora-(su-compa%C3%B1ero).">Envía la solicitud de firma a la entidad certificadora (su compañero).</a>
+            		</li>
+
+                    <li><a href="#recibe-como-respuesta-un-certificado-x.509-para-el-servidor-firmado-y-el-certificado-de-la-autoridad-certificadora.">Recibe como respuesta un certificado X.509 para el servidor firmado y el certificado de la autoridad certificadora.</a>
+            		</li>
+
+                    <li><a href="#configura-tu-servidor-web-con-https-en-el-puerto-443%2C-haciendo-que-las-peticiones-http-se-redireccionen-a-https-(forzar-https).">Configura tu servidor web con https en el puerto 443, haciendo que las peticiones http se redireccionen a https (forzar https).</a>
+            		</li>
+
+                    <li><a href="#instala-ahora-un-servidor-nginx%2C-y-realiza-la-misma-configuraci%C3%B3n-que-anteriormente-para-que-se-sirva-la-p%C3%A1gina-con-https.">Instala ahora un servidor nginx, y realiza la misma configuración que anteriormente para que se sirva la página con HTTPS.</a>
+            		</li>
+                </ol>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h2 id="certificado-digital-de-persona-f%C3%ADsica." tabindex="-1">Certificado digital de persona física.</h2>
+<h3 id="tarea-1%3A-instalaci%C3%B3n-del-certificado." tabindex="-1">Tarea 1: Instalación del certificado.</h3>
+<h4 id="una-vez-que-hayas-obtenido-tu-certificado%2C-explica-brevemente-como-se-instala-en-tu-navegador-favorito." tabindex="-1">Una vez que hayas obtenido tu certificado, explica brevemente como se instala en tu navegador favorito.</h4>
+<p>Para importarlo en Firefox hacemos los siguientes pasos:</p>
+<ul>
+<li>
+<p>Abrimos los ajustes de Firefox.</p>
+</li>
+<li>
+<p>Vamos a la pestaña Privacidad &amp; Seguridad.</p>
+</li>
+<li>
+<p>En seguridad, hay un apartado de certificados y le damos a la opción de ver certificados. Se nos abrirá la siguiente pestaña:</p>
+</li>
+</ul>
+<p><img src="/img/SAD-cripto3.t1.1.png" alt="SAD-cripto3.t1.1.png"></p>
+<ul>
+<li>Como vemos mi certificado ya está importado, pero tenemos que elegir la opción de importar y elegimos nuestro certificado. Le damos a aceptar para que se guarden los cambios y lo habremos instalado correctamente.</li>
+</ul>
+<h4 id="muestra-una-captura-de-pantalla-donde-se-vea-las-preferencias-del-navegador-donde-se-ve-instalado-tu-certificado." tabindex="-1">Muestra una captura de pantalla donde se vea las preferencias del navegador donde se ve instalado tu certificado.</h4>
+<p>Para no repetir la captura, en el anterior apartado muestro mi certificado instalado.</p>
+<h4 id="%C2%BFc%C3%B3mo-puedes-hacer-una-copia-de-tu-certificado%3F%2C-%C2%BFcomo-vas-a-realizar-la-copia-de-seguridad-de-tu-certificado%3F.-razona-la-respuesta." tabindex="-1">¿Cómo puedes hacer una copia de tu certificado?, ¿Como vas a realizar la copia de seguridad de tu certificado?. Razona la respuesta.</h4>
+<p>Estando en el mismo apartado de ajuste que en el primer apartado, si seleccionamos nuestro certificado, nos da una opción que es  <code>Hacer copia...</code> .</p>
+<p><img src="/img/SAD-cripto3.t1.2.png" alt="SAD-cripto3.t1.2.png"></p>
+<p>Elegimos un nombre para la copia y lo guardamos. Tendremos que elegir una contraseña de respaldo de la copia del certificado, para cuando vayamos a restaurarla la introduzcamos.</p>
+<p><img src="/img/SAD-cripto3.t1.3.png" alt="SAD-cripto3.t1.3.png"></p>
+<h4 id="investiga-como-exportar-la-clave-p%C3%BAblica-de-tu-certificado." tabindex="-1">Investiga como exportar la clave pública de tu certificado.</h4>
+<p>Lo primero que hacemos es generar el par de claves del certificado con el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/2ASIR$ openssl pkcs12 -in MONTES_DELGADO_ALEJANDRO___49125015M.p12 -nocerts -nodes -out MONTES_DELGADO_ALEJANDRO___49125015M.key<br>Enter Import Password:<br>alemd@debian:~/2ASIR$</code></pre>
+<p>Ahora usamos el siguiente comando para extraer la clave pública:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/2ASIR$ openssl rsa -in MONTES_DELGADO_ALEJANDRO___49125015M.key -pubout -out MONTES_DELGADO_ALEJANDRO___49125015M.pub<br>writing RSA key</code></pre>
+<p>muestro un ls del directorio para comprobar que se han generado los ficheros correspondientes:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/2ASIR$ ls | grep ^MONTES*<br>MONTES_DELGADO_ALEJANDRO___49125015M.key<br>MONTES_DELGADO_ALEJANDRO___49125015M.p12<br>MONTES_DELGADO_ALEJANDRO___49125015M.pub</code></pre>
+<h3 id="tarea-2%3A-validaci%C3%B3n-del-certificado." tabindex="-1">Tarea 2: Validación del certificado.</h3>
+<h4 id="instala-en-tu-ordenador-el-software-autofirma-y-desde-la-p%C3%A1gina-de-valide-valida-tu-certificado.-muestra-capturas-de-pantalla-donde-se-comprueba-la-validaci%C3%B3n." tabindex="-1">Instala en tu ordenador el software autofirma y desde la página de VALIDe valida tu certificado. Muestra capturas de pantalla donde se comprueba la validación.</h4>
+<p>Lo primero que haremos será instalar las dependencias correspondiente para que funcione autofirma:</p>
+<pre class="language-txt"><code class="language-txt">sudo apt install default-jdk libnss3-tools</code></pre>
+<p>Desde la página de <a href="https://autofirma.net/como-instalar-autofirma-en-linux/">autofirma</a> descargaremos el zip y lo descomprimiremos.</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/2ASIR$ unzip AutoFirma_Linux.zip</code></pre>
+<p>Como podemos comprobar autofirma funciona correctamente.</p>
+<p><img src="/img/SAD-cripto3.t2.1.png" alt="SAD-cripto3.t2.1.png"></p>
+<p>Ahora en la página web de VALIDe, validaremos el certificado en la sección de validar el certificado, subiremos nuestro certificado y validaremos el captcha.</p>
+<p><img src="/img/SAD-cripto3.t2.png" alt="SAD-cripto3.t2.png"></p>
+<h3 id="tarea-3%3A-firma-electr%C3%B3nica." tabindex="-1">Tarea 3: Firma electrónica.</h3>
+<h4 id="utilizando-la-p%C3%A1gina-valide-y-el-programa-autofirma%2C-firma-un-documento-con-tu-certificado-y-env%C3%ADalo-por-correo-a-un-compa%C3%B1ero." tabindex="-1">Utilizando la página VALIDe y el programa autofirma, firma un documento con tu certificado y envíalo por correo a un compañero.</h4>
+<p>Si usamos VALIDe, en la sección de realizar firma, pulsamos sobre el botón firmar y subimos un archivo nuestro. Guardaremos el documento y se lo enviaremos a nuestro compañero.</p>
+<p><img src="/img/SAD-cripto3.t3.1.png" alt="SAD-cripto3.t3.1.png"></p>
+<p>Ahora muestro como he firmado otro documento con Autofirma. Pulsamos sobre seleccionar ficheros a firmar y buscamos el fichero que queremos firmar. Como podemos ver en los detalles está firmado por mí.</p>
+<p><img src="/img/SAD-cripto3.t3.2.png" alt="SAD-cripto3.t3.2.png"></p>
+<p>Ahora envío los ficheros a mi compañero Juanje por correo.</p>
+<h4 id="tu-debes-recibir-otro-documento-firmado-por-un-compa%C3%B1ero-y-utilizando-las-herramientas-anteriores-debes-visualizar-la-firma-(visualizar-firma)-y-(verificar-firma).-%C2%BFpuedes-verificar-la-firma-aunque-no-tengas-la-clave-p%C3%BAblica-de-tu-compa%C3%B1ero%3F%2C-%C2%BFes-necesario-estar-conectado-a-internet-para-hacer-la-validaci%C3%B3n-de-la-firma%3F.-razona-tus-respuestas." tabindex="-1">Tu debes recibir otro documento firmado por un compañero y utilizando las herramientas anteriores debes visualizar la firma (Visualizar Firma) y (Verificar Firma). ¿Puedes verificar la firma aunque no tengas la clave pública de tu compañero?, ¿Es necesario estar conectado a internet para hacer la validación de la firma?. Razona tus respuestas.</h4>
+<p>Visualizo la firma en VALIDe:</p>
+<p><img src="/img/SAD-cripto3.t3.6.png" alt="SAD-cripto3.t3.6.png"></p>
+<p>Visualizo la firma en Autofirma:</p>
+<p><img src="/img/SAD-cripto3.t3.5.png" alt="SAD-cripto3.t3.5.png"></p>
+<p>Juanje me ha enviado 2 ficheros. El primero lo valido con VALIDe:</p>
+<p><img src="/img/SAD-cripto3.t3.4.png" alt="SAD-cripto3.t3.4.png"></p>
+<p>Ahora valido el otro fichero con Autofirma:</p>
+<p><img src="/img/SAD-cripto3.t3.3.png" alt="SAD-cripto3.t3.3.png"></p>
+<h4 id="entre-dos-compa%C3%B1eros%2C-firmar-los-dos-un-documento%2C-verificar-la-firma-para-comprobar-que-est%C3%A1-firmado-por-los-dos." tabindex="-1">Entre dos compañeros, firmar los dos un documento, verificar la firma para comprobar que está firmado por los dos.</h4>
+<p>Ahora con Autofirma, firmo un documento que me ha enviado Juanje:</p>
+<p><img src="/img/SAD-cripto3.t3.7.png" alt="SAD-cripto3.t3.7.png"></p>
+<p>Como podemos ver, el fichero es firmado por Juanje y por mí. También lo he firmado con VALIDe:</p>
+<p><img src="/img/SAD-cripto3.t3.8.png" alt="SAD-cripto3.t3.8.png"></p>
+<h3 id="tarea-4%3A-autentificaci%C3%B3n." tabindex="-1">Tarea 4: Autentificación.</h3>
+<h4 id="utilizando-tu-certificado-accede-a-alguna-p%C3%A1gina-de-la-administraci%C3%B3n-p%C3%BAblica-)cita-m%C3%A9dica%2C-becas%2C-puntos-del-carnet%2C%E2%80%A6).-entrega-capturas-de-pantalla-donde-se-demuestre-el-acceso-a-ellas." tabindex="-1">Utilizando tu certificado accede a alguna página de la administración pública )cita médica, becas, puntos del carnet,…). Entrega capturas de pantalla donde se demuestre el acceso a ellas.</h4>
+<p>Entraré en la <a href="https://sede.dgt.gob.es/es/">Sede de la DGT</a> con mi certificado digital. Puelsaremos en el botón de arriba a la derecha <code>Acceso a mi dgt</code> :</p>
+<p><img src="/img/SAD-cripto3.t3.9.png" alt="SAD-cripto3.t3.9.png"></p>
+<p>Nos llevará a la pasarela de clave para iniciar sesión con el certificado electrónico y elegiremos nuestro certificado.</p>
+<p><img src="/img/SAD-cripto3.t3.10.png" alt="SAD-cripto3.t3.10.png"></p>
+<p>Como podemos ver, hemos iniciado sesión con mi certificado digital.</p>
+<hr>
+<h2 id="https-%2F-ssl." tabindex="-1">HTTPS / SSL.</h2>
+<h3 id="tarea-1%3A-certificado-autofirmado.-ca" tabindex="-1">Tarea 1: Certificado autofirmado. CA</h3>
+<h4 id="crear-su-autoridad-certificadora-(generar-el-certificado-digital-de-la-ca).-mostrar-el-fichero-de-configuraci%C3%B3n-de-la-ac." tabindex="-1">Crear su autoridad certificadora (generar el certificado digital de la CA). Mostrar el fichero de configuración de la AC.</h4>
+<p>Lo primero que haré, será crear carpetas para mantener una organización con los archivos.</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/2ASIR/SAD/cripto3/CA$ mkdir certs csr crl newcerts private<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ chmod 700 private<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ touch index.txt<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ touch index.txt.attr<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ echo 1000 > serial</code></pre>
+<p>Añado las siguientes variables de entorno:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/2ASIR/SAD/cripto3/CA$ countryName_default="ES"<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ stateOrProvinceName_default="Sevilla"<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ localityName_default="Utrera"<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ organizationName_default="Alejandro"<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ organizationalUnitName_default="ASIR2"<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ emailAddress_default="aaleemd11@gmail.com"<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ DIR_CA="./"</code></pre>
+<p>A continuación, creo el archivo openssl.cnf</p>
+<pre class="language-txt"><code class="language-txt"> cat &lt;&lt;EOF>$DIR_CA/openssl.conf<br>[ ca ]<br># man ca<br>default_ca = CA_default<br><br>[ CA_default ]<br># Directory and file locations.<br>dir               = ${DIR_CA}<br>certs             = ${DIR_CA}certs<br>crl_dir           = ${DIR_CA}crl<br>new_certs_dir     = ${DIR_CA}newcerts<br>database          = ${DIR_CA}index.txt<br>serial            = ${DIR_CA}serial<br>RANDFILE          = ${DIR_CA}private/.rand<br><br># The root key and root certificate.<br>private_key       = ${DIR_CA}private/private.key<br>certificate       = ${DIR_CA}certs/cacert.crt<br><br># For certificate revocation lists.<br>crlnumber         = ${DIR_CA}crlnumber<br>crl               = ${DIR_CA}crl/ca.crl.pem<br>crl_extensions    = crl_ext<br>default_crl_days  = 30<br><br># SHA-1 is deprecated, so use SHA-2 instead.<br>default_md        = sha256<br><br>name_opt          = ca_default<br>cert_opt          = ca_default<br>default_days      = 375<br>preserve          = no<br>policy            = policy_strict<br><br>[ policy_strict ]<br># The root CA should only sign intermediate certificates that match.<br>EOFendedKeyUsage = critical, OCSPSignings (man ocsp).tg).yEnciphermentes.</code></pre>
+<p>Generamos la clave privada y le cambiamos los permisos a la misma:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/2ASIR/SAD/cripto3/CA$ openssl genrsa -aes256 -out private/private.key 4096<br>Generating RSA private key, 4096 bit long modulus (2 primes)<br>...........................................................++++<br>.......................................................................................................................................................................................................................................................++++<br>e is 65537 (0x010001)<br>Enter pass phrase for private/private.key:<br>Verifying - Enter pass phrase for private/private.key:<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ chmod 400 private/private.key</code></pre>
+<p>Con el siguiente comando, editamos el fichero openssl.cnf:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/2ASIR/SAD/cripto3/CA$ sed -i 's|xxxsubjectAltNamexxx =|subjectAltName = ${ENV::SAN}|g' openssl.conf</code></pre>
+<p>Y ahora, creamos el certificado autofirmado para la CA:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/2ASIR/SAD/cripto3/CA$ URL=juanjesus.iesgn.org<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ export SAN=DNS:$URL<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ openssl req -config openssl.conf -key private/private.key -new -x509 -days 3650 -sha256 -extensions v3_ca -out certs/cacert.crt<br>Enter pass phrase for private/private.key:<br>You are about to be asked to enter information that will be incorporated<br>into your certificate request.<br>What you are about to enter is what is called a Distinguished Name or a DN.<br>There are quite a few fields but you can leave some blank<br>For some fields there will be a default value,<br>If you enter '.', the field will be left blank.<br>-----<br>Country Name (2 letter code) [ES]:<br>State or Province Name [Sevilla]:<br>Locality Name [Utrera]:<br>Organization Name [Alejandro]:<br>Organizational Unit Name [ASIR2]:<br>Common Name []:alejandro.montes<br>Email Address [aaleemd11@gmail.com]:<br>alemd@debian:~/2ASIR/SAD/cripto3/CA$ chmod 444 certs/cacert.crt</code></pre>
+<h4 id="debe-recibir-el-fichero-csr-(solicitud-de-firmar-un-certificado)-de-su-compa%C3%B1ero%2C-debe-firmarlo-y-enviar-el-certificado-generado-a-su-compa%C3%B1ero." tabindex="-1">Debe recibir el fichero CSR (Solicitud de Firmar un Certificado) de su compañero, debe firmarlo y enviar el certificado generado a su compañero.</h4>
+<p>Una vez que mi compañero Juanje me ha enviado el fichero, lo firmo:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/2ASIR/SAD/cripto3/CA$ openssl ca -config openssl.conf -extensions v3_req -days 3650 -notext -md sha256 -in csr/juanjesus-aleca.csr -out certs/juanjesus-aleca.crt<br>Using configuration from openssl.conf<br>Enter pass phrase for ./private/private.key:<br>Check that the request matches the signature<br>Signature ok<br>Certificate Details:<br>        Serial Number: 4096 (0x1000)<br>        Validity<br>            Not Before: Jan  8 12:21:19 2023 GMT<br>            Not After : Jan  5 12:21:19 2033 GMT<br>        Subject:<br>            countryName               = ES<br>            stateOrProvinceName       = Sevilla<br>            organizationName          = Alejandro<br>            organizationalUnitName    = ASIR2<br>            commonName                = juanjesus.debian<br>            emailAddress              = githubemail1asir@gmail.com<br>        X509v3 extensions:<br>            X509v3 Basic Constraints: <br>                CA:FALSE<br>            X509v3 Key Usage: <br>                Digital Signature, Non Repudiation, Key Encipherment<br>            X509v3 Subject Alternative Name: <br>                DNS:juanjesus.iesgn.org<br>Certificate is to be certified until Jan  5 12:21:19 2033 GMT (3650 days)<br>Sign the certificate? [y/n]:y<br><br><br>1 out of 1 certificate requests certified, commit? [y/n]y<br>Write out database with 1 new entries<br>Data Base Updated</code></pre>
+<p>Ahora le envío a Juanje los ficheros <code>juanjesus-aleca.crt</code> y el fichero <code>cacert.crt</code></p>
+<h4 id="%C2%BFqu%C3%A9-otra-informaci%C3%B3n-debes-aportar-a-tu-compa%C3%B1ero-para-que-%C3%A9ste-configure-de-forma-adecuada-su-servidor-web-con-el-certificado-generado%3F" tabindex="-1">¿Qué otra información debes aportar a tu compañero para que éste configure de forma adecuada su servidor web con el certificado generado?</h4>
+<p>Mi compañero necesitara el fichero <code>cacert.crt</code> que es el certificado autofirmado de la CA para que se pueda verificar la firma del certificado que le he enviado.</p>
+<h3 id="tarea-1%3A-certificado-autofirmado.-administrador-web" tabindex="-1">Tarea 1: Certificado autofirmado. Administrador Web</h3>
+<p>Antes que nada, dejo un resumen de los comandos usados para crear el servidor web con el virtualhost <code>alejandro.iesgn.org</code>.</p>
+<pre class="language-txt"><code class="language-txt">usuario@alejandro:~$ sudo apt update<br>usuario@alejandro:~$ sudo apt install apache2<br>usuario@alejandro:~$ sudo a2dissite 000-default.conf<br>usuario@alejandro:~$ sudo nano -cl /etc/apache2/sites-available/alejandro.iesgn.org.conf</code></pre>
+<p>Añadimos lo siguiente a la configuración del virtualhost:</p>
+<pre class="language-txt"><code class="language-txt">&lt;VirtualHost *:80><br>    ServerName alejandro.iesgn.org<br>    DocumentRoot /var/www/html/alejandro.iesgn.org<br>    ErrorLog ${APACHE_LOG_DIR}/error-alejandro.log<br>    CustomLog ${APACHE_LOG_DIR}/access-alejandro.log combined<br>&lt;/VirtualHost></code></pre>
+<p>He puesto un fichero de prueba para visualizar la página web. Activamos el virtual host:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alejandro:~$ sudo a2ensite alejandro.iesgn.org.conf<br>Enabling site alejandro.iesgn.org.<br>To activate the new configuration, you need to run:<br>  systemctl reload apache2<br>usuario@alejandro:~$ sudo systemctl reload apache2</code></pre>
+<p>Y por último en mi máquina cliente añadimos al /etc/hosts lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">172.22.9.231 alejandro.iesgn.org</code></pre>
+<h4 id="crea-una-clave-privada-rsa-de-4096-bits-para-identificar-el-servidor." tabindex="-1">Crea una clave privada RSA de 4096 bits para identificar el servidor.</h4>
+<p>Usamos el siguiente comando para crear la clave y le cambiamos los permisos al fichero:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alejandro:~$ sudo openssl genrsa -aes256 -out /etc/ssl/private/alejandro-priv.key 4096<br>Generating RSA private key, 4096 bit long modulus (2 primes)<br>........................++++<br>...............................................................................................................................................................++++<br>e is 65537 (0x010001)<br>Enter pass phrase for /etc/ssl/private/alejandro-priv.key:<br>Verifying - Enter pass phrase for /etc/ssl/private/alejandro-priv.key:<br>usuario@alejandro:~$ sudo chmod 400 /etc/ssl/private/alejandro-priv.key</code></pre>
+<h4 id="utiliza-la-clave-anterior-para-generar-un-csr%2C-considerando-que-deseas-acceder-al-servidor-con-el-fqdn-(tunombre.iesgn.org)." tabindex="-1">Utiliza la clave anterior para generar un CSR, considerando que deseas acceder al servidor con el FQDN (<a href="http://tunombre.iesgn.org">tunombre.iesgn.org</a>).</h4>
+<p>El comando es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alejandro:~$ sudo openssl req -new -sha256 -key /etc/ssl/private/alejandro-priv.key -out alejandro.csr<br>Enter pass phrase for /etc/ssl/private/alejandro-priv.key:<br>You are about to be asked to enter information that will be incorporated<br>into your certificate request.<br>What you are about to enter is what is called a Distinguished Name or a DN.<br>There are quite a few fields but you can leave some blank<br>For some fields there will be a default value,<br>If you enter '.', the field will be left blank.<br>-----<br>Country Name (2 letter code) [AU]:ES<br>State or Province Name (full name) [Some-State]:Sevilla<br>Locality Name (eg, city) []:Dos Hermanas<br>Organization Name (eg, company) [Internet Widgits Pty Ltd]:Juanje<br>Organizational Unit Name (eg, section) []:ASIR2<br>Common Name (e.g. server FQDN or YOUR name) []:alejandro.montes<br>Email Address []:aaleemd11@gmail.com<br><br>Please enter the following 'extra' attributes<br>to be sent with your certificate request<br>A challenge password []:       <br>An optional company name []:</code></pre>
+<h4 id="env%C3%ADa-la-solicitud-de-firma-a-la-entidad-certificadora-(su-compa%C3%B1ero)." tabindex="-1">Envía la solicitud de firma a la entidad certificadora (su compañero).</h4>
+<p>El fichero CSR ha sido enviado a mi compañero Juanje.</p>
+<h4 id="recibe-como-respuesta-un-certificado-x.509-para-el-servidor-firmado-y-el-certificado-de-la-autoridad-certificadora." tabindex="-1">Recibe como respuesta un certificado X.509 para el servidor firmado y el certificado de la autoridad certificadora.</h4>
+<p>Juanje me envía los ficheros <code>alejandro.crt</code> y <code>cacert.crt</code>.</p>
+<h4 id="configura-tu-servidor-web-con-https-en-el-puerto-443%2C-haciendo-que-las-peticiones-http-se-redireccionen-a-https-(forzar-https)." tabindex="-1">Configura tu servidor web con https en el puerto 443, haciendo que las peticiones http se redireccionen a https (forzar https).</h4>
+<p>Creo el virtualhost para https:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alejandro:~$ sudo nano -cl /etc/apache2/sites-available/ssl-alejandro.iesgn.org.conf</code></pre>
+<p>Añado lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt"> &lt;IfModule mod_ssl.c><br>     &lt;VirtualHost *:443><br>         ServerName alejandro.iesgn.org<br>         DocumentRoot /var/www/html/alejandro.iesgn.org<br>         ErrorLog ${APACHE_LOG_DIR}/error-alejandro.log<br>         CustomLog ${APACHE_LOG_DIR}/access-alejandro.log combined<br><br>         SSLEngine on<br>         SSLCertificateFile /etc/ssl/certs/alejandro.crt<br>         SSLCertificateKeyFile /etc/ssl/private/alejandro-priv.key<br>         SSLCertificateChainFile /etc/ssl/certs/cacert.crt<br><br>         &lt;Directory /var/www/html/alejandro.iesgn.org><br>             Options Indexes FollowSymLinks<br>             AllowOverride None<br>             Require all granted<br>         &lt;/Directory><br>     &lt;/VirtualHost><br> &lt;/IfModule></code></pre>
+<p>A continuación, muevo los ficheros a sus directorios correspondientes:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alejandro:~$ sudo mv alejandro.crt /etc/ssl/certs/<br>usuario@alejandro:~$ sudo mv cacert.crt /etc/ssl/certs/<br>usuario@alejandro:~$ sudo chown root:root /etc/ssl/certs/alejandro.crt<br>usuario@alejandro:~$ sudo chown root:root /etc/ssl/certs/cacert.crt<br>usuario@alejandro:~$ sudo chmod 644 /etc/ssl/certs/alejandro.crt<br>usuario@alejandro:~$ sudo chmod 644 /etc/ssl/certs/cacert.crt</code></pre>
+<p>por último, activamos el módulo SSL de apache, el virtualhost y recargamos el servicio:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alejandro:~$ sudo a2enmod ssl<br>Considering dependency setenvif for ssl:<br>Module setenvif already enabled<br>Considering dependency mime for ssl:<br>Module mime already enabled<br>Considering dependency socache_shmcb for ssl:<br>Enabling module socache_shmcb.<br>Enabling module ssl.<br>See /usr/share/doc/apache2/README.Debian.gz on how to configure SSL and create self-signed certificates.<br>To activate the new configuration, you need to run:<br>  systemctl restart apache2<br>usuario@alejandro:~$ sudo a2ensite ssl-alejandro.iesgn.org.conf<br>Enabling site ssl-alejandro.iesgn.org.<br>To activate the new configuration, you need to run:<br>  systemctl reload apache2<br>usuario@alejandro:~$ sudo systemctl reload apache2<br>🔐 Enter passphrase for SSL/TLS keys for alejandro.iesgn.org:443 (RSA): (p*********             </code></pre>
+<p>Para que nos redirija a HTTPS, tenemos que hacer lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~$ sudo nano -cl /etc/apache2/sites-available/ssl-alejandro.iesgn.org.conf</code></pre>
+<p>Tenemos que dejar el fichero de la siguiente manera:</p>
+<pre class="language-txt"><code class="language-txt">&lt;VirtualHost *:80><br>     ServerName alejandro.iesgn.org<br>     DocumentRoot /var/www/html/alejandro.iesgn.org<br>     ErrorLog ${APACHE_LOG_DIR}/error-alejandro.log<br>     CustomLog ${APACHE_LOG_DIR}/access-alejandro.log combined<br>     Redirect 301 / https://alejandro.iesgn.org/<br>&lt;/VirtualHost></code></pre>
+<p>Volvemos a recargar apache para que se apliquen los cambios.</p>
+<pre class="language-txt"><code class="language-txt">usuario@alejandro:~$ sudo systemctl reload apache2</code></pre>
+<p>Para que al entrar no nos aparezca el mensaje de que el certificado no es reconocido por mi navegador tendremos que importar en el navegador el certificado autofirmado de la CA  de Juanje que es el archivo <code>cacert.crt</code>.</p>
+<p><img src="/img/SAD-cripto3.t6.2.png" alt="SAD-cripto3.t6.2.png"></p>
+<h4 id="instala-ahora-un-servidor-nginx%2C-y-realiza-la-misma-configuraci%C3%B3n-que-anteriormente-para-que-se-sirva-la-p%C3%A1gina-con-https." tabindex="-1">Instala ahora un servidor nginx, y realiza la misma configuración que anteriormente para que se sirva la página con HTTPS.</h4>
+<p>Lo primero que haremos será deshabilitar apache2:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alejandro:~$ sudo systemctl disable --now apache2<br>Synchronizing state of apache2.service with SysV service script with /lib/systemd/systemd-sysv-install.<br>Executing: /lib/systemd/systemd-sysv-install disable apache2<br>Removed /etc/systemd/system/multi-user.target.wants/apache2.service.</code></pre>
+<p>Instalamos nginx:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alejandro:~$ sudo apt install nginx<br>Reading package lists... Done<br>Building dependency tree... Done<br>Reading state information... Done<br>The following additional packages will be installed:<br>  fontconfig-config fonts-dejavu-core geoip-database libdeflate0<br>  libfontconfig1 libgd3 libgeoip1 libjbig0 libjpeg62-turbo<br>  libnginx-mod-http-geoip libnginx-mod-http-image-filter<br>  libnginx-mod-http-xslt-filter libnginx-mod-mail libnginx-mod-stream<br>  libnginx-mod-stream-geoip libtiff5 libwebp6 libx11-6 libx11-data<br>  libxau6 libxcb1 libxdmcp6 libxpm4 libxslt1.1 nginx-common nginx-core<br>Suggested packages:<br>  libgd-tools geoip-bin fcgiwrap nginx-doc<br>The following NEW packages will be installed:<br>  fontconfig-config fonts-dejavu-core geoip-database libdeflate0<br>  libfontconfig1 libgd3 libgeoip1 libjbig0 libjpeg62-turbo<br>  libnginx-mod-http-geoip libnginx-mod-http-image-filter<br>  libnginx-mod-http-xslt-filter libnginx-mod-mail libnginx-mod-stream<br>  libnginx-mod-stream-geoip libtiff5 libwebp6 libx11-6 libx11-data<br>  libxau6 libxcb1 libxdmcp6 libxpm4 libxslt1.1 nginx nginx-common<br>  nginx-core<br>0 upgraded, 27 newly installed, 0 to remove and 0 not upgraded.<br>Need to get 8715 kB of archives.<br>After this operation, 24.2 MB of additional disk space will be used.<br>Do you want to continue? [Y/n] y</code></pre>
+<p>Creamos el fichero de configuración del virtualhost de la web:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alejandro:~$ sudo nano -cl /etc/nginx/sites-available/alejandro.iesgn.org.conf</code></pre>
+<p>agregamos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">server {<br>    listen 80;<br>    listen [::]:80;<br>    server_name alejandro.iesgn.org;<br>    return 301 https://$server_name$request_uri;<br>}<br><br>server {<br>    listen 443 ssl http2;<br>    listen [::]:443 ssl http2;<br>    server_name alejandro.iesgn.org;<br><br>    ssl_certificate /etc/ssl/certs/alejandro.crt;<br>    ssl_certificate_key /etc/ssl/private/alejandro-priv.key;<br>    ssl_trusted_certificate /etc/ssl/certs/cacert.crt;<br><br>    root /var/www/html/alejandro.iesgn.org;<br>    index index.html;<br><br>    location / {<br>        try_files $uri $uri/ =404;<br>    }<br>}</code></pre>
+<p>Ahora creamos el enlace simbólico del virtualhost:</p>
+<pre class="language-txt"><code class="language-txt"> sudo ln -s /etc/nginx/sites-available/alejandro.iesgn.org.conf /etc/nginx/sites-enabled/</code></pre>
+<p>Modifico la página y reinicio el servicio:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alejandro:~$ sudo systemctl restart nginx<br>usuario@alejandro:~$ sudo nano -cl /var/www/html/alejandro.iesgn.org/index.html</code></pre>
+<p>Accedo a la web:</p>
+<p><img src="/img/SAD-cripto3.t6.1.png" alt="SAD-cripto3.t6.1.png"></p>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/despliegue-de-aplicaciones-python./">Despliegue de aplicaciones python.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
