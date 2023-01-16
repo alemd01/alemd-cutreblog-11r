@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Servidores Web, Base de Datos y DNS en nuestros escenario de OpenStack | Cutreblog">
+    <meta itemprop="description" content="En esta práctica vamos a configurar un servidor DNS, Web y de bases de datos en nuestro escenario de OpenStack.">
+
+    
+    <meta name="twitter:title" content="Servidores Web, Base de Datos y DNS en nuestros escenario de OpenStack | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="En esta práctica vamos a configurar un servidor DNS, Web y de bases de datos en nuestro escenario de OpenStack.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Servidores Web, Base de Datos y DNS en nuestros escenario de OpenStack | Cutreblog">
+    <meta name="og:description" content="En esta práctica vamos a configurar un servidor DNS, Web y de bases de datos en nuestro escenario de OpenStack.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Servidores Web, Base de Datos y DNS en nuestros escenario de OpenStack | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">About</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Servidores Web, Base de Datos y DNS en nuestros escenario de OpenStack</h2>
+
+        
+            <p class="excerpt">En esta práctica vamos a configurar un servidor DNS, Web y de bases de datos en nuestro escenario de OpenStack.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SRI" href="/tag/SRI">SRI</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Sat Jan 14 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">January 14, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#entrega-la-configuraci%C3%B3n-dns-de-cada-m%C3%A1quina.">Entrega la configuración DNS de cada máquina.</a>
+            
+                <ol>
+                    
+                    <li><a href="#alfa.">Alfa.</a>
+            		</li>
+
+                    <li><a href="#bravo.">Bravo.</a>
+            		</li>
+
+                    <li><a href="#charlie.">Charlie.</a>
+            		</li>
+
+                    <li><a href="#delta.">Delta.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#entrega-la-definici%C3%B3n-de-las-vistas-y-de-las-zonas.">Entrega la definición de las vistas y de las zonas.</a>
+            
+                <ol>
+                    
+                    <li><a href="#configuraci%C3%B3n-de-las-vistas.">Configuración de las vistas.</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-de-la-zona-externa.">Configuración de la zona externa.</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-de-la-zona-dmz.">Configuración de la zona dmz.</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-de-la-zona-interna.">Configuración de la zona Interna.</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-de-la-zona-dmz-inversa.">Configuración de la zona DMZ inversa.</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-de-la-zona-interna-inversa.">Configuración de la zona interna inversa.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#entrega-el-resultado-de-las-siguientes-consultas-desde-una-m%C3%A1quina-interna-a-nuestra-red-y-otro-externo%3A">Entrega el resultado de las siguientes consultas desde una máquina interna a nuestra red y otro externo:</a>
+            
+                <ol>
+                    
+                    <li><a href="#el-servidor-dns-con-autoridad-sobre-la-zona-del-dominio-tu_nombre.gonzalonazareno.org.">El servidor DNS con autoridad sobre la zona del dominio tu_nombre.gonzalonazareno.org.</a>
+            		</li>
+
+                    <li><a href="#la-direcci%C3%B3n-ip-de-alfa.">La dirección IP de alfa.</a>
+            		</li>
+
+                    <li><a href="#una-resoluci%C3%B3n-de-www.">Una resolución de www.</a>
+            		</li>
+
+                    <li><a href="#una-resoluci%C3%B3n-de-bd.">Una resolución de bd.</a>
+            		</li>
+
+                    <li><a href="#un-resoluci%C3%B3n-inversa-de-ip-fija-en-cada-una-de-las-redes.-(esta-consulta-s%C3%B3lo-funcionar%C3%A1-desde-una-m%C3%A1quina-interna).">Un resolución inversa de IP fija en cada una de las redes. (Esta consulta sólo funcionará desde una máquina interna).</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#entrega-una-captura-de-pantalla-accediendo-a-www.tunombre.gonzalonazareno.org%2Finfo.php-donde-se-vea-la-salida-del-fichero-info.php.">Entrega una captura de pantalla accediendo a www.tunombre.gonzalonazareno.org/info.php donde se vea la salida del fichero info.php.</a>
+            		</li>
+
+                    <li><a href="#entrega-una-prueba-de-funcionamiento-donde-se-vea-como-se-realiza-una-conexi%C3%B3n-a-la-base-de-datos-desde-bravo.">Entrega una prueba de funcionamiento donde se vea como se realiza una conexión a la base de datos desde bravo.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="entrega-la-configuraci%C3%B3n-dns-de-cada-m%C3%A1quina." tabindex="-1">Entrega la configuración DNS de cada máquina.</h3>
+<p>Para que la configuración sea persistente en todas las máquinas tendremos que hacer lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ sudo nano /usr/lib/systemd/resolv.conf </code></pre>
+<p>En este fichero, añadiremos la configuración dns para que al reiniciar se mantenga.</p>
+<ul>
+<li>
+<h4 id="alfa." tabindex="-1">Alfa.</h4>
+</li>
+</ul>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ cat /etc/resolv.conf<br><br>nameserver 192.168.0.2<br>search alejandro-montes.gonzalonazareno.org<br>nameserver 172.16.202.2<br>search openstacklocal</code></pre>
+<ul>
+<li>
+<h4 id="bravo." tabindex="-1">Bravo.</h4>
+</li>
+</ul>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ cat /etc/resolv.conf <br><br>nameserver 192.168.0.2<br>search alejandro-montes.gonzalonazareno.org<br>nameserver 172.16.202.2</code></pre>
+<ul>
+<li>
+<h4 id="charlie." tabindex="-1">Charlie.</h4>
+</li>
+</ul>
+<pre class="language-txt"><code class="language-txt">ubuntu@charlie:~$ cat /etc/resolv.conf <br><br>nameserver 192.168.0.2<br>search alejandro-montes.gonzalonazareno.org<br>nameserver 127.0.0.53<br>options edns0 trust-ad<br></code></pre>
+<ul>
+<li>
+<h4 id="delta." tabindex="-1">Delta.</h4>
+</li>
+</ul>
+<pre class="language-txt"><code class="language-txt">ubuntu@delta:~$ cat /etc/resolv.conf <br><br>nameserver 192.168.0.2<br>search alejandro-montes.gonzalonazareno.org<br>nameserver 127.0.0.53<br>options edns0 trust-ad<br></code></pre>
+<h3 id="entrega-la-definici%C3%B3n-de-las-vistas-y-de-las-zonas." tabindex="-1">Entrega la definición de las vistas y de las zonas.</h3>
+<ul>
+<li>
+<h4 id="configuraci%C3%B3n-de-las-vistas." tabindex="-1">Configuración de las vistas.</h4>
+</li>
+</ul>
+<pre class="language-txt"><code class="language-txt">view externa {<br>                match-clients { 172.22.0.0/16; 172.29.0.0/16; 192.168.202.2/32; };<br>                allow-recursion { any; };<br>                zone "alejandro-montes.gonzalonazareno.org"<br>                {<br>                        type master;<br>                        file "db.externa.alejandro-montesgonzalonazareno.org";<br>                };<br>                include "/etc/bind/zones.rfc1918";<br>                include "/etc/bind/named.conf.default-zones";<br>};<br>view dmz {<br>                match-clients { 172.16.0.0/16; };<br>                allow-recursion { any; };<br>                zone "alejandro-montes.gonzalonazareno.org"<br>                {<br>                        type master;<br>                        file "db.dmz.alejandro-montes.gonzalonazareno.org";<br>                };<br>                zone "16.172.in-addr.arpa"<br>                {<br>                        type master;<br>                        file "db.16.172";<br>                };<br>                zone "0.168.192.in-addr.arpa"<br>                {<br>                        type master;<br>                        file "db.0.168.192";<br>                };<br>                include "/etc/bind/zones.rfc1918";<br>                include "/etc/bind/named.conf.default-zones";<br>};<br>view interna {<br>                match-clients { 192.168.0.0/24; 127.0.0.1; };<br>                allow-recursion { any; };<br>                zone "alejandro-montes.gonzalonazareno.org"<br>                {<br>                        type master;<br>                        file "db.interna.alejandro-montes.gonzalonazareno.org";<br>                };<br>                zone "0.168.192.in-addr.arpa"<br>                {<br>                        type master;<br>                        file "db.0.168.192";<br>                };<br>                zone "16.172.in-addr.arpa"<br>                {<br>                        type master;<br>                        file "db.16.172";<br>                };<br>                include "/etc/bind/zones.rfc1918";<br>                include "/etc/bind/named.conf.default-zones";<br>};</code></pre>
+<ul>
+<li>
+<h4 id="configuraci%C3%B3n-de-la-zona-externa." tabindex="-1">Configuración de la zona externa.</h4>
+</li>
+</ul>
+<pre class="language-txt"><code class="language-txt">$TTL    86400<br>@       IN      SOA     alfa.alejandro-montes.gonzalonazareno.org. root.alejandro-montes.gonzalonazareno.org. (<br>                              1         ; Serial<br>                         604800         ; Refresh<br>                          86400         ; Retry<br>                        2419200         ; Expire<br>                          86400 )       ; Negative Cache TTL<br>;<br>@       IN      NS      alfa.alejandro-montes.gonzalonazareno.org.<br><br>$ORIGIN alejandro-montes.gonzalonazareno.org.<br><br>alfa                    IN      A       172.22.200.13<br>dns                     IN      CNAME   alfa<br>www                     IN      CNAME   alfa<br></code></pre>
+<ul>
+<li>
+<h4 id="configuraci%C3%B3n-de-la-zona-dmz." tabindex="-1">Configuración de la zona dmz.</h4>
+</li>
+</ul>
+<pre class="language-txt"><code class="language-txt">$TTL    86400<br>@       IN      SOA     charlie.alejandro-montes.gonzalonazareno.org. root.charlie.alejandro-montes.gonzalonazareno.org. (<br>                              1         ; Serial<br>                         604800         ; Refresh<br>                          86400         ; Retry<br>                        2419200         ; Expire<br>                          86400 )       ; Negative Cache TTL<br>;<br>@       IN      NS      charlie.alejandro-montes.gonzalonazareno.org.<br><br>$ORIGIN alejandro-montes.gonzalonazareno.org.<br><br>alfa                    IN      A       172.16.0.1<br>bravo                   IN      A       172.16.0.200<br>charlie                 IN      A       192.168.0.2<br>delta                   IN      A       192.168.0.3<br>www                     IN      CNAME   bravo<br>bd                      IN      CNAME   delta<br>dns                     IN      CNAME   charlie</code></pre>
+<ul>
+<li>
+<h4 id="configuraci%C3%B3n-de-la-zona-interna." tabindex="-1">Configuración de la zona Interna.</h4>
+</li>
+</ul>
+<pre class="language-txt"><code class="language-txt">$TTL    86400<br>@       IN      SOA     charlie.alejandro-montes.gonzalonazareno.org. root.charlie.alejandro-montes.gonzalonazareno.org. (<br>                              1         ; Serial<br>                         604800         ; Refresh<br>                          86400         ; Retry<br>                        2419200         ; Expire<br>                          86400 )       ; Negative Cache TTL<br>;<br>@       IN      NS      charlie.alejandro-montes.gonzalonazareno.org.<br><br>$ORIGIN alejandro-montes.gonzalonazareno.org.<br><br>alfa                    IN      A       192.168.0.1<br>bravo                   IN      A       172.16.0.200<br>charlie                 IN      A       192.168.0.2<br>delta                   IN      A       192.168.0.3<br>www                     IN      CNAME   bravo<br>bd                      IN      CNAME   delta<br>dns                     IN      CNAME   charlie<br></code></pre>
+<ul>
+<li>
+<h4 id="configuraci%C3%B3n-de-la-zona-dmz-inversa." tabindex="-1">Configuración de la zona DMZ inversa.</h4>
+</li>
+</ul>
+<pre class="language-txt"><code class="language-txt">$TTL    86400<br>@       IN      SOA     charlie.alejandro-montes.gonzalonazareno.org. root.alejandro-montes.gonzalonazareno.org. (<br>                              1         ; Serial<br>                         604800         ; Refresh<br>                          86400         ; Retry<br>                        2419200         ; Expire<br>                          86400 )       ; Negative Cache TTL<br>;<br>@       IN      NS              charlie.alejandro-montes.gonzalonazareno.org.<br><br>$ORIGIN 16.172.in-addr.arpa.<br><br>200.0                   IN      PTR             bravo.alejandro-montes.gonzalonazareno.org.</code></pre>
+<ul>
+<li>
+<h4 id="configuraci%C3%B3n-de-la-zona-interna-inversa." tabindex="-1">Configuración de la zona interna inversa.</h4>
+</li>
+</ul>
+<pre class="language-txt"><code class="language-txt">$TTL    86400<br>@       IN      SOA     charlie.alejandro-montes.gonzalonazareno.org. root.alejandro-montes.gonzalonazareno.org. (<br>                              1         ; Serial<br>                         604800         ; Refresh<br>                          86400         ; Retry<br>                        2419200         ; Expire<br>                          86400 )       ; Negative Cache TTL<br>;<br>@       IN      NS              charlie.alejandro-montes.gonzalonazareno.org.<br><br>$ORIGIN 0.168.192.in-addr.arpa.<br><br>1                       IN      PTR             alfa.alejandro-montes.gonzalonazareno.org.<br>2                       IN      PTR             charlie.alejandro-montes.gonzalonazareno.org.<br>3                       IN      PTR             delta.alejandro-montes.gonzalonazareno.org.</code></pre>
+<h3 id="entrega-el-resultado-de-las-siguientes-consultas-desde-una-m%C3%A1quina-interna-a-nuestra-red-y-otro-externo%3A" tabindex="-1">Entrega el resultado de las siguientes consultas desde una máquina interna a nuestra red y otro externo:</h3>
+<ul>
+<li>
+<h4 id="el-servidor-dns-con-autoridad-sobre-la-zona-del-dominio-tu_nombre.gonzalonazareno.org." tabindex="-1">El servidor DNS con autoridad sobre la zona del dominio tu_nombre.gonzalonazareno.org.</h4>
+</li>
+</ul>
+<p>El comando es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">dig ns alejandro-montes.gonzalonazareno.org</code></pre>
+<p>Desde alfa(Red Interna):</p>
+<p><img src="/img/SRI-P7.4.png" alt="SRI-P7.4.png"></p>
+<p>Desde bravo(Red DMZ):</p>
+<p><img src="/img/SRI-P7.2.png" alt="SRI-P7.2.png"></p>
+<p>Desde mi portátil:</p>
+<p><img src="/img/SRI-P7.3.png" alt="SRI-P7.3.png"></p>
+<ul>
+<li>
+<h4 id="la-direcci%C3%B3n-ip-de-alfa." tabindex="-1">La dirección IP de alfa.</h4>
+</li>
+</ul>
+<p>El comando es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">dig alfa.alejandro-montes.gonzalonazareno.org</code></pre>
+<p>Desde alfa(Red Interna):</p>
+<p><img src="/img/SRI-P7.5.png" alt="SRI-P7.5.png"></p>
+<p>Desde bravo(Red DMZ):</p>
+<p><img src="/img/SRI-P7.6.png" alt="SRI-P7.6.png"></p>
+<p>Desde mi portátil:</p>
+<p><img src="/img/SRI-P7.7.png" alt="SRI-P7.7.png"></p>
+<ul>
+<li>
+<h4 id="una-resoluci%C3%B3n-de-www." tabindex="-1">Una resolución de www.</h4>
+</li>
+</ul>
+<p>El comando es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">dig www.alejandro-montes.gonzalonazareno.org</code></pre>
+<p>Desde alfa(Red Interna):</p>
+<p><img src="/img/SRI-P7.8.png" alt="SRI-P7.8.png"></p>
+<p>Desde bravo(Red DMZ):</p>
+<p><img src="/img/SRI-P7.9.png" alt="SRI-P7.9.png"></p>
+<p>Desde mi portátil:</p>
+<p><img src="/img/SRI-P7.10.png" alt="SRI-P7.10.png"></p>
+<ul>
+<li>
+<h4 id="una-resoluci%C3%B3n-de-bd." tabindex="-1">Una resolución de bd.</h4>
+</li>
+</ul>
+<p>El comando es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">dig bd.alejandro-montes.gonzalonazareno.org</code></pre>
+<p>Desde alfa(Red Interna):</p>
+<p><img src="/img/SRI-P7.11.png" alt="SRI-P7.11.png"></p>
+<p>Desde bravo(Red DMZ):</p>
+<p><img src="/img/SRI-P7.12.png" alt="SRI-P7.12.png"></p>
+<p>Desde mi portátil:</p>
+<p><img src="/img/SRI-P7.13.png" alt="SRI-P7.13.png"></p>
+<ul>
+<li>
+<h4 id="un-resoluci%C3%B3n-inversa-de-ip-fija-en-cada-una-de-las-redes.-(esta-consulta-s%C3%B3lo-funcionar%C3%A1-desde-una-m%C3%A1quina-interna)." tabindex="-1">Un resolución inversa de IP fija en cada una de las redes. (Esta consulta sólo funcionará desde una máquina interna).</h4>
+</li>
+</ul>
+<p>El comando es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">dig -x 0.0.0.0</code></pre>
+<p>Desde alfa(Red Interna) a la red interna:</p>
+<p><img src="/img/SRI-P7.14.png" alt="SRI-P7.14.png"></p>
+<p>Desde alfa(Red Interna) a la red dmz:</p>
+<p><img src="/img/SRI-P7.15.png" alt="SRI-P7.15.png"></p>
+<p>Desde bravo(Red DMZ) a la red interna:</p>
+<p><img src="/img/SRI-P7.16.png" alt="SRI-P7.16.png"></p>
+<p>Desde bravo(Red DMZ) a la red dmz:</p>
+<p><img src="/img/SRI-P7.17.png" alt="SRI-P7.17.png"></p>
+<h3 id="entrega-una-captura-de-pantalla-accediendo-a-www.tunombre.gonzalonazareno.org%2Finfo.php-donde-se-vea-la-salida-del-fichero-info.php." tabindex="-1">Entrega una captura de pantalla accediendo a <a href="http://www.tunombre.gonzalonazareno.org/info.php">www.tunombre.gonzalonazareno.org/info.php</a> donde se vea la salida del fichero info.php.</h3>
+<p><img src="/img/SRI-P7.18.png" alt="SRI-P7.18.png"></p>
+<h3 id="entrega-una-prueba-de-funcionamiento-donde-se-vea-como-se-realiza-una-conexi%C3%B3n-a-la-base-de-datos-desde-bravo." tabindex="-1">Entrega una prueba de funcionamiento donde se vea como se realiza una conexión a la base de datos desde bravo.</h3>
+<p>Desde Bravo, conecto al servidor de bases de datos usando el CNAME <code>bd</code> de delta:</p>
+<p><img src="/img/SRI-P7.1.png" alt="SRI-P7.1.png"></p>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/configurar-servidor-vpn-en-openvpn-y-wireguard./">Configurar servidor VPN en OpenVPN y WireGuard.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>

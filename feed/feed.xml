@@ -5,11 +5,160 @@
 	
 	<link href="https://reeseschultz.github.io/feed/feed.xml" rel="self"/>
 	<link href="https://reeseschultz.github.io"/>
-	<updated>2023-01-10T00:00:00Z</updated>
+	<updated>2023-01-14T00:00:00Z</updated>
 	<id>https://example.com/</id>
 	<author> 
 		<name>Reese Schultz</name>
 	</author>
+	
+	<entry>
+		<title>Servidores Web, Base de Datos y DNS en nuestros escenario de OpenStack</title>
+		<link href="https://reeseschultz.github.io/post/servidores-web-base-de-datos-y-dns-en-nuestros-escenario-de-openstack/"/>
+		<updated>2023-01-14T00:00:00Z</updated>
+		<id>https://reeseschultz.github.io/post/servidores-web-base-de-datos-y-dns-en-nuestros-escenario-de-openstack/</id>
+		<content type="html">&lt;h3 id=&quot;entrega-la-configuraci%C3%B3n-dns-de-cada-m%C3%A1quina.&quot; tabindex=&quot;-1&quot;&gt;Entrega la configuración DNS de cada máquina.&lt;/h3&gt;
+&lt;p&gt;Para que la configuración sea persistente en todas las máquinas tendremos que hacer lo siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@alfa:~$ sudo nano /usr/lib/systemd/resolv.conf &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;En este fichero, añadiremos la configuración dns para que al reiniciar se mantenga.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;alfa.&quot; tabindex=&quot;-1&quot;&gt;Alfa.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;usuario@alfa:~$ cat /etc/resolv.conf&lt;br /&gt;&lt;br /&gt;nameserver 192.168.0.2&lt;br /&gt;search alejandro-montes.gonzalonazareno.org&lt;br /&gt;nameserver 172.16.202.2&lt;br /&gt;search openstacklocal&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;bravo.&quot; tabindex=&quot;-1&quot;&gt;Bravo.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[usuario@bravo ~]$ cat /etc/resolv.conf &lt;br /&gt;&lt;br /&gt;nameserver 192.168.0.2&lt;br /&gt;search alejandro-montes.gonzalonazareno.org&lt;br /&gt;nameserver 172.16.202.2&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;charlie.&quot; tabindex=&quot;-1&quot;&gt;Charlie.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;ubuntu@charlie:~$ cat /etc/resolv.conf &lt;br /&gt;&lt;br /&gt;nameserver 192.168.0.2&lt;br /&gt;search alejandro-montes.gonzalonazareno.org&lt;br /&gt;nameserver 127.0.0.53&lt;br /&gt;options edns0 trust-ad&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;delta.&quot; tabindex=&quot;-1&quot;&gt;Delta.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;ubuntu@delta:~$ cat /etc/resolv.conf &lt;br /&gt;&lt;br /&gt;nameserver 192.168.0.2&lt;br /&gt;search alejandro-montes.gonzalonazareno.org&lt;br /&gt;nameserver 127.0.0.53&lt;br /&gt;options edns0 trust-ad&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;entrega-la-definici%C3%B3n-de-las-vistas-y-de-las-zonas.&quot; tabindex=&quot;-1&quot;&gt;Entrega la definición de las vistas y de las zonas.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;configuraci%C3%B3n-de-las-vistas.&quot; tabindex=&quot;-1&quot;&gt;Configuración de las vistas.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;view externa {&lt;br /&gt;                match-clients { 172.22.0.0/16; 172.29.0.0/16; 192.168.202.2/32; };&lt;br /&gt;                allow-recursion { any; };&lt;br /&gt;                zone &quot;alejandro-montes.gonzalonazareno.org&quot;&lt;br /&gt;                {&lt;br /&gt;                        type master;&lt;br /&gt;                        file &quot;db.externa.alejandro-montesgonzalonazareno.org&quot;;&lt;br /&gt;                };&lt;br /&gt;                include &quot;/etc/bind/zones.rfc1918&quot;;&lt;br /&gt;                include &quot;/etc/bind/named.conf.default-zones&quot;;&lt;br /&gt;};&lt;br /&gt;view dmz {&lt;br /&gt;                match-clients { 172.16.0.0/16; };&lt;br /&gt;                allow-recursion { any; };&lt;br /&gt;                zone &quot;alejandro-montes.gonzalonazareno.org&quot;&lt;br /&gt;                {&lt;br /&gt;                        type master;&lt;br /&gt;                        file &quot;db.dmz.alejandro-montes.gonzalonazareno.org&quot;;&lt;br /&gt;                };&lt;br /&gt;                zone &quot;16.172.in-addr.arpa&quot;&lt;br /&gt;                {&lt;br /&gt;                        type master;&lt;br /&gt;                        file &quot;db.16.172&quot;;&lt;br /&gt;                };&lt;br /&gt;                zone &quot;0.168.192.in-addr.arpa&quot;&lt;br /&gt;                {&lt;br /&gt;                        type master;&lt;br /&gt;                        file &quot;db.0.168.192&quot;;&lt;br /&gt;                };&lt;br /&gt;                include &quot;/etc/bind/zones.rfc1918&quot;;&lt;br /&gt;                include &quot;/etc/bind/named.conf.default-zones&quot;;&lt;br /&gt;};&lt;br /&gt;view interna {&lt;br /&gt;                match-clients { 192.168.0.0/24; 127.0.0.1; };&lt;br /&gt;                allow-recursion { any; };&lt;br /&gt;                zone &quot;alejandro-montes.gonzalonazareno.org&quot;&lt;br /&gt;                {&lt;br /&gt;                        type master;&lt;br /&gt;                        file &quot;db.interna.alejandro-montes.gonzalonazareno.org&quot;;&lt;br /&gt;                };&lt;br /&gt;                zone &quot;0.168.192.in-addr.arpa&quot;&lt;br /&gt;                {&lt;br /&gt;                        type master;&lt;br /&gt;                        file &quot;db.0.168.192&quot;;&lt;br /&gt;                };&lt;br /&gt;                zone &quot;16.172.in-addr.arpa&quot;&lt;br /&gt;                {&lt;br /&gt;                        type master;&lt;br /&gt;                        file &quot;db.16.172&quot;;&lt;br /&gt;                };&lt;br /&gt;                include &quot;/etc/bind/zones.rfc1918&quot;;&lt;br /&gt;                include &quot;/etc/bind/named.conf.default-zones&quot;;&lt;br /&gt;};&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;configuraci%C3%B3n-de-la-zona-externa.&quot; tabindex=&quot;-1&quot;&gt;Configuración de la zona externa.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;$TTL    86400&lt;br /&gt;@       IN      SOA     alfa.alejandro-montes.gonzalonazareno.org. root.alejandro-montes.gonzalonazareno.org. (&lt;br /&gt;                              1         ; Serial&lt;br /&gt;                         604800         ; Refresh&lt;br /&gt;                          86400         ; Retry&lt;br /&gt;                        2419200         ; Expire&lt;br /&gt;                          86400 )       ; Negative Cache TTL&lt;br /&gt;;&lt;br /&gt;@       IN      NS      alfa.alejandro-montes.gonzalonazareno.org.&lt;br /&gt;&lt;br /&gt;$ORIGIN alejandro-montes.gonzalonazareno.org.&lt;br /&gt;&lt;br /&gt;alfa                    IN      A       172.22.200.13&lt;br /&gt;dns                     IN      CNAME   alfa&lt;br /&gt;www                     IN      CNAME   alfa&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;configuraci%C3%B3n-de-la-zona-dmz.&quot; tabindex=&quot;-1&quot;&gt;Configuración de la zona dmz.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;$TTL    86400&lt;br /&gt;@       IN      SOA     charlie.alejandro-montes.gonzalonazareno.org. root.charlie.alejandro-montes.gonzalonazareno.org. (&lt;br /&gt;                              1         ; Serial&lt;br /&gt;                         604800         ; Refresh&lt;br /&gt;                          86400         ; Retry&lt;br /&gt;                        2419200         ; Expire&lt;br /&gt;                          86400 )       ; Negative Cache TTL&lt;br /&gt;;&lt;br /&gt;@       IN      NS      charlie.alejandro-montes.gonzalonazareno.org.&lt;br /&gt;&lt;br /&gt;$ORIGIN alejandro-montes.gonzalonazareno.org.&lt;br /&gt;&lt;br /&gt;alfa                    IN      A       172.16.0.1&lt;br /&gt;bravo                   IN      A       172.16.0.200&lt;br /&gt;charlie                 IN      A       192.168.0.2&lt;br /&gt;delta                   IN      A       192.168.0.3&lt;br /&gt;www                     IN      CNAME   bravo&lt;br /&gt;bd                      IN      CNAME   delta&lt;br /&gt;dns                     IN      CNAME   charlie&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;configuraci%C3%B3n-de-la-zona-interna.&quot; tabindex=&quot;-1&quot;&gt;Configuración de la zona Interna.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;$TTL    86400&lt;br /&gt;@       IN      SOA     charlie.alejandro-montes.gonzalonazareno.org. root.charlie.alejandro-montes.gonzalonazareno.org. (&lt;br /&gt;                              1         ; Serial&lt;br /&gt;                         604800         ; Refresh&lt;br /&gt;                          86400         ; Retry&lt;br /&gt;                        2419200         ; Expire&lt;br /&gt;                          86400 )       ; Negative Cache TTL&lt;br /&gt;;&lt;br /&gt;@       IN      NS      charlie.alejandro-montes.gonzalonazareno.org.&lt;br /&gt;&lt;br /&gt;$ORIGIN alejandro-montes.gonzalonazareno.org.&lt;br /&gt;&lt;br /&gt;alfa                    IN      A       192.168.0.1&lt;br /&gt;bravo                   IN      A       172.16.0.200&lt;br /&gt;charlie                 IN      A       192.168.0.2&lt;br /&gt;delta                   IN      A       192.168.0.3&lt;br /&gt;www                     IN      CNAME   bravo&lt;br /&gt;bd                      IN      CNAME   delta&lt;br /&gt;dns                     IN      CNAME   charlie&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;configuraci%C3%B3n-de-la-zona-dmz-inversa.&quot; tabindex=&quot;-1&quot;&gt;Configuración de la zona DMZ inversa.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;$TTL    86400&lt;br /&gt;@       IN      SOA     charlie.alejandro-montes.gonzalonazareno.org. root.alejandro-montes.gonzalonazareno.org. (&lt;br /&gt;                              1         ; Serial&lt;br /&gt;                         604800         ; Refresh&lt;br /&gt;                          86400         ; Retry&lt;br /&gt;                        2419200         ; Expire&lt;br /&gt;                          86400 )       ; Negative Cache TTL&lt;br /&gt;;&lt;br /&gt;@       IN      NS              charlie.alejandro-montes.gonzalonazareno.org.&lt;br /&gt;&lt;br /&gt;$ORIGIN 16.172.in-addr.arpa.&lt;br /&gt;&lt;br /&gt;200.0                   IN      PTR             bravo.alejandro-montes.gonzalonazareno.org.&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;configuraci%C3%B3n-de-la-zona-interna-inversa.&quot; tabindex=&quot;-1&quot;&gt;Configuración de la zona interna inversa.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;$TTL    86400&lt;br /&gt;@       IN      SOA     charlie.alejandro-montes.gonzalonazareno.org. root.alejandro-montes.gonzalonazareno.org. (&lt;br /&gt;                              1         ; Serial&lt;br /&gt;                         604800         ; Refresh&lt;br /&gt;                          86400         ; Retry&lt;br /&gt;                        2419200         ; Expire&lt;br /&gt;                          86400 )       ; Negative Cache TTL&lt;br /&gt;;&lt;br /&gt;@       IN      NS              charlie.alejandro-montes.gonzalonazareno.org.&lt;br /&gt;&lt;br /&gt;$ORIGIN 0.168.192.in-addr.arpa.&lt;br /&gt;&lt;br /&gt;1                       IN      PTR             alfa.alejandro-montes.gonzalonazareno.org.&lt;br /&gt;2                       IN      PTR             charlie.alejandro-montes.gonzalonazareno.org.&lt;br /&gt;3                       IN      PTR             delta.alejandro-montes.gonzalonazareno.org.&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;entrega-el-resultado-de-las-siguientes-consultas-desde-una-m%C3%A1quina-interna-a-nuestra-red-y-otro-externo%3A&quot; tabindex=&quot;-1&quot;&gt;Entrega el resultado de las siguientes consultas desde una máquina interna a nuestra red y otro externo:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;el-servidor-dns-con-autoridad-sobre-la-zona-del-dominio-tu_nombre.gonzalonazareno.org.&quot; tabindex=&quot;-1&quot;&gt;El servidor DNS con autoridad sobre la zona del dominio tu_nombre.gonzalonazareno.org.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;El comando es el siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;dig ns alejandro-montes.gonzalonazareno.org&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Desde alfa(Red Interna):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.4.png&quot; alt=&quot;SRI-P7.4.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Desde bravo(Red DMZ):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.2.png&quot; alt=&quot;SRI-P7.2.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Desde mi portátil:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.3.png&quot; alt=&quot;SRI-P7.3.png&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;la-direcci%C3%B3n-ip-de-alfa.&quot; tabindex=&quot;-1&quot;&gt;La dirección IP de alfa.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;El comando es el siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;dig alfa.alejandro-montes.gonzalonazareno.org&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Desde alfa(Red Interna):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.5.png&quot; alt=&quot;SRI-P7.5.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Desde bravo(Red DMZ):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.6.png&quot; alt=&quot;SRI-P7.6.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Desde mi portátil:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.7.png&quot; alt=&quot;SRI-P7.7.png&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;una-resoluci%C3%B3n-de-www.&quot; tabindex=&quot;-1&quot;&gt;Una resolución de www.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;El comando es el siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;dig www.alejandro-montes.gonzalonazareno.org&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Desde alfa(Red Interna):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.8.png&quot; alt=&quot;SRI-P7.8.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Desde bravo(Red DMZ):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.9.png&quot; alt=&quot;SRI-P7.9.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Desde mi portátil:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.10.png&quot; alt=&quot;SRI-P7.10.png&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;una-resoluci%C3%B3n-de-bd.&quot; tabindex=&quot;-1&quot;&gt;Una resolución de bd.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;El comando es el siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;dig bd.alejandro-montes.gonzalonazareno.org&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Desde alfa(Red Interna):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.11.png&quot; alt=&quot;SRI-P7.11.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Desde bravo(Red DMZ):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.12.png&quot; alt=&quot;SRI-P7.12.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Desde mi portátil:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.13.png&quot; alt=&quot;SRI-P7.13.png&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;un-resoluci%C3%B3n-inversa-de-ip-fija-en-cada-una-de-las-redes.-(esta-consulta-s%C3%B3lo-funcionar%C3%A1-desde-una-m%C3%A1quina-interna).&quot; tabindex=&quot;-1&quot;&gt;Un resolución inversa de IP fija en cada una de las redes. (Esta consulta sólo funcionará desde una máquina interna).&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;El comando es el siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;dig -x 0.0.0.0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Desde alfa(Red Interna) a la red interna:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.14.png&quot; alt=&quot;SRI-P7.14.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Desde alfa(Red Interna) a la red dmz:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.15.png&quot; alt=&quot;SRI-P7.15.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Desde bravo(Red DMZ) a la red interna:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.16.png&quot; alt=&quot;SRI-P7.16.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Desde bravo(Red DMZ) a la red dmz:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.17.png&quot; alt=&quot;SRI-P7.17.png&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;entrega-una-captura-de-pantalla-accediendo-a-www.tunombre.gonzalonazareno.org%2Finfo.php-donde-se-vea-la-salida-del-fichero-info.php.&quot; tabindex=&quot;-1&quot;&gt;Entrega una captura de pantalla accediendo a &lt;a href=&quot;http://www.tunombre.gonzalonazareno.org/info.php&quot;&gt;www.tunombre.gonzalonazareno.org/info.php&lt;/a&gt; donde se vea la salida del fichero info.php.&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.18.png&quot; alt=&quot;SRI-P7.18.png&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;entrega-una-prueba-de-funcionamiento-donde-se-vea-como-se-realiza-una-conexi%C3%B3n-a-la-base-de-datos-desde-bravo.&quot; tabindex=&quot;-1&quot;&gt;Entrega una prueba de funcionamiento donde se vea como se realiza una conexión a la base de datos desde bravo.&lt;/h3&gt;
+&lt;p&gt;Desde Bravo, conecto al servidor de bases de datos usando el CNAME &lt;code&gt;bd&lt;/code&gt; de delta:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-P7.1.png&quot; alt=&quot;SRI-P7.1.png&quot; /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2 id=&quot;documento-realizado-por%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Documento realizado por:&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;✒️ &lt;strong&gt;Alejandro Montes Delgado&lt;/strong&gt; - &lt;em&gt;2º ASIR&lt;/em&gt;&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>Configurar servidor VPN en OpenVPN y WireGuard.</title>
