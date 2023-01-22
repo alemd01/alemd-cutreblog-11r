@@ -116,8 +116,77 @@
 <pre class="language-txt"><code class="language-txt">(venv) [usuario@bravo django_tutorial]$ python3 manage.py migrate<br>Operations to perform:<br>  Apply all migrations: admin, auth, contenttypes, polls, sessions<br>Running migrations:<br>  Applying contenttypes.0001_initial... OK<br>  Applying auth.0001_initial... OK<br>  Applying admin.0001_initial... OK<br>  Applying admin.0002_logentry_remove_auto_add... OK<br>  Applying admin.0003_logentry_add_action_flag_choices... OK<br>  Applying contenttypes.0002_remove_content_type_name... OK<br>  Applying auth.0002_alter_permission_name_max_length... OK<br>  Applying auth.0003_alter_user_email_max_length... OK<br>  Applying auth.0004_alter_user_username_opts... OK<br>  Applying auth.0005_alter_user_last_login_null... OK<br>  Applying auth.0006_require_contenttypes_0002... OK<br>  Applying auth.0007_alter_validators_add_error_messages... OK<br>  Applying auth.0008_alter_user_username_max_length... OK<br>  Applying auth.0009_alter_user_last_name_max_length... OK<br>  Applying auth.0010_alter_group_name_max_length... OK<br>  Applying auth.0011_update_proxy_permissions... OK<br>  Applying auth.0012_alter_user_first_name_max_length... OK<br>  Applying polls.0001_initial... OK<br>  Applying sessions.0001_initial... OK<br>(venv) [usuario@bravo django_tutorial]$ ls<br>README.md   django_tutorial  polls<br>db.sqlite3  manage.py        requirements.txt<br></code></pre>
 <p>Con el siguiente comando crearemos un usuario para la base de datos:</p>
 <pre class="language-txt"><code class="language-txt">(venv) [usuario@bravo django_tutorial]$ python3 manage.py createsuperuser<br>Username (leave blank to use 'usuario'): alejandro<br>Email address: aaleemd11@gmail.com<br>Password: <br>Password (again): <br>This password is too short. It must contain at least 8 characters.<br>Bypass password validation and create user anyway? [y/N]: y<br>Superuser created successfully.</code></pre>
-<p>probaremos el servidor en desarrollo, para ello</p>
+<p>probaremos el servidor en desarrollo, para ello utilizaremos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">(venv) [usuario@bravo django_tutorial]$ python3 manage.py runserver 0.0.0.0:8000<br>Watching for file changes with StatReloader<br>Performing system checks...<br><br>System check identified no issues (0 silenced).<br>January 19, 2023 - 10:05:34<br>Django version 4.1.5, using settings 'django_tutorial.settings'<br>Starting development server at http://0.0.0.0:8000/<br>Quit the server with CONTROL-C.</code></pre>
+<p>Ahora en alfa, añadiremos una regla DNAT para que el tráfico del puerto 8000 vaya a bravo.</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ sudo iptables -t nat -A PREROUTING -p tcp --dport 8000 -i ens3 -j DNAT --to 172.16.0.200<br>usuario@alfa:~$ sudo iptables -L -t nat<br>Chain PREROUTING (policy ACCEPT)<br>target     prot opt source               destination         <br>DNAT       tcp  --  anywhere             anywhere             tcp dpt:http to:172.16.0.200:80<br>DNAT       udp  --  anywhere             anywhere             udp dpt:domain to:192.168.0.2:53<br>DNAT       tcp  --  anywhere             anywhere             tcp dpt:smtp to:192.168.0.3<br>DNAT       tcp  --  anywhere             anywhere             tcp dpt:8000 to:172.16.0.200</code></pre>
+<p>Una vez hecho esto, podremos acceder desde nuestro navegador web a django en fase de desarrollo:</p>
+<p><img src="/img/IAW-T4.P1.1.png" alt="IAW-T4.P1.1.png"></p>
+<p>Nos logeamos con el usuario y contraseña que creamos anteriormente y nos aparecerá el siguiente menú:</p>
+<p><img src="/img/IAW-T4.P1.2.png" alt="IAW-T4.P1.2.png"></p>
+<p>En el apartado <code>Questions</code> pulsamos <code>Add</code> para añadir preguntas.</p>
+<p><img src="/img/IAW-T4.P1.3.png" alt="IAW-T4.P1.3.png"></p>
+<p>Rellenamos 2 preguntas con sus respuestas y pulsamos sobre <code>Questions</code> el resultado será el siguiente:</p>
+<p><img src="/img/IAW-T4.P1.4.png" alt="IAW-T4.P1.4.png"></p>
+<p>Ahora si nos metemos en /polls veremos las preguntas creadas:</p>
+<p><img src="/img/IAW-T4.P1.5.png" alt="IAW-T4.P1.5.png"></p>
+<p>Una vez hecho esto, pondremos en producción django en bravo. Lo primero que haremos será mover django que está en el home a <code>/var/www</code></p>
+<pre class="language-txt"><code class="language-txt">(venv) [usuario@bravo ~]$ sudo mv django_tutorial/ /var/www<br>(venv) [usuario@bravo ~]$ sudo chown -R apache:apache /var/www/django_tutorial/</code></pre>
+<p>Ahora editamos la configuración de django para indicar la nueva ruta estática:</p>
+<pre class="language-txt"><code class="language-txt">(venv) [usuario@bravo www]$ sudo nano django_tutorial/settings.py </code></pre>
+<p>Al final del archivo añadimos:</p>
+<pre class="language-txt"><code class="language-txt">STATIC_ROOT = '/var/www/django_tutorial/static'</code></pre>
+<p>Ahora ejecutamos:</p>
+<pre class="language-txt"><code class="language-txt">(django) [usuario@bravo django_tutorial]$ python3 manage.py collectstatic<br><br>133 static files copied to '/var/www/django_tutorial/static'.<br></code></pre>
+<p>Nos salimos del entorno virtual e instalaremos mod_wsgi:</p>
+<pre class="language-txt"><code class="language-txt">(django) [usuario@bravo django_tutorial]$ deactivate<br>[usuario@bravo django_tutorial]$ sudo dnf install python3-mod_wsgi -y<br>Failed to set locale, defaulting to C.UTF-8<br>Last metadata expiration check: 2:14:47 ago on Sun Jan 22 12:59:59 2023.<br>Dependencies resolved.<br>==========================================================================<br> Package               Arch        Version           Repository      Size<br>==========================================================================<br>Installing:<br> python3-mod_wsgi      x86_64      4.7.1-11.el9      appstream      931 k<br><br>Transaction Summary<br>==========================================================================<br>Install  1 Package<br><br>Total download size: 931 k<br>Installed size: 5.6 M<br>Downloading Packages:<br>python3-mod_wsgi-4.7.1-11.el9.x86_64.rpm  1.7 MB/s | 931 kB     00:00    <br>--------------------------------------------------------------------------<br>Total                                     857 kB/s | 931 kB     00:01     <br></code></pre>
+<p>Ahora tendríamos que crear el fichero <a href="http://wsgi.py">wsgi.py</a> en django pero ya viene creado. Lo que haremos será crear el virtual host:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo django_tutorial]$ sudo nano /etc/httpd/sites-available/django.conf</code></pre>
+<p>Añadimos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">&lt;VirtualHost *:80><br>        ServerName python.alejandro-montes.gonzalonazareno.org<br>        DocumentRoot /var/www/django_tutorial<br>        Alias /static/ /var/www/django_tutorial/static/<br>        WSGIDaemonProcess django_tutorial python-path=/var/www/django_tutorial:/var/www/django/lib/python3.9/site-packages/<br>        WSGIProcessGroup django_tutorial<br>        WSGIScriptAlias / /var/www/django_tutorial/django_tutorial/wsgi.py<br>        ErrorLog /var/log/httpd/django_tutorial_error.log<br>        CustomLog /var/log/httpd/django_tutorial_access.log combined<br>&lt;/VirtualHost></code></pre>
+<p>Activamos el virtual host:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo django_tutorial]$ sudo ln -s /etc/httpd/sites-available/django.conf /etc/httpd/sites-enabled/django.conf</code></pre>
+<p>Reiniciamos apache para que se apliquen los cambios:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo django_tutorial]$ sudo systemctl restart httpd</code></pre>
+<p>Ahora en charlie añadimos un CNAME para todas las zonas llamado python.</p>
+<pre class="language-txt"><code class="language-txt">ubuntu@charlie:~$ sudo nano /var/cache/bind/db.dmz.alejandro-montes.gonzalonazareno.org<br>ubuntu@charlie:~$ sudo nano /var/cache/bind/db.interna.alejandro-montes.gonzalonazareno.org</code></pre>
+<p>añadimos al final lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">python                  IN      CNAME   bravo</code></pre>
+<p>ahora reiniciamos el servidor dns y borramos la cache:</p>
+<pre class="language-txt"><code class="language-txt">ubuntu@charlie:~$ sudo rndc flush<br>ubuntu@charlie:~$ sudo systemctl restart bind9</code></pre>
+<p>Una vez hecho esto, estaría funcionando el servidor dns y el virtualhost. Ahora probaremos a acceder a <a href="http://python.alejandro-montes.gonzalonazareno.org">python.alejandro-montes.gonzalonazareno.org</a> a través de internet:</p>
+<p><img src="/img/IAW-T4.P1.6.png" alt="IAW-T4.P1.6.png"></p>
+<p>Por últimos subimos los cambios a git para realizar la migración al vps.</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo django_tutorial]$ git add .<br>[usuario@bravo django_tutorial]$ git commit -m "corregido"<br>[usuario@bravo django_tutorial]$ git push</code></pre>
 <h3 id="tarea-2%3A-entorno-de-producci%C3%B3n." tabindex="-1">Tarea 2: Entorno de producción.</h3>
+<p>Lo primero que haremos será conectarnos al vps a traves de ssh e instalaremos git:</p>
+<pre class="language-txt"><code class="language-txt">alemd@nabil:~$ sudo apt install git<br>Reading package lists... Done<br>Building dependency tree... Done<br>Reading state information... Done<br>The following additional packages will be installed:<br>  git-man libcurl3-gnutls liberror-perl patch<br>Suggested packages:<br>  git-daemon-run | git-daemon-sysvinit git-doc git-el git-email git-gui<br>  gitk gitweb git-cvs git-mediawiki git-svn ed diffutils-doc<br>The following NEW packages will be installed:<br>  git git-man libcurl3-gnutls liberror-perl patch<br>0 upgraded, 5 newly installed, 0 to remove and 3 not upgraded.<br>Need to get 7855 kB of archives.<br>After this operation, 38.9 MB of additional disk space will be used.<br>Do you want to continue? [Y/n] y</code></pre>
+<p>Clonaremos el repositorio con el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@nabil:~$ git clone git@github.com:alemd01/django_tutorial.git</code></pre>
+<p>Ahora instalamos si es necesario el módulo de python para crear entornos virtuales:</p>
+<pre class="language-txt"><code class="language-txt">alemd@nabil:~$ sudo apt install python3-venv</code></pre>
+<p>Y creamos uno:</p>
+<pre class="language-txt"><code class="language-txt">alemd@nabil:~$ mkdir django<br>alemd@nabil:~$ python3 -m venv django</code></pre>
+<p>Activamos el entorno virtual:</p>
+<pre class="language-txt"><code class="language-txt">alemd@nabil:~$ source django/bin/activate<br>(django) alemd@nabil:~$ </code></pre>
+<p>Instalaremos las dependencias de nuestra aplicación:</p>
+<pre class="language-txt"><code class="language-txt">(django) alemd@nabil:~/django_tutorial$ pip install -r requirements.txt <br>Collecting Django<br>  Downloading Django-4.1.5-py3-none-any.whl (8.1 MB)<br>     |████████████████████████████████| 8.1 MB 4.9 MB/s <br>Collecting asgiref&lt;4,>=3.5.2<br>  Downloading asgiref-3.6.0-py3-none-any.whl (23 kB)<br>Collecting sqlparse>=0.2.2<br>  Downloading sqlparse-0.4.3-py3-none-any.whl (42 kB)<br>     |████████████████████████████████| 42 kB 1.5 MB/s <br>Installing collected packages: sqlparse, asgiref, Django<br>Successfully installed Django-4.1.5 asgiref-3.6.0 sqlparse-0.4.3</code></pre>
+<p>También instalaremos mysqlclient ya que la aplicación trabajará con una base de datos de mariadb:</p>
+<pre class="language-txt"><code class="language-txt">(django) alemd@nabil:~/django_tutorial$ sudo apt install python3-dev default-libmysqlclient-dev build-essential -y<br>(django) alemd@nabil:~/django_tutorial$ pip install mysqlclient</code></pre>
+<p>Ahora crearemos una base de datos en mysql, con un usuario y sus respectivos privilegios para la base de datos:</p>
+<pre class="language-txt"><code class="language-txt">root@nabil:/home/alemd/django_tutorial# mysql -u root<br><br>MariaDB [(none)]> CREATE DATABASE DJANGO;<br>Query OK, 1 row affected (0.009 sec)<br><br>MariaDB [(none)]> CREATE USER 'alejandro'@'%' IDENTIFIED BY 'usuario';<br>Query OK, 0 rows affected (0.021 sec)<br><br>MariaDB [(none)]> GRANT ALL PRIVILEGES ON DJANGO.* TO 'alejandro'@'%';<br>Query OK, 0 rows affected (0.007 sec)<br></code></pre>
+<p>Ahora editaremos la aplicación para que utilice MySQL en vez de sqlite3:</p>
+<pre class="language-txt"><code class="language-txt">(django) alemd@nabil:~/django_tutorial$ nano django_tutorial/settings.py</code></pre>
+<p>editamos la zona de databases y tiene que quedar así:</p>
+<pre class="language-txt"><code class="language-txt">DATABASES = {<br>    'default': {<br>        'ENGINE': 'django.db.backends.mysql',<br>        'NAME': 'DJANGO',<br>        'USER': 'alejandro',<br>        'PASSWORD': 'usuario',<br>        'HOST': 'localhost',<br>        'PORT': '',<br>    }</code></pre>
+<p>Ahora creamos una copia de seguridad de la base de datos del entorno de desarrollo(bravo) y la subimos a github y actualizamos el repositorio en el vps:</p>
+<pre class="language-txt"><code class="language-txt">(django) [usuario@bravo django_tutorial]$ python3 manage.py dumpdata > db.json<br>(django) [usuario@bravo django_tutorial]$ git add .<br>(django) [usuario@bravo django_tutorial]$ git commit -m "copia de seguridad"<br>(django) [usuario@bravo django_tutorial]$ git push</code></pre>
+<p>Ahora hacemos un pull al vps para que sincronice con el repositorio:</p>
+<pre class="language-txt"><code class="language-txt">(django) alemd@nabil:~/django_tutorial$ git pull<br>(django) alemd@nabil:~/django_tutorial$ ls<br>README.md  django_tutorial  polls             static<br>db.json    manage.py        requirements.txt</code></pre>
+<p>Una vez tengamos la copia de seguridad en el vps, realizaremos la migración:</p>
+<pre class="language-txt"><code class="language-txt">(django) alemd@nabil:~/django_tutorial$ python3 manage.py migrate<br>Operations to perform:<br>  Apply all migrations: admin, auth, contenttypes, polls, sessions<br>Running migrations:<br>  Applying contenttypes.0001_initial... OK<br>  Applying auth.0001_initial... OK<br>  Applying admin.0001_initial... OK<br>  Applying admin.0002_logentry_remove_auto_add... OK<br>  Applying admin.0003_logentry_add_action_flag_choices... OK<br>  Applying contenttypes.0002_remove_content_type_name... OK<br>  Applying auth.0002_alter_permission_name_max_length... OK<br>  Applying auth.0003_alter_user_email_max_length... OK<br>  Applying auth.0004_alter_user_username_opts... OK<br>  Applying auth.0005_alter_user_last_login_null... OK<br>  Applying auth.0006_require_contenttypes_0002... OK<br>  Applying auth.0007_alter_validators_add_error_messages... OK<br>  Applying auth.0008_alter_user_username_max_length... OK<br>  Applying auth.0009_alter_user_last_name_max_length... OK<br>  Applying auth.0010_alter_group_name_max_length... OK<br>  Applying auth.0011_update_proxy_permissions... OK<br>  Applying auth.0012_alter_user_first_name_max_length... OK<br>  Applying polls.0001_initial... OK<br>  Applying sessions.0001_initial... OK</code></pre>
+<p>Ahora cargamos los datos:</p>
+<pre class="language-txt"><code class="language-txt">(django) alemd@nabil:~/django_tutorial$ python3 manage.py loaddata db.json <br>Installed 53 object(s) from 1 fixture(s)</code></pre>
 <h3 id="tarea-3%3A-modificaci%C3%B3n-de-nuestra-aplicaci%C3%B3n." tabindex="-1">Tarea 3: Modificación de nuestra aplicación.</h3>
 <hr>
 <h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
@@ -132,7 +201,7 @@
             <p class="uppercase text-xs mt-6">Post anterior.</p>
 
             <p class="font-bold">
-                <a href="/post/instalacion-de-ldap-en-entorno-de-produccion./">Instalación de LDAP en entorno de produccion.</a>
+                <a href="/posts/comprobaciones/"></a>
             </p>
         
     </div>

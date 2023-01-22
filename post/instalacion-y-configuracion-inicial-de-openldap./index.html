@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Instalación y configuración inicial de OpenLDAP. | Cutreblog">
+    <meta itemprop="description" content="Veremos la instalación y la configuración inicial de OpenLDAP.">
+
+    
+    <meta name="twitter:title" content="Instalación y configuración inicial de OpenLDAP. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Veremos la instalación y la configuración inicial de OpenLDAP.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Instalación y configuración inicial de OpenLDAP. | Cutreblog">
+    <meta name="og:description" content="Veremos la instalación y la configuración inicial de OpenLDAP.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Instalación y configuración inicial de OpenLDAP. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">About</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Instalación y configuración inicial de OpenLDAP.</h2>
+
+        
+            <p class="excerpt">Veremos la instalación y la configuración inicial de OpenLDAP.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag ASO" href="/tag/ASO">ASO</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Thu Jan 19 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">January 19, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#instalaci%C3%B3n-y-configuraci%C3%B3n-del-servidor-ldap.">Instalación y configuración del servidor LDAP.</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-y-prueba-de-cliente-ldap-en-rocky(bravo).">Configuración y prueba de cliente LDAP en Rocky(Bravo).</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="instalaci%C3%B3n-y-configuraci%C3%B3n-del-servidor-ldap." tabindex="-1">Instalación y configuración del servidor LDAP.</h3>
+<p>Lo primero que debemos de hacer es asegurarnos de que tenemos el FQND configurado correctamente. En nuestro caso, en el escenario de OpenStack está configurado correctamente ya que tenemos instalado un servidor DNS. Muestro el hostname de Alfa:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ hostname -f<br>alfa.alejandro-montes.gonzalonazareno.org</code></pre>
+<p>Una vez comprobado de que el FQDN está configurado correctamente, comenzaremos con la instalación:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ sudo apt install slapd<br>Reading package lists... Done<br>Building dependency tree... Done<br>Reading state information... Done<br>The following additional packages will be installed:<br>  ldap-utils libltdl7 libodbc1<br>Suggested packages:<br>  libsasl2-modules-gssapi-mit | libsasl2-modules-gssapi-heimdal<br>  libmyodbc odbc-postgresql tdsodbc unixodbc-bin<br>The following NEW packages will be installed:<br>  ldap-utils libltdl7 libodbc1 slapd<br>0 upgraded, 4 newly installed, 0 to remove and 1 not upgraded.<br>Need to get 2270 kB of archives.<br>After this operation, 6400 kB of additional disk space will be used.<br>Do you want to continue? [Y/n] y<br></code></pre>
+<p>Nos pedirá una contraseña para el usuario administrador de LDAP. Ahora instalaremos el siguiente paquete:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ sudo apt install ldap-utils<br>Reading package lists... Done<br>Building dependency tree... Done<br>Reading state information... Done<br>ldap-utils is already the newest version (2.4.57+dfsg-3+deb11u1).<br>ldap-utils set to manually installed.<br>0 upgraded, 0 newly installed, 0 to remove and 1 not upgraded.</code></pre>
+<p>No se me ha instalado ldap-utils debido a que se me ha instalado como dependencia. Para verificar que está instalado, haremos una búsqueda con las credenciales de la instalación:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ ldapsearch -x -D "cn=admin,dc=alejandro-montes,dc=gonzalonazareno,dc=org" -b "dc=alejandro-montes,dc=gonzalonazareno,dc=org" -W<br>Enter LDAP Password: <br># extended LDIF<br>#<br># LDAPv3<br># base &lt;dc=alejandro-montes,dc=gonzalonazareno,dc=org> with scope subtree<br># filter: (objectclass=*)<br># requesting: ALL<br>#<br><br># alejandro-montes.gonzalonazareno.org<br>dn: dc=alejandro-montes,dc=gonzalonazareno,dc=org<br>objectClass: top<br>objectClass: dcObject<br>objectClass: organization<br>o: alejandro-montes.gonzalonazareno.org<br>dc: alejandro-montes<br><br># search result<br>search: 2<br>result: 0 Success<br><br># numResponses: 2<br># numEntries: 1</code></pre>
+<p>Ahora, vamos a crear dos objetos, para ello crearemos el siguiente fichero:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ nano unidades.ldif</code></pre>
+<p>Y ponemos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">dn: ou=Personas,dc=alejandro-montes,dc=gonzalonazareno,dc=org<br>objectClass: organizationalUnit<br>ou: Personas<br><br>dn: ou=Grupos,dc=alejandro-montes,dc=gonzalonazareno,dc=org<br>objectClass: organizationalUnit<br>ou: Grupos</code></pre>
+<p>Ejecutamos el siguiente comando para incluirlo en nuestro árbol de directorios:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ ldapadd -x -D "cn=admin,dc=alejandro-montes,dc=gonzalonazareno,dc=org" -f unidades.ldif -W<br>Enter LDAP Password: <br>adding new entry "ou=Personas,dc=alejandro-montes,dc=gonzalonazareno,dc=org"<br><br>adding new entry "ou=Grupos,dc=alejandro-montes,dc=gonzalonazareno,dc=org"</code></pre>
+<p>Ahora crearemos el siguiente fichero para crear un usuario:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ nano usuarios.ldif</code></pre>
+<p>Añadimos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">dn: ou=usuario, dc=alejandro-montes, dc=gonzalonazareno, dc=org<br>objectClass: top<br>objectClass: posixAccount<br>objectClass: inetOrgPerson<br>objectClass: person<br>cn: usuario<br>uid: usuario<br>uidNumber: 2000<br>gidNumber: 2000<br>homeDirectory: /home/users/pruebausuario<br>loginShell: /bin/bash<br>userPassword: usuario<br>sn: apellido<br>mail: pruebausuario@prueba.com<br>givenName: usuario</code></pre>
+<p>Ejecutamos el siguiente comando para añadir el usuario a LDAP:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ ldapadd -x -D "cn=admin,dc=alejandro-montes,dc=gonzalonazareno,dc=org" -W -f usuario.ldif<br>Enter LDAP Password: <br>adding new entry "ou=usuario, dc=alejandro-montes, dc=gonzalonazareno, dc=org"</code></pre>
+<h3 id="configuraci%C3%B3n-y-prueba-de-cliente-ldap-en-rocky(bravo)." tabindex="-1">Configuración y prueba de cliente LDAP en Rocky(Bravo).</h3>
+<p>En el cliente(Bravo), después de actualizarlo, lo primero que haremos será instalar los paquetes necesarios:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ sudo sudo dnf -y install openldap-clients sssd sssd-ldap oddjob-mkhomedir <br>Failed to set locale, defaulting to C.UTF-8<br>Last metadata expiration check: 2:38:22 ago on Thu Jan 19 10:54:03 2023.<br>Package oddjob-mkhomedir-0.34.7-6.el9.x86_64 is already installed.<br>Dependencies resolved.<br>==========================================================================<br> Package               Arch       Version                Repository  Size<br>==========================================================================<br>Installing:<br> openldap-clients      x86_64     2.6.2-3.el9            baseos     174 k<br> sssd                  x86_64     2.7.3-4.el9_1.1        baseos      27 k<br> sssd-ldap             x86_64     2.7.3-4.el9_1.1        baseos     156 k<br>Installing dependencies:<br> avahi-libs            x86_64     0.8-12.el9             baseos      67 k<br> cyrus-sasl-gssapi     x86_64     2.1.27-20.el9          baseos      26 k<br> libipa_hbac           x86_64     2.7.3-4.el9_1.1        baseos      35 k<br> libsmbclient          x86_64     4.16.4-101.el9         baseos      75 k</code></pre>
+<p>Una vez se hayan instalados las dependencias,</p>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/servidores-web-base-de-datos-y-dns-en-nuestros-escenario-de-openstack/">Servidores Web, Base de Datos y DNS en nuestros escenario de OpenStack</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
