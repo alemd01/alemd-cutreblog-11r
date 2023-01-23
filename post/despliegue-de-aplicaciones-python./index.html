@@ -187,7 +187,62 @@
 <pre class="language-txt"><code class="language-txt">(django) alemd@nabil:~/django_tutorial$ python3 manage.py migrate<br>Operations to perform:<br>  Apply all migrations: admin, auth, contenttypes, polls, sessions<br>Running migrations:<br>  Applying contenttypes.0001_initial... OK<br>  Applying auth.0001_initial... OK<br>  Applying admin.0001_initial... OK<br>  Applying admin.0002_logentry_remove_auto_add... OK<br>  Applying admin.0003_logentry_add_action_flag_choices... OK<br>  Applying contenttypes.0002_remove_content_type_name... OK<br>  Applying auth.0002_alter_permission_name_max_length... OK<br>  Applying auth.0003_alter_user_email_max_length... OK<br>  Applying auth.0004_alter_user_username_opts... OK<br>  Applying auth.0005_alter_user_last_login_null... OK<br>  Applying auth.0006_require_contenttypes_0002... OK<br>  Applying auth.0007_alter_validators_add_error_messages... OK<br>  Applying auth.0008_alter_user_username_max_length... OK<br>  Applying auth.0009_alter_user_last_name_max_length... OK<br>  Applying auth.0010_alter_group_name_max_length... OK<br>  Applying auth.0011_update_proxy_permissions... OK<br>  Applying auth.0012_alter_user_first_name_max_length... OK<br>  Applying polls.0001_initial... OK<br>  Applying sessions.0001_initial... OK</code></pre>
 <p>Ahora cargamos los datos:</p>
 <pre class="language-txt"><code class="language-txt">(django) alemd@nabil:~/django_tutorial$ python3 manage.py loaddata db.json <br>Installed 53 object(s) from 1 fixture(s)</code></pre>
+<p>Ahora instalaremos con pip un servidor de aplicaciones como uwsgi:</p>
+<pre class="language-txt"><code class="language-txt">alemd@nabil:~$ source django/bin/activate<br>(django) alemd@nabil:~$ pip install uwsgi<br>Collecting uwsgi<br>  Downloading uwsgi-2.0.21.tar.gz (808 kB)<br>     |████████████████████████████████| 808 kB 5.1 MB/s <br>Using legacy 'setup.py install' for uwsgi, since package 'wheel' is not installed.<br>Installing collected packages: uwsgi<br>    Running setup.py install for uwsgi ... done<br>Successfully installed uwsgi-2.0.21</code></pre>
+<p>Y crearemos una unidad de systemd:</p>
+<pre class="language-txt"><code class="language-txt">(django) alemd@nabil:/var/www$ nano django/uwsgi.ini <br><br>[uwsgi]<br>http = :8080<br>chdir = /var/www/django_tutorial<br>wsgi-file = /var/www/django_tutorial/django_tutorial/wsgi.py<br>processes = 4<br>threads = 2<br></code></pre>
+<pre class="language-txt"><code class="language-txt">(django) alemd@nabil:/var/www$ sudo nano /etc/systemd/system/uwsgi-django.service <br><br>[Unit]<br>Description=uWSGI instance to serve django_tutorial<br>After=network.target<br><br>[Install]<br>WantedBy=multi-user.target<br><br>[Service]<br>User=www-data<br>Group=www-data<br>Restart=always<br><br>ExecStart=/var/www/django/bin/uwsgi --ini /var/www/django/uwsgi.ini<br>ExecReload=/bin/kill -s HUP $MAINPID<br>ExecStop=/bin/kill -s TERM $MAINPID<br><br>WorkingDirectory=/var/www/django_tutorial<br>Environment=PYTHONPATH='/var/www/django_tutorial/django_tutorial:/var/www><br><br>PrivateTmp=true<br></code></pre>
+<p>Una vez hecho esto recargaremos el demonio de systemctl para que se apliquen los cambios y habilitaremos la unidad:</p>
+<pre class="language-txt"><code class="language-txt">(django) alemd@nabil:/var/www/django$ sudo systemctl daemon-reload<br>(django) alemd@nabil:/var/www/django$ sudo systemctl enable --now uwsgi-django.service<br>Created symlink /etc/systemd/system/multi-user.target.wants/uwsgi-django.service → /etc/systemd/system/uwsgi-django.service.</code></pre>
+<p>Ahora configuraremos el virtual host en el servidor nginx del vps:</p>
+<pre class="language-txt"><code class="language-txt">(django) alemd@nabil:/var/www/django$ sudo nano /etc/nginx/sites-available/django.conf<br><br>server {<br>        listen 80;<br>        listen [::]:80;<br><br>        root /var/www/django_tutorial;<br><br>        index index.html index.php index.htm index.nginx-debian.html;<br><br>        server_name python.alejandro-montes.es;<br><br>        location / {<br>                proxy_pass http://localhost:8080;<br>                include proxy_params;<br>        }<br><br>        location /static {<br>                alias /var/www/django_tutorial/static;<br>        }<br>}<br></code></pre>
+<p>Crearemos el enlace simbólico para activar el virtual host:</p>
+<pre class="language-txt"><code class="language-txt">(django) alemd@nabil:/var/www/django$ sudo ln -s  /etc/nginx/sites-available/django.conf /etc/nginx/sites-enabled/</code></pre>
+<p>Ahora crearemos una entrada en la configuración de nuestro dns para poder acceder a través de internet.</p>
+<p><img src="/img/IAW-T4.P1.7.png" alt="IAW-T4.P1.7.png"></p>
+<p>Como podemos ver en la casilla marcada, hemos indicado a nuestro proveedor de dns un cname a nabil que es la máquina del vps. Ahora muestro una captura de pantalla de django funcionando en el vps:</p>
+<p><img src="/img/IAW-T4.P1.8.png" alt="IAW-T4.P1.8.png"></p>
 <h3 id="tarea-3%3A-modificaci%C3%B3n-de-nuestra-aplicaci%C3%B3n." tabindex="-1">Tarea 3: Modificación de nuestra aplicación.</h3>
+<p>Lo primero que realizaremos será entrar en el entorno de desarrollo (bravo) y modificaremos el apartado polls para que aparezca nuestro nombre:</p>
+<pre><code>[usuario@bravo django_tutorial]$ nano polls/templates/polls/index.html
+</code></pre>
+<p>Añadimos lo siguiente:</p>
+<p><img src="/img/IAW-T4.P1.13.png" alt="IAW-T4.P1.13.png"></p>
+<p>Ahora cambiaremos el fondo de la aplicación para ello bajaremos una imagen y la pasaremos al servidor por scp. Una vez la imagen esté en el servidor, la moveremos a la siguiente ruta:</p>
+<pre><code>[usuario@bravo ~]$ sudo mv background2.jpg /var/www/django_tutorial/static/polls/images/ 
+</code></pre>
+<p>Y ahora editamos el css para aplicar los cambios:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ sudo nano /var/www/django_tutorial/static/polls/style.css </code></pre>
+<p>El contenido del fichero ya editado es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">li a {<br>    color: green;<br>    background-color: blanchedalmond;<br>}<br><br>body {<br>    background: white url("images/background2.jpg");<br>}</code></pre>
+<p>Muestro una captura de bravo con la pantalla editada:</p>
+<p><img src="/img/IAW-T4.P1.9.png" alt="IAW-T4.P1.9.png"></p>
+<p>Una vez hecho esto, añadiremos una nueva tabla en la base de datos, para ello editaremos el archivo <a href="http://models.py">models.py</a> situado en el directorio polls dentro de nuestra aplicación django:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo django_tutorial]$ nano polls/models.py </code></pre>
+<p>Añadimos lo siguiente al final del fichero:</p>
+<pre class="language-txt"><code class="language-txt">class Categoria(models.Model):<br>    Abr = models.CharField(max_length=4)<br>    Nombre = models.CharField(max_length=50)<br><br>    def __str__(self):<br>        return self.Abr+" - "+self.Nombre</code></pre>
+<p>Crearemos una nueva migración:</p>
+<pre class="language-txt"><code class="language-txt">(django) [usuario@bravo django_tutorial]$ python3 manage.py makemigrations<br>Migrations for 'polls':<br>  polls/migrations/0002_categoria.py<br>    - Create model Categoria<br>(django) [usuario@bravo django_tutorial]$ python3 manage.py migrate   <br>Operations to perform:<br>  Apply all migrations: admin, auth, contenttypes, polls, sessions<br>Running migrations:<br>  Applying polls.0002_categoria... OK</code></pre>
+<p>Ahora añadimos el nuevo modelo al panel de administración:</p>
+<pre class="language-txt"><code class="language-txt">(django) [usuario@bravo django_tutorial]$ nano polls/admin.py </code></pre>
+<p>La segunda línea del fichero la cambiamos por la siguiente:</p>
+<pre class="language-txt"><code class="language-txt">from .models import Choice, Question, Categoria</code></pre>
+<p>Y al final agregamos:</p>
+<pre class="language-txt"><code class="language-txt">admin.site.register(Categoria)</code></pre>
+<p>Reiniciamos el servicio y muestro el panel de administración:</p>
+<pre class="language-txt"><code class="language-txt">(django) [usuario@bravo django_tutorial]$ sudo systemctl restart httpd</code></pre>
+<p><img src="/img/IAW-T4.P1.10.png" alt="IAW-T4.P1.10.png"></p>
+<p>Como vemos, en los polls ahora aparece <code>Categorias</code>. Ahora pasaremos los cambios a bravo, para ello actualizaremos nuestro repositorio de github con todos los cambios:</p>
+<pre class="language-txt"><code class="language-txt">(django) [usuario@bravo django_tutorial]$ git add .<br>(django) [usuario@bravo django_tutorial]$ git commit -m "modificacion"<br>[master 5122a1d] modificacion<br> 7 files changed, 35 insertions(+), 4 deletions(-)<br> rewrite db.json (100%)<br> create mode 100644 polls/migrations/0002_categoria.py<br> create mode 100644 static/polls/images/background2.jpg<br>(django) [usuario@bravo django_tutorial]$ git push<br>Enumerating objects: 27, done.<br>Counting objects: 100% (27/27), done.<br>Compressing objects: 100% (15/15), done.<br>Writing objects: 100% (15/15), 43.47 KiB | 8.69 MiB/s, done.<br>Total 15 (delta 6), reused 0 (delta 0), pack-reused 0<br>remote: Resolving deltas: 100% (6/6), completed with 6 local objects.<br>To github.com:alemd01/django_tutorial.git<br>   48e377c..5122a1d  master -> master</code></pre>
+<p>Ahora en producción actualizamos los cambios:</p>
+<pre class="language-txt"><code class="language-txt">alemd@nabil:/var/www/django_tutorial$ git pull</code></pre>
+<p>Ahora haremos un collectstatic para que cambie la parte estática de la aplicación:</p>
+<pre class="language-txt"><code class="language-txt">(django) alemd@nabil:/var/www/django_tutorial$ python3 manage.py collectstatic<br><br>You have requested to collect static files at the destination<br>location as specified in your settings:<br><br>    /var/www/django_tutorial/static<br><br>This will overwrite existing files!<br>Are you sure you want to do this?<br><br>Type 'yes' to continue, or 'no' to cancel: yes</code></pre>
+<p>Por último muestro los cambios en producción:</p>
+<p>Primero muestro que polls tiene el background cambiado y muestra mi nombre:</p>
+<p><img src="/img/IAW-T4.P1.11.png" alt="IAW-T4.P1.11.png"></p>
+<p>Ahora muestro que en la zona de administración se ha creado el nuevo polls:</p>
+<p><img src="/img/IAW-T4.P1.12.png" alt="IAW-T4.P1.12.png"></p>
 <hr>
 <h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
 <p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
