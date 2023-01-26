@@ -132,6 +132,15 @@
                 <ol>
                     
                     <li><a href="#2.1.-vpn-de-acceso-remoto-con-wireguard.-(5-puntos)">2.1. VPN de acceso remoto con WireGuard. (5 puntos)</a>
+            
+                <ol>
+                    
+                    <li><a href="#configuraci%C3%B3n-del-servidor%3A">Configuración del servidor:</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-cliente-debian.">Configuración cliente debian.</a>
+            		</li>
+                </ol>
             		</li>
 
                     <li><a href="#2.2.-vpn-sitio-a-sitio-con-wireguard.-(10-puntos)">2.2. VPN sitio a sitio con WireGuard. (10 puntos)</a>
@@ -286,10 +295,10 @@
 <pre class="language-txt"><code class="language-txt">vagrant@cliente2vpn:~$ sudo ip r del default<br>vagrant@cliente2vpn:~$ sudo ip r add default via 10.1.2.1</code></pre>
 <h5 id="comprobaciones." tabindex="-1">Comprobaciones.</h5>
 <p>IPs:</p>
-<p>Servidor1-vpn:10.0.0.10,192.168.121.6
-Cliente1-vpn:10.0.0.11</p>
-<p>Servidor2-vpn:10.1.2.1.1,192.168.121.252
-Cliente2-vpn:10.1.2.1.2</p>
+<p>Servidor1-vpn:10.0.0.10,192.168.121.6</p>
+<p>Cliente1-vpn:10.0.0.11</p>
+<p>Servidor2-vpn:10.1.2.1.1,192.168.121.252</p>
+<p>Cliente2-vpn:10.1.2.1.2</p>
 <p>Ping y traceroute desde el cliente del servidor 1 al cliente del servidor 2:</p>
 <pre class="language-txt"><code class="language-txt">vagrant@clientevpn:~$ ping 10.1.2.2<br>PING 10.1.2.2 (10.1.2.2) 56(84) bytes of data.<br>64 bytes from 10.1.2.2: icmp_seq=1 ttl=62 time=3.13 ms<br>64 bytes from 10.1.2.2: icmp_seq=2 ttl=62 time=3.48 ms<br>64 bytes from 10.1.2.2: icmp_seq=3 ttl=62 time=3.55 ms<br>64 bytes from 10.1.2.2: icmp_seq=4 ttl=62 time=3.14 ms<br>^C<br>--- 10.1.2.2 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3005ms<br>rtt min/avg/max/mdev = 3.130/3.325/3.549/0.191 ms<br>vagrant@clientevpn:~$ traceroute 10.1.2.2<br>traceroute to 10.1.2.2 (10.1.2.2), 30 hops max, 60 byte packets<br> 1  10.0.0.10 (10.0.0.10)  0.470 ms  0.414 ms  0.469 ms<br> 2  pool-100-0-123-2.bstnma.fios.verizon.net (100.0.123.2)  1.674 ms  3.207 ms  3.144 ms<br> 3  10.1.2.2 (10.1.2.2)  3.090 ms  3.072 ms  2.993 ms</code></pre>
 <p>Ping y traceroute desde el cliente del servidor 2 al cliente del servidor 1:</p>
@@ -297,6 +306,31 @@ Cliente2-vpn:10.1.2.1.2</p>
 <h3 id="wireguard" tabindex="-1">WireGuard</h3>
 <h4 id="2.1.-vpn-de-acceso-remoto-con-wireguard.-(5-puntos)" tabindex="-1">2.1. VPN de acceso remoto con WireGuard. (5 puntos)</h4>
 <p><strong>Monta una VPN de acceso remoto usando Wireguard. Intenta probarla con clientes Windows, Linux y Android. Documenta el proceso adecuadamente y compáralo con el del apartado A.</strong></p>
+<p>Para crear el escenario he usado este Vagrantfile:</p>
+<pre class="language-txt"><code class="language-txt">Vagrant.configure("2") do |config|<br><br>    config.vm.define :nodo1 do |nodo1|<br>      nodo1.vm.box = "debian/bullseye64"<br>      nodo1.vm.hostname = "wireguard-server"<br>      nodo1.vm.synced_folder ".", "/vagrant", disabled: true<br>      nodo1.vm.network :private_network,<br>      :libvirt__network_name => "net1",<br>      :libvirt__dhcp_enabled => false,<br>      :ip => "192.168.100.1",<br>      :libvirt__forward_mode => "veryisolated"<br>      nodo1.vm.network :private_network,<br>      :libvirt__network_name => "net-privada",<br>      :libvirt__dhcp_enabled => false,<br>      :ip => "192.168.50.1",<br>      :libvirt__forward_mode => "veryisolated"<br><br>    end<br>    config.vm.define :nodo2 do |nodo2|<br>      nodo2.vm.box = "debian/bullseye64"<br>      nodo2.vm.hostname = "wireguard-client"<br>      nodo2.vm.synced_folder ".", "/vagrant", disabled: true<br>      nodo2.vm.network :private_network,<br>      :libvirt__network_name => "net3",<br>      :libvirt__dhcp_enabled => false,<br>      :ip => "192.168.100.2",<br>      :libvirt__forward_mode => "veryisolated"<br>    end<br>    config.vm.define :nodo3 do |nodo3|<br>      nodo3.vm.box = "debian/bullseye64"<br>      nodo3.vm.hostname = "private-client"<br>      nodo3.vm.synced_folder ".", "/vagrant", disabled: true<br>      nodo3.vm.network :private_network,<br>      :libvirt__network_name => "net-privada",<br>      :libvirt__dhcp_enabled => false,<br>      :ip => "192.168.50.10",<br>      :libvirt__forward_mode => "veryisolated"<br>    end<br>  end</code></pre>
+<h5 id="configuraci%C3%B3n-del-servidor%3A" tabindex="-1">Configuración del servidor:</h5>
+<p>Una vez creado el escenario, entraremos al servidor y lo configuraremos, para ello lo primero que haremos será instalar wireguard:</p>
+<pre class="language-txt"><code class="language-txt">vagrant@wireguard-server:~$ sudo apt install wireguard<br>Reading package lists... Done<br>Building dependency tree... Done<br>Reading state information... Done<br>The following additional packages will be installed:<br>  wireguard-tools<br>Suggested packages:<br>  openresolv | resolvconf<br>The following NEW packages will be installed:<br>  wireguard wireguard-tools<br>0 upgraded, 2 newly installed, 0 to remove and 31 not upgraded.<br>Need to get 94.3 kB of archives.<br>After this operation, 344 kB of additional disk space will be used.<br>Do you want to continue? [Y/n] y</code></pre>
+<p>Como he tenido problemas en el apartado anterior, lo primero que haremos será activar el bit de forwarding:</p>
+<pre class="language-txt"><code class="language-txt">vagrant@wireguard-server:~$ sudo nano /etc/sysctl.conf</code></pre>
+<p>Y descomentamos la línea:</p>
+<pre class="language-txt"><code class="language-txt">net.ipv4.ip_forward=1</code></pre>
+<p>Creamos un par de claves usando el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">vagrant@wireguard-server:~$ sudo su<br>root@wireguard-server:/home/vagrant# cd /etc/wireguard/<br>root@wireguard-server:/etc/wireguard# wg genkey | tee serverprivatekey | wg pubkey > serverpublickey</code></pre>
+<p>Creamos el archivo de configuración:</p>
+<pre class="language-txt"><code class="language-txt">root@wireguard-server:/etc/wireguard# nano wg0.conf</code></pre>
+<pre class="language-txt"><code class="language-txt">[Interface]<br>Address = 10.0.100.1 #IP de la nueva interfaz<br>PrivateKey = yMILnmrL3ACptes5tfVdGQE7aeMRjX04t1KgOF811W8= #Clave privada generada anteriormente.<br>ListenPort = 51820 #Puerto de escucha.</code></pre>
+<p>Levantamos la interfaz creada con el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">root@wireguard-server:/etc/wireguard# wg-quick up wg0<br>[#] ip link add wg0 type wireguard<br>[#] wg setconf wg0 /dev/fd/63<br>[#] ip -4 address add 10.0.100.1 dev wg0<br>[#] ip link set mtu 1420 up dev wg0</code></pre>
+<p>Como vemos con el siguiente comanfo, la interfaz está activa:</p>
+<pre class="language-txt"><code class="language-txt">root@wireguard-server:/etc/wireguard# wg<br>interface: wg0<br>  public key: bEnc2dZ0wBF6R3GBNmeGWidnyng+w4I2QZNFqFA2emA=<br>  private key: (hidden)<br>  listening port: 51820</code></pre>
+<p>Ahora que el servidor ya está configurado, procederemos a configurar los clientes:</p>
+<h5 id="configuraci%C3%B3n-cliente-debian." tabindex="-1">Configuración cliente debian.</h5>
+<p>Instalamos wireguard y creamos el par de claves:</p>
+<pre class="language-txt"><code class="language-txt">vagrant@wireguard-client:~$ sudo apt install wireguard<br>vagrant@wireguard-client:~$ sudo su<br>cdroot@wireguard-client:/home/vagrant# cd /etc/wireguard/<br>root@wireguard-client:/etc/wireguard# wg genkey | tee clientprivatekey | wg pubkey > clientpublickey</code></pre>
+<p>Creamos el fichero de configuración:</p>
+<pre class="language-txt"><code class="language-txt">root@wireguard-client:/etc/wireguard# nano wg0.conf<br><br>[Interface]<br>Address = 10.0.100.2<br>PrivateKey = kDCxFoW5x4U41A826+d1l8k6J1frGKHYk5PsK2A7Y2k=<br>ListenPort = 51820<br><br>[Peer]<br>PublicKey = bEnc2dZ0wBF6R3GBNmeGWidnyng+w4I2QZNFqFA2emA=<br>AllowedIPs = 0.0.0.0/0<br>Endpoint = 192.168.100.1:51820</code></pre>
+<p>Ahora del lado del servidor editamos la configuración y añadimos un bloque peer:</p>
 <h4 id="2.2.-vpn-sitio-a-sitio-con-wireguard.-(10-puntos)" tabindex="-1">2.2. VPN sitio a sitio con WireGuard. (10 puntos)</h4>
 <p><strong>Configura una VPN sitio a sitio usando WireGuard. Documenta el proceso adecuadamente y compáralo con el del apartado B.</strong></p>
 <hr>
