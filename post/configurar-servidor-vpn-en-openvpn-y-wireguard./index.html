@@ -114,7 +114,7 @@
                     <li><a href="#configuraci%C3%B3n-del-cliente1.">Configuración del cliente1.</a>
             		</li>
 
-                    <li><a href="#configuraci%C3%B3n-del-servidor2">Configuración del servidor2</a>
+                    <li><a href="#configuraci%C3%B3n-del-servidor2.">Configuración del servidor2.</a>
             		</li>
 
                     <li><a href="#configuraci%C3%B3n-cliente-2.">Configuración cliente 2.</a>
@@ -135,7 +135,7 @@
             
                 <ol>
                     
-                    <li><a href="#configuraci%C3%B3n-del-servidor%3A">Configuración del servidor:</a>
+                    <li><a href="#configuraci%C3%B3n-del-servidor.-1">Configuración del servidor.</a>
             		</li>
 
                     <li><a href="#configuraci%C3%B3n-cliente-debian.">Configuración cliente debian.</a>
@@ -298,7 +298,7 @@
 <h5 id="configuraci%C3%B3n-del-cliente1." tabindex="-1">Configuración del cliente1.</h5>
 <p>Cambiaremos la ruta por defecto del cliente1:</p>
 <pre class="language-txt"><code class="language-txt">vagrant@clientevpn:~$ sudo ip r del default<br>vagrant@clientevpn:~$ sudo ip r add default via 10.0.0.10</code></pre>
-<h5 id="configuraci%C3%B3n-del-servidor2" tabindex="-1">Configuración del servidor2</h5>
+<h5 id="configuraci%C3%B3n-del-servidor2." tabindex="-1">Configuración del servidor2.</h5>
 <p>Ahora configuraremos el servidor 2 que es el otro extremo del túnel vpn. Lo primero que haremos será instalar openvpn y mover los ficheros que pasamos anteriormente por scp a las rutas adecuadas:</p>
 <pre class="language-txt"><code class="language-txt">vagrant@servidor2-vpn:~$ sudo apt install openvpn<br>Reading package lists... Done<br>Building dependency tree... Done<br>Reading state information... Done<br>The following additional packages will be installed:<br>  easy-rsa libccid liblzo2-2 libpcsclite1 libpkcs11-helper1 libusb-1.0-0<br>  opensc opensc-pkcs11 pcscd<br>Suggested packages:<br>  pcmciautils resolvconf openvpn-systemd-resolved<br>The following NEW packages will be installed:<br>  easy-rsa libccid liblzo2-2 libpcsclite1 libpkcs11-helper1 libusb-1.0-0<br>  opensc opensc-pkcs11 openvpn pcscd<br>0 upgraded, 10 newly installed, 0 to remove and 0 not upgraded.<br>Need to get 2551 kB of archives.<br>After this operation, 7667 kB of additional disk space will be used.<br>Do you want to continue? [Y/n] y<br>vagrant@servidor2-vpn:~$ sudo su<br>root@servidor2-vpn:/home/vagrant# mv ca.crt /etc/openvpn/client/<br>root@servidor2-vpn:/home/vagrant# mv vpn_server2.crt /etc/openvpn/client/<br>root@servidor2-vpn:/home/vagrant# mv vpn_server2.key /etc/openvpn/client/</code></pre>
 <p>Creamos un archivo de configuración para este servidor:</p>
@@ -328,7 +328,7 @@
 <p><strong>Monta una VPN de acceso remoto usando Wireguard. Intenta probarla con clientes Windows, Linux y Android. Documenta el proceso adecuadamente y compáralo con el del apartado A.</strong></p>
 <p>Para crear el escenario he usado este Vagrantfile:</p>
 <pre class="language-txt"><code class="language-txt">Vagrant.configure("2") do |config|<br><br>    config.vm.define :nodo1 do |nodo1|<br>      nodo1.vm.box = "debian/bullseye64"<br>      nodo1.vm.hostname = "wireguard-server"<br>      nodo1.vm.synced_folder ".", "/vagrant", disabled: true<br>      nodo1.vm.network :private_network,<br>      :libvirt__network_name => "net1",<br>      :libvirt__dhcp_enabled => false,<br>      :ip => "192.168.100.1",<br>      :libvirt__forward_mode => "veryisolated"<br>      nodo1.vm.network :private_network,<br>      :libvirt__network_name => "net-privada",<br>      :libvirt__dhcp_enabled => false,<br>      :ip => "192.168.50.1",<br>      :libvirt__forward_mode => "veryisolated"<br><br>    end<br>    config.vm.define :nodo2 do |nodo2|<br>      nodo2.vm.box = "debian/bullseye64"<br>      nodo2.vm.hostname = "wireguard-client"<br>      nodo2.vm.synced_folder ".", "/vagrant", disabled: true<br>      nodo2.vm.network :private_network,<br>      :libvirt__network_name => "net1",<br>      :libvirt__dhcp_enabled => false,<br>      :ip => "192.168.100.2",<br>      :libvirt__forward_mode => "veryisolated"<br>    end<br>    config.vm.define :nodo3 do |nodo3|<br>      nodo3.vm.box = "debian/bullseye64"<br>      nodo3.vm.hostname = "private-client"<br>      nodo3.vm.synced_folder ".", "/vagrant", disabled: true<br>      nodo3.vm.network :private_network,<br>      :libvirt__network_name => "net-privada",<br>      :libvirt__dhcp_enabled => false,<br>      :ip => "192.168.50.10",<br>      :libvirt__forward_mode => "veryisolated"<br>    end<br>  end</code></pre>
-<h5 id="configuraci%C3%B3n-del-servidor%3A" tabindex="-1">Configuración del servidor:</h5>
+<h5 id="configuraci%C3%B3n-del-servidor.-1" tabindex="-1">Configuración del servidor.</h5>
 <p>Una vez creado el escenario, entraremos al servidor y lo configuraremos, para ello lo primero que haremos será instalar wireguard:</p>
 <pre class="language-txt"><code class="language-txt">vagrant@wireguard-server:~$ sudo apt install wireguard<br>Reading package lists... Done<br>Building dependency tree... Done<br>Reading state information... Done<br>The following additional packages will be installed:<br>  wireguard-tools<br>Suggested packages:<br>  openresolv | resolvconf<br>The following NEW packages will be installed:<br>  wireguard wireguard-tools<br>0 upgraded, 2 newly installed, 0 to remove and 31 not upgraded.<br>Need to get 94.3 kB of archives.<br>After this operation, 344 kB of additional disk space will be used.<br>Do you want to continue? [Y/n] y</code></pre>
 <p>Como he tenido problemas en el apartado anterior, lo primero que haremos será activar el bit de forwarding:</p>
@@ -377,7 +377,6 @@
 <p>Si  en el cliente pulsamos activate, habilitamos la vpn:</p>
 <p><img src="/img/SAD-P6.6.png" alt="SAD-P6.6.png"></p>
 <p>El cliente Windows realiza ping a otros equipos de la vpn pero no los recibe.</p>
-<p>ip</p>
 <h4 id="2.2.-vpn-sitio-a-sitio-con-wireguard.-(10-puntos)" tabindex="-1">2.2. VPN sitio a sitio con WireGuard. (10 puntos)</h4>
 <p><strong>Configura una VPN sitio a sitio usando WireGuard. Documenta el proceso adecuadamente y compáralo con el del apartado B.</strong></p>
 <p>Lo primero que haré será copiar el escenario del apartado B que es openvpn site to site, será exactamente el mismo cambiando openvpn por wireguard. No adjunto el vagrant ya que está más arriba.</p>
