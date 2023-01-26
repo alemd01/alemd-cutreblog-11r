@@ -153,6 +153,18 @@
             		</li>
 
                     <li><a href="#2.2.-vpn-sitio-a-sitio-con-wireguard.-(10-puntos)">2.2. VPN sitio a sitio con WireGuard. (10 puntos)</a>
+            
+                <ol>
+                    
+                    <li><a href="#configuraci%C3%B3n-servidor1.">Configuración Servidor1.</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-servidor2.">Configuración servidor2.</a>
+            		</li>
+
+                    <li><a href="#comprobaciones.-2">Comprobaciones.</a>
+            		</li>
+                </ol>
             		</li>
                 </ol>
             		</li>
@@ -350,13 +362,73 @@
 <p>Para que el cliente interno Debian se vea con la vpn tendremos que cambiarle la ruta por defecto:</p>
 <pre class="language-txt"><code class="language-txt">vagrant@private-client:~$ sudo ip r del default<br>vagrant@private-client:~$ sudo ip r add default via 192.168.50.1</code></pre>
 <h5 id="comprobaciones.-1" tabindex="-1">Comprobaciones.</h5>
-<p>Ping y traceroute desde el cliente interno Debian al cliente vpn:</p>
+<p>Ping y traceroute desde el cliente interno (Debian) al cliente vpn:</p>
 <pre class="language-txt"><code class="language-txt">vagrant@private-client:~$ ping 10.0.100.2<br>PING 10.0.100.2 (10.0.100.2) 56(84) bytes of data.<br>64 bytes from 10.0.100.2: icmp_seq=1 ttl=63 time=1.06 ms<br>64 bytes from 10.0.100.2: icmp_seq=2 ttl=63 time=2.16 ms<br>64 bytes from 10.0.100.2: icmp_seq=3 ttl=63 time=2.49 ms<br>64 bytes from 10.0.100.2: icmp_seq=4 ttl=63 time=2.06 ms<br>^C<br>--- 10.0.100.2 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3006ms<br>rtt min/avg/max/mdev = 1.056/1.939/2.486/0.534 ms<br>vagrant@private-client:~$ traceroute 10.0.100.2<br>traceroute to 10.0.100.2 (10.0.100.2), 30 hops max, 60 byte packets<br> 1  192.168.50.1 (192.168.50.1)  0.641 ms  0.622 ms  0.700 ms<br> 2  10.0.100.2 (10.0.100.2)  1.899 ms  1.976 ms  2.234 ms</code></pre>
-<p>Ping y traceroute desde el cliente vpn al cliente interno:</p>
+<p>Ping y traceroute desde el cliente vpn al cliente interno(Debian):</p>
 <pre class="language-txt"><code class="language-txt">oot@wireguard-client:/etc/wireguard# ping 192.168.50.10<br>PING 192.168.50.10 (192.168.50.10) 56(84) bytes of data.<br>64 bytes from 192.168.50.10: icmp_seq=1 ttl=63 time=2.11 ms<br>64 bytes from 192.168.50.10: icmp_seq=2 ttl=63 time=2.81 ms<br>64 bytes from 192.168.50.10: icmp_seq=3 ttl=63 time=2.31 ms<br>64 bytes from 192.168.50.10: icmp_seq=4 ttl=63 time=1.03 ms<br>^C<br>--- 192.168.50.10 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3006ms<br>rtt min/avg/max/mdev = 1.027/2.062/2.806/0.649 ms<br>root@wireguard-client:/etc/wireguard# traceroute 192.168.50.10<br>traceroute to 192.168.50.10 (192.168.50.10), 30 hops max, 60 byte packets<br> 1  10.0.100.1 (10.0.100.1)  0.905 ms  0.672 ms  0.462 ms<br> 2  192.168.50.10 (192.168.50.10)  1.202 ms  1.026 ms  0.953 ms</code></pre>
 <h5 id="cliente-windows." tabindex="-1">Cliente Windows.</h5>
+<p>Para windows, nos descargaremos el programa desde su página oficial, es un ejecutable y se instala de manera muy sencilla, no veo necesario poner los pasos a seguir para la instalación.</p>
+<p>Una vez hecho esto, le damos a crear nuevo túnel y nos aparecerá lo siguiente:</p>
+<p><img src="/img/SAD-P6.4.png" alt="SAD-P6.4.png"></p>
+<p>Crearemos el archivo de configuración del cliente vpn.</p>
+<p><img src="/img/SAD-P6.5.png" alt="SAD-P6.5.png"></p>
+<p>Añadimos al servidor otro peer con los datos del cliente windows. La configuración quedaría así:</p>
+<pre class="language-txt"><code class="language-txt">[Interface]<br>Address = 10.0.100.1<br>PrivateKey = 6OC4j5vEf+qxlROFk+6V8GSKc+wBJkHpDtLtCFLUG3s=<br>ListenPort = 51820<br><br>#Cliente debiam<br><br>[Peer]<br>Publickey = 3VMhNkz7uu2NdG4kv59RPyZZmmF/00MZvvbnt5tyx38=<br>AllowedIPs = 10.0.100.2/32<br>PersistentKeepAlive = 25<br><br># Cliente Windows<br><br>[Peer]<br>Publickey = MRD4t4ygbdqsg2rjKCWV7P4gMZzrp+adAYSZnrmkQkw=<br>AllowedIPs = 10.0.100.3/32<br>PersistentKeepAlive = 25<br></code></pre>
+<p>Si  en el cliente pulsamos activate, habilitamos la vpn:</p>
+<p><img src="/img/SAD-P6.6.png" alt="SAD-P6.6.png"></p>
+<p>El cliente Windows realiza ping a otros equipos de la vpn pero no los recibe.</p>
+<p>ip</p>
 <h4 id="2.2.-vpn-sitio-a-sitio-con-wireguard.-(10-puntos)" tabindex="-1">2.2. VPN sitio a sitio con WireGuard. (10 puntos)</h4>
 <p><strong>Configura una VPN sitio a sitio usando WireGuard. Documenta el proceso adecuadamente y compáralo con el del apartado B.</strong></p>
+<p>Lo primero que haré será copiar el escenario del apartado B que es openvpn site to site, será exactamente el mismo cambiando openvpn por wireguard. No adjunto el vagrant ya que está más arriba.</p>
+<p>Para no olvidarnos lo primero que haremos será cambiar la puerta de enlace de los dos clientes:</p>
+<pre class="language-txt"><code class="language-txt">vagrant@clientevpn:~$ sudo ip r del default<br>vagrant@clientevpn:~$ sudo ip r add default via 10.0.0.10<br></code></pre>
+<p>Cliente2:</p>
+<pre class="language-txt"><code class="language-txt">vagrant@cliente2vpn:~$ sudo ip r del default<br>vagrant@cliente2vpn:~$ sudo ip r add default via 10.1.2.1<br></code></pre>
+<h5 id="configuraci%C3%B3n-servidor1." tabindex="-1">Configuración Servidor1.</h5>
+<p>En el servidor1, instalaremos wireguard y activaremos el bit de forwarding:</p>
+<pre class="language-txt"><code class="language-txt">vagrant@servidor-vpn:~$ sudo apt install wireguard<br>Reading package lists... Done<br>Building dependency tree... Done<br>Reading state information... Done<br>The following additional packages will be installed:<br>  wireguard-tools<br>Suggested packages:<br>  openresolv | resolvconf<br>The following NEW packages will be installed:<br>  wireguard wireguard-tools<br>0 upgraded, 2 newly installed, 0 to remove and 31 not upgraded.<br>Need to get 94.3 kB of archives.<br>After this operation, 344 kB of additional disk space will be used.<br>Do you want to continue? [Y/n] y</code></pre>
+<p>Activamos el bit de forwarding:</p>
+<pre class="language-txt"><code class="language-txt">root@servidor-vpn:/home/vagrant# nano /etc/sysctl.conf <br><br><br>#Uncoment<br>net.ipv4.ip_forward=1</code></pre>
+<p>Nos movemos al directorio de wireguard y generamos el par de claves:</p>
+<pre class="language-txt"><code class="language-txt">root@servidor-vpn:/home/vagrant# cd /etc/wireguard/<br>root@servidor-vpn:/etc/wireguard# wg genkey | tee serverprivatekey | wg pubkey > serverpublickey<br>root@servidor-vpn:/etc/wireguard# cat serverpublickey <br>mTfMLCkgFZboI9Pi+35malydyOVVFIiAPZvMG0QNhnA=<br>root@servidor-vpn:/etc/wireguard# cat serverprivatekey <br>mC4yoTaz9iVpXW2i4ykl+3u68SqIVbDOS71wQrZ6WG0=<br></code></pre>
+<p>Creamos el fichero de configuración:</p>
+<pre class="language-txt"><code class="language-txt">root@servidor-vpn:/etc/wireguard# nano wg0.conf<br><br>[Interface]<br>Address = 10.0.100.1<br>PrivateKey = mC4yoTaz9iVpXW2i4ykl+3u68SqIVbDOS71wQrZ6WG0=<br>ListenPort = 51820</code></pre>
+<p>Iniciamos la vpn para probar que funciona:</p>
+<pre class="language-txt"><code class="language-txt">root@servidor-vpn:/etc/wireguard# wg-quick up wg0<br>[#] ip link add wg0 type wireguard<br>[#] wg setconf wg0 /dev/fd/63<br>[#] ip -4 address add 10.0.100.1 dev wg0<br>[#] ip link set mtu 1420 up dev wg0<br>root@servidor-vpn:/etc/wireguard# wg<br>interface: wg0<br>  public key: mTfMLCkgFZboI9Pi+35malydyOVVFIiAPZvMG0QNhnA=<br>  private key: (hidden)<br>  listening port: 51820<br></code></pre>
+<h5 id="configuraci%C3%B3n-servidor2." tabindex="-1">Configuración servidor2.</h5>
+<p>Ahora replicaremos los pasos que hemos hecho en el servidor1, instalaremos wireguard y activaremos el bit de forwarding.</p>
+<pre class="language-txt"><code class="language-txt">vagrant@servidor2-vpn:~$ sudo apt install wireguard<br>Reading package lists... Done<br>Building dependency tree... Done<br>Reading state information... Done<br>The following additional packages will be installed:<br>  wireguard-tools<br>Suggested packages:<br>  openresolv | resolvconf<br>The following NEW packages will be installed:<br>  wireguard wireguard-tools<br>0 upgraded, 2 newly installed, 0 to remove and 31 not upgraded.<br>Need to get 94.3 kB of archives.<br>After this operation, 344 kB of additional disk space will be used.<br>Do you want to continue? [Y/n] y</code></pre>
+<p>Activamos el bit de forwarding:</p>
+<pre class="language-txt"><code class="language-txt">vagrant@servidor2-vpn:~$ sudo nano /etc/sysctl.conf <br><br># Uncomment the next line to enable packet forwarding for IPv4<br>net.ipv4.ip_forward=1<br></code></pre>
+<p>Nos conectamos como super usuario, nos movemos al directorio de wireguard y generamos el par de claves:</p>
+<pre class="language-txt"><code class="language-txt">root@servidor2-vpn:/home/vagrant# cd /etc/wireguard/<br>root@servidor2-vpn:/etc/wireguard# wg genkey | tee clientprivatekey | wg pubkey > clientpublickey<br>root@servidor2-vpn:/etc/wireguard# cat clientpublickey <br>E4obRhgP0i+SvbDf8uKfGnZFNjKmqH/E+ms7WiL9Qjw=<br>root@servidor2-vpn:/etc/wireguard# cat clientprivatekey <br>WBGshn38JwiYiFhJnVocCKyGpGjL0wgvMviRIPLmEXE=</code></pre>
+<p>Creamos el fichero de configuración del Servidor2.</p>
+<pre class="language-txt"><code class="language-txt">root@servidor2-vpn:/etc/wireguard# sudo nano wg0.conf</code></pre>
+<pre class="language-txt"><code class="language-txt">[Interface]<br>Address = 10.0.100.2<br>PrivateKey = WBGshn38JwiYiFhJnVocCKyGpGjL0wgvMviRIPLmEXE=<br>ListenPort = 51820<br><br>[Peer]<br>PublicKey = mTfMLCkgFZboI9Pi+35malydyOVVFIiAPZvMG0QNhnA=<br>AllowedIPs = 0.0.0.0/0<br>Endpoint = 192.168.121.225:51820<br></code></pre>
+<p>Ahora modificaremos el servidor1 para añadir un peer con los datos del servidor2:</p>
+<pre class="language-txt"><code class="language-txt">root@servidor-vpn:/etc/wireguard# nano wg0.conf</code></pre>
+<p>El fichero quedará así:</p>
+<pre class="language-txt"><code class="language-txt">Interface]<br>Address = 10.0.100.1<br>PrivateKey = mC4yoTaz9iVpXW2i4ykl+3u68SqIVbDOS71wQrZ6WG0=<br>ListenPort = 51820<br><br>[Peer]<br>Publickey = E4obRhgP0i+SvbDf8uKfGnZFNjKmqH/E+ms7WiL9Qjw=<br>AllowedIPs = 0.0.0.0/0<br>PersistentKeepAlive = 25<br></code></pre>
+<p>Reiniciamos la interfaz de la vpn del servidor1:</p>
+<pre class="language-txt"><code class="language-txt">root@servidor-vpn:/etc/wireguard# wg-quick down wg0<br>[#] ip link delete dev wg0<br>root@servidor-vpn:/etc/wireguard# wg-quick up wg0<br>[#] ip link add wg0 type wireguard<br>[#] wg setconf wg0 /dev/fd/63<br>[#] ip -4 address add 10.0.100.1 dev wg0<br>[#] ip link set mtu 1420 up dev wg0<br>[#] wg set wg0 fwmark 51820<br>[#] ip -4 route add 0.0.0.0/0 dev wg0 table 51820<br>[#] ip -4 rule add not fwmark 51820 table 51820<br>[#] ip -4 rule add table main suppress_prefixlength 0<br>[#] sysctl -q net.ipv4.conf.all.src_valid_mark=1<br>[#] nft -f /dev/fd/63<br></code></pre>
+<p>Iniciamos la interfaz del servidor2:</p>
+<pre class="language-txt"><code class="language-txt">root@servidor2-vpn:/etc/wireguard# wg-quick down wg0<br>wg-quick: `wg0' is not a WireGuard interface<br>root@servidor2-vpn:/etc/wireguard# wg-quick up wg0<br>[#] ip link add wg0 type wireguard<br>[#] wg setconf wg0 /dev/fd/63<br>[#] ip -4 address add 10.0.100.2 dev wg0<br>[#] ip link set mtu 1420 up dev wg0<br>[#] wg set wg0 fwmark 51820<br>[#] ip -4 route add 0.0.0.0/0 dev wg0 table 51820<br>[#] ip -4 rule add not fwmark 51820 table 51820<br>[#] ip -4 rule add table main suppress_prefixlength 0<br>[#] sysctl -q net.ipv4.conf.all.src_valid_mark=1<br>[#] nft -f /dev/fd/63</code></pre>
+<p>Muestro el estado de conexión de ambos servidores:</p>
+<p>Servidor1:</p>
+<pre class="language-txt"><code class="language-txt">root@servidor-vpn:/etc/wireguard# wg<br>interface: wg0<br>  public key: mTfMLCkgFZboI9Pi+35malydyOVVFIiAPZvMG0QNhnA=<br>  private key: (hidden)<br>  listening port: 51820<br>  fwmark: 0xca6c<br><br>peer: E4obRhgP0i+SvbDf8uKfGnZFNjKmqH/E+ms7WiL9Qjw=<br>  endpoint: 192.168.121.31:51820<br>  allowed ips: 0.0.0.0/0<br>  latest handshake: 8 seconds ago<br>  transfer: 276 B received, 124 B sent<br>  persistent keepalive: every 25 seconds</code></pre>
+<p>Servidor2:</p>
+<pre class="language-txt"><code class="language-txt">root@servidor2-vpn:/etc/wireguard# wg-quick up wg0<br>[#] ip link add wg0 type wireguard<br>[#] wg setconf wg0 /dev/fd/63<br>[#] ip -4 address add 10.0.100.2 dev wg0<br>[#] ip link set mtu 1420 up dev wg0<br>[#] wg set wg0 fwmark 51820<br>[#] ip -4 route add 0.0.0.0/0 dev wg0 table 51820<br>[#] ip -4 rule add not fwmark 51820 table 51820<br>[#] ip -4 rule add table main suppress_prefixlength 0<br>[#] sysctl -q net.ipv4.conf.all.src_valid_mark=1<br>[#] nft -f /dev/fd/63</code></pre>
+<h5 id="comprobaciones.-2" tabindex="-1">Comprobaciones.</h5>
+<p>Las IP de los equipos son:</p>
+<p>Servidor1: 10.0.0.10,192.168.121.225</p>
+<p>Cliente1: 10.0.0.11</p>
+<p>Servidor2: 10.1.2.1, 192.168.121.31</p>
+<p>Cliente2: 10.1.2.2</p>
+<p>Desde el cliente del servidor1 (cliente1) hago ping y traceroute al cliente del servidor2 (cliente2):</p>
+<pre class="language-txt"><code class="language-txt">vagrant@clientevpn:~$ ping 10.1.2.2<br>PING 10.1.2.2 (10.1.2.2) 56(84) bytes of data.<br>64 bytes from 10.1.2.2: icmp_seq=1 ttl=62 time=3.47 ms<br>64 bytes from 10.1.2.2: icmp_seq=2 ttl=62 time=3.42 ms<br>64 bytes from 10.1.2.2: icmp_seq=3 ttl=62 time=3.87 ms<br>64 bytes from 10.1.2.2: icmp_seq=4 ttl=62 time=3.93 ms<br>^C<br>--- 10.1.2.2 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3005ms<br>rtt min/avg/max/mdev = 3.424/3.673/3.933/0.228 ms<br>vagrant@clientevpn:~$ traceroute 10.1.2.2<br>traceroute to 10.1.2.2 (10.1.2.2), 30 hops max, 60 byte packets<br> 1  10.0.0.10 (10.0.0.10)  0.626 ms  0.557 ms  0.526 ms<br> 2  10.0.100.2 (10.0.100.2)  1.445 ms  1.356 ms  2.004 ms<br> 3  10.1.2.2 (10.1.2.2)  2.759 ms  2.620 ms  2.521 ms<br></code></pre>
+<p>Ahora, desde el cliente del servidor2 (cliente2) hago ping y traceroute al cliente del servidor1 (cliente1):</p>
+<pre class="language-txt"><code class="language-txt">agrant@cliente2vpn:~$ ping 10.0.0.11<br>PING 10.0.0.11 (10.0.0.11) 56(84) bytes of data.<br>64 bytes from 10.0.0.11: icmp_seq=1 ttl=62 time=3.44 ms<br>64 bytes from 10.0.0.11: icmp_seq=2 ttl=62 time=3.69 ms<br>64 bytes from 10.0.0.11: icmp_seq=3 ttl=62 time=3.83 ms<br>64 bytes from 10.0.0.11: icmp_seq=4 ttl=62 time=3.81 ms<br>^C<br>--- 10.0.0.11 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3004ms<br>rtt min/avg/max/mdev = 3.438/3.690/3.830/0.155 ms<br>vagrant@cliente2vpn:~$ traceroute 10.0.0.11<br>traceroute to 10.0.0.11 (10.0.0.11), 30 hops max, 60 byte packets<br> 1  10.1.2.1 (10.1.2.1)  0.451 ms  0.470 ms  0.454 ms<br> 2  10.0.100.1 (10.0.100.1)  1.640 ms  2.705 ms  2.682 ms<br> 3  10.0.0.11 (10.0.0.11)  4.315 ms  4.267 ms  4.207 ms<br></code></pre>
 <hr>
 <h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
 <p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
