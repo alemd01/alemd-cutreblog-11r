@@ -149,6 +149,9 @@
 
                     <li><a href="#cliente-windows.">Cliente Windows.</a>
             		</li>
+
+                    <li><a href="#comprobaciones-cliente-vpn-windows%3A">Comprobaciones Cliente VPN Windows:</a>
+            		</li>
                 </ol>
             		</li>
 
@@ -376,7 +379,13 @@
 <pre class="language-txt"><code class="language-txt">[Interface]<br>Address = 10.0.100.1<br>PrivateKey = 6OC4j5vEf+qxlROFk+6V8GSKc+wBJkHpDtLtCFLUG3s=<br>ListenPort = 51820<br><br>#Cliente debiam<br><br>[Peer]<br>Publickey = 3VMhNkz7uu2NdG4kv59RPyZZmmF/00MZvvbnt5tyx38=<br>AllowedIPs = 10.0.100.2/32<br>PersistentKeepAlive = 25<br><br># Cliente Windows<br><br>[Peer]<br>Publickey = MRD4t4ygbdqsg2rjKCWV7P4gMZzrp+adAYSZnrmkQkw=<br>AllowedIPs = 10.0.100.3/32<br>PersistentKeepAlive = 25<br></code></pre>
 <p>Si  en el cliente pulsamos activate, habilitamos la vpn:</p>
 <p><img src="/img/SAD-P6.6.png" alt="SAD-P6.6.png"></p>
-<p>El cliente Windows realiza ping a otros equipos de la vpn pero no los recibe.</p>
+<h5 id="comprobaciones-cliente-vpn-windows%3A" tabindex="-1">Comprobaciones Cliente VPN Windows:</h5>
+<p>Lo primero que haremos será hacer ping y traceroute desde el cliente windows al cliente interno:</p>
+<p><img src="/img/SAD-P6.7.png" alt="SAD-P6.7.png"></p>
+<p>Ahora desde el cliente interno ping y traceroute al cliente vpn windows:</p>
+<pre class="language-txt"><code class="language-txt">vagrant@private-client:~$ ping 10.0.100.3<br>PING 10.0.100.3 (10.0.100.3) 56(84) bytes of data.<br>64 bytes from 10.0.100.3: icmp_seq=1 ttl=127 time=2.29 ms<br>64 bytes from 10.0.100.3: icmp_seq=2 ttl=127 time=11.8 ms<br>64 bytes from 10.0.100.3: icmp_seq=3 ttl=127 time=4.78 ms<br>64 bytes from 10.0.100.3: icmp_seq=4 ttl=127 time=1.83 ms<br>^C<br>--- 10.0.100.3 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3005ms<br>rtt min/avg/max/mdev = 1.834/5.178/11.816/3.992 ms<br>vagrant@private-client:~$ traceroute 10.0.100.3<br>traceroute to 10.0.100.3 (10.0.100.3), 30 hops max, 60 byte packets<br> 1  192.168.50.1 (192.168.50.1)  0.514 ms  0.621 ms  0.571 ms<br> 2  10.0.100.3 (10.0.100.3)  12.915 ms * *<br>vagrant@private-client:~$ </code></pre>
+<p>Por último desde el otro cliente de la vpn también probaremos que tiene conexión:</p>
+<pre class="language-txt"><code class="language-txt">root@wireguard-client:/home/vagrant# ping 10.0.100.3<br>PING 10.0.100.3 (10.0.100.3) 56(84) bytes of data.<br>64 bytes from 10.0.100.3: icmp_seq=1 ttl=127 time=2.98 ms<br>64 bytes from 10.0.100.3: icmp_seq=2 ttl=127 time=11.6 ms<br>64 bytes from 10.0.100.3: icmp_seq=3 ttl=127 time=3.14 ms<br>64 bytes from 10.0.100.3: icmp_seq=4 ttl=127 time=1.96 ms<br>^C<br>--- 10.0.100.3 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3005ms<br>rtt min/avg/max/mdev = 1.964/4.924/11.618/3.890 ms<br>root@wireguard-client:/home/vagrant# traceroute 10.0.100.3<br>traceroute to 10.0.100.3 (10.0.100.3), 30 hops max, 60 byte packets<br> 1  10.0.100.1 (10.0.100.1)  1.913 ms  1.565 ms  1.451 ms<br> 2  10.0.100.3 (10.0.100.3)  4.352 ms * *<br></code></pre>
 <h4 id="2.2.-vpn-sitio-a-sitio-con-wireguard.-(10-puntos)" tabindex="-1">2.2. VPN sitio a sitio con WireGuard. (10 puntos)</h4>
 <p><strong>Configura una VPN sitio a sitio usando WireGuard. Documenta el proceso adecuadamente y compáralo con el del apartado B.</strong></p>
 <p>Lo primero que haré será copiar el escenario del apartado B que es openvpn site to site, será exactamente el mismo cambiando openvpn por wireguard. No adjunto el vagrant ya que está más arriba.</p>
@@ -408,7 +417,7 @@
 <p>Ahora modificaremos el servidor1 para añadir un peer con los datos del servidor2:</p>
 <pre class="language-txt"><code class="language-txt">root@servidor-vpn:/etc/wireguard# nano wg0.conf</code></pre>
 <p>El fichero quedará así:</p>
-<pre class="language-txt"><code class="language-txt">Interface]<br>Address = 10.0.100.1<br>PrivateKey = mC4yoTaz9iVpXW2i4ykl+3u68SqIVbDOS71wQrZ6WG0=<br>ListenPort = 51820<br><br>[Peer]<br>Publickey = E4obRhgP0i+SvbDf8uKfGnZFNjKmqH/E+ms7WiL9Qjw=<br>AllowedIPs = 0.0.0.0/0<br>PersistentKeepAlive = 25<br></code></pre>
+<pre class="language-txt"><code class="language-txt">[Interface]<br>Address = 10.0.100.1<br>PrivateKey = mC4yoTaz9iVpXW2i4ykl+3u68SqIVbDOS71wQrZ6WG0=<br>ListenPort = 51820<br><br>[Peer]<br>Publickey = E4obRhgP0i+SvbDf8uKfGnZFNjKmqH/E+ms7WiL9Qjw=<br>AllowedIPs = 0.0.0.0/0<br>PersistentKeepAlive = 25<br></code></pre>
 <p>Reiniciamos la interfaz de la vpn del servidor1:</p>
 <pre class="language-txt"><code class="language-txt">root@servidor-vpn:/etc/wireguard# wg-quick down wg0<br>[#] ip link delete dev wg0<br>root@servidor-vpn:/etc/wireguard# wg-quick up wg0<br>[#] ip link add wg0 type wireguard<br>[#] wg setconf wg0 /dev/fd/63<br>[#] ip -4 address add 10.0.100.1 dev wg0<br>[#] ip link set mtu 1420 up dev wg0<br>[#] wg set wg0 fwmark 51820<br>[#] ip -4 route add 0.0.0.0/0 dev wg0 table 51820<br>[#] ip -4 rule add not fwmark 51820 table 51820<br>[#] ip -4 rule add table main suppress_prefixlength 0<br>[#] sysctl -q net.ipv4.conf.all.src_valid_mark=1<br>[#] nft -f /dev/fd/63<br></code></pre>
 <p>Iniciamos la interfaz del servidor2:</p>
