@@ -150,7 +150,7 @@
                     <li><a href="#cliente-windows.">Cliente Windows.</a>
             		</li>
 
-                    <li><a href="#comprobaciones-cliente-vpn-windows%3A">Comprobaciones Cliente VPN Windows:</a>
+                    <li><a href="#comprobaciones-cliente-vpn-windows.">Comprobaciones Cliente VPN Windows.</a>
             		</li>
                 </ol>
             		</li>
@@ -376,10 +376,10 @@
 <p>Crearemos el archivo de configuración del cliente vpn.</p>
 <p><img src="/img/SAD-P6.5.png" alt="SAD-P6.5.png"></p>
 <p>Añadimos al servidor otro peer con los datos del cliente windows. La configuración quedaría así:</p>
-<pre class="language-txt"><code class="language-txt">[Interface]<br>Address = 10.0.100.1<br>PrivateKey = 6OC4j5vEf+qxlROFk+6V8GSKc+wBJkHpDtLtCFLUG3s=<br>ListenPort = 51820<br><br>#Cliente debiam<br><br>[Peer]<br>Publickey = 3VMhNkz7uu2NdG4kv59RPyZZmmF/00MZvvbnt5tyx38=<br>AllowedIPs = 10.0.100.2/32<br>PersistentKeepAlive = 25<br><br># Cliente Windows<br><br>[Peer]<br>Publickey = MRD4t4ygbdqsg2rjKCWV7P4gMZzrp+adAYSZnrmkQkw=<br>AllowedIPs = 10.0.100.3/32<br>PersistentKeepAlive = 25<br></code></pre>
+<pre class="language-txt"><code class="language-txt">[Interface]<br>Address = 10.0.100.1<br>PrivateKey = 6OC4j5vEf+qxlROFk+6V8GSKc+wBJkHpDtLtCFLUG3s=<br>ListenPort = 51820<br><br>[Peer]<br>Publickey = 3VMhNkz7uu2NdG4kv59RPyZZmmF/00MZvvbnt5tyx38=<br>AllowedIPs = 10.0.100.2/32<br>PersistentKeepAlive = 25<br><br>[Peer]<br>Publickey = ARu1pvsyDprc147XdaBNliCeuBl8mtnY65xIYR2UPio=<br>AllowedIPs = 10.0.100.3/32<br>PersistentKeepAlive = 25<br></code></pre>
 <p>Si  en el cliente pulsamos activate, habilitamos la vpn:</p>
 <p><img src="/img/SAD-P6.6.png" alt="SAD-P6.6.png"></p>
-<h5 id="comprobaciones-cliente-vpn-windows%3A" tabindex="-1">Comprobaciones Cliente VPN Windows:</h5>
+<h5 id="comprobaciones-cliente-vpn-windows." tabindex="-1">Comprobaciones Cliente VPN Windows.</h5>
 <p>Lo primero que haremos será hacer ping y traceroute desde el cliente windows al cliente interno:</p>
 <p><img src="/img/SAD-P6.7.png" alt="SAD-P6.7.png"></p>
 <p>Ahora desde el cliente interno ping y traceroute al cliente vpn windows:</p>

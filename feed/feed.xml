@@ -400,10 +400,10 @@
 &lt;p&gt;Crearemos el archivo de configuración del cliente vpn.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P6.5.png&quot; alt=&quot;SAD-P6.5.png&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;Añadimos al servidor otro peer con los datos del cliente windows. La configuración quedaría así:&lt;/p&gt;
-&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[Interface]&lt;br /&gt;Address = 10.0.100.1&lt;br /&gt;PrivateKey = 6OC4j5vEf+qxlROFk+6V8GSKc+wBJkHpDtLtCFLUG3s=&lt;br /&gt;ListenPort = 51820&lt;br /&gt;&lt;br /&gt;#Cliente debiam&lt;br /&gt;&lt;br /&gt;[Peer]&lt;br /&gt;Publickey = 3VMhNkz7uu2NdG4kv59RPyZZmmF/00MZvvbnt5tyx38=&lt;br /&gt;AllowedIPs = 10.0.100.2/32&lt;br /&gt;PersistentKeepAlive = 25&lt;br /&gt;&lt;br /&gt;# Cliente Windows&lt;br /&gt;&lt;br /&gt;[Peer]&lt;br /&gt;Publickey = MRD4t4ygbdqsg2rjKCWV7P4gMZzrp+adAYSZnrmkQkw=&lt;br /&gt;AllowedIPs = 10.0.100.3/32&lt;br /&gt;PersistentKeepAlive = 25&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[Interface]&lt;br /&gt;Address = 10.0.100.1&lt;br /&gt;PrivateKey = 6OC4j5vEf+qxlROFk+6V8GSKc+wBJkHpDtLtCFLUG3s=&lt;br /&gt;ListenPort = 51820&lt;br /&gt;&lt;br /&gt;[Peer]&lt;br /&gt;Publickey = 3VMhNkz7uu2NdG4kv59RPyZZmmF/00MZvvbnt5tyx38=&lt;br /&gt;AllowedIPs = 10.0.100.2/32&lt;br /&gt;PersistentKeepAlive = 25&lt;br /&gt;&lt;br /&gt;[Peer]&lt;br /&gt;Publickey = ARu1pvsyDprc147XdaBNliCeuBl8mtnY65xIYR2UPio=&lt;br /&gt;AllowedIPs = 10.0.100.3/32&lt;br /&gt;PersistentKeepAlive = 25&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Si  en el cliente pulsamos activate, habilitamos la vpn:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P6.6.png&quot; alt=&quot;SAD-P6.6.png&quot; /&gt;&lt;/p&gt;
-&lt;h5 id=&quot;comprobaciones-cliente-vpn-windows%3A&quot; tabindex=&quot;-1&quot;&gt;Comprobaciones Cliente VPN Windows:&lt;/h5&gt;
+&lt;h5 id=&quot;comprobaciones-cliente-vpn-windows.&quot; tabindex=&quot;-1&quot;&gt;Comprobaciones Cliente VPN Windows.&lt;/h5&gt;
 &lt;p&gt;Lo primero que haremos será hacer ping y traceroute desde el cliente windows al cliente interno:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P6.7.png&quot; alt=&quot;SAD-P6.7.png&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;Ahora desde el cliente interno ping y traceroute al cliente vpn windows:&lt;/p&gt;
