@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Ejercicios con Docker II. | Cutreblog">
+    <meta itemprop="description" content="Segundo taller de la unidad de Docker.">
+
+    
+    <meta name="twitter:title" content="Ejercicios con Docker II. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Segundo taller de la unidad de Docker.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Ejercicios con Docker II. | Cutreblog">
+    <meta name="og:description" content="Segundo taller de la unidad de Docker.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Ejercicios con Docker II. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Ejercicios con Docker II.</h2>
+
+        
+            <p class="excerpt">Segundo taller de la unidad de Docker.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag Docker" href="/tag/Docker">Docker</a><a class="tag SRI" href="/tag/SRI">SRI</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Sun Feb 05 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 5, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#despliegue-de-nextcloud">Despliegue de Nextcloud</a>
+            
+                <ol>
+                    
+                    <li><a href="#1.-instala-docker-compose-en-tu-ordenador.">1. Instala docker-compose en tu ordenador.</a>
+            		</li>
+
+                    <li><a href="#2.-dentro-de-un-directorio-crea-un-fichero-docker-compose.yml-para-realizar-el-despliegue-de-nextcloud-con-una-base-de-datos.-recuerda-las-variables-de-entorno-y-la-persistencia-de-informaci%C3%B3n.">2. Dentro de un directorio crea un fichero docker-compose.yml para realizar el despliegue de nextcloud con una base de datos. Recuerda las variables de entorno y la persistencia de información.</a>
+            		</li>
+
+                    <li><a href="#3.-levanta-el-escenario-con-docker-compose.">3. Levanta el escenario con docker-compose.</a>
+            		</li>
+
+                    <li><a href="#4.-muestra-los-contenedores-con-docker-compose.">4. Muestra los contenedores con docker-compose.</a>
+            		</li>
+
+                    <li><a href="#5.-accede-a-la-aplicaci%C3%B3n-y-comprueba-que-funciona.">5. Accede a la aplicación y comprueba que funciona.</a>
+            		</li>
+
+                    <li><a href="#6.-comprueba-el-almacenamiento-que-has-definido-y-que-se-ha-creado-una-nueva-red-de-tipo-bridge.">6. Comprueba el almacenamiento que has definido y que se ha creado una nueva red de tipo bridge.</a>
+            		</li>
+
+                    <li><a href="#7.-borra-el-escenario-con-docker-compose.">7. Borra el escenario con docker-compose.</a>
+            		</li>
+                </ol>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="despliegue-de-nextcloud" tabindex="-1">Despliegue de Nextcloud</h3>
+<p><strong>Vamos a desplegar la aplicación nextcloud con una base de datos (puedes elegir mariadb o PostgreSQL) utilizando la aplicación docker-compose. Puedes coger cómo modelo el fichero docker-compose.yml el que hemos estudiado para desplegar WordPress.</strong></p>
+<h4 id="1.-instala-docker-compose-en-tu-ordenador." tabindex="-1">1. Instala docker-compose en tu ordenador.</h4>
+<pre class="language-txt"><code class="language-txt">usuario@debian:~/docker/taller1$ sudo apt install docker-compose<br>Leyendo lista de paquetes... Hecho<br>Creando árbol de dependencias... Hecho<br>Leyendo la información de estado... Hecho<br>Se instalarán los siguientes paquetes adicionales:<br>  python3-cached-property python3-docker python3-dockerpty<br>  python3-docopt python3-texttable python3-websocket<br>Se instalarán los siguientes paquetes NUEVOS:<br>  docker-compose python3-cached-property python3-docker<br>  python3-dockerpty python3-docopt python3-texttable python3-websocket<br>0 actualizados, 7 nuevos se instalarán, 0 para eliminar y 31 no actualizados.<br>Se necesita descargar 301 kB de archivos.<br>Se utilizarán 1.647 kB de espacio de disco adicional después de esta operación.<br>¿Desea continuar? [S/n] s</code></pre>
+<h4 id="2.-dentro-de-un-directorio-crea-un-fichero-docker-compose.yml-para-realizar-el-despliegue-de-nextcloud-con-una-base-de-datos.-recuerda-las-variables-de-entorno-y-la-persistencia-de-informaci%C3%B3n." tabindex="-1">2. Dentro de un directorio crea un fichero docker-compose.yml para realizar el despliegue de nextcloud con una base de datos. Recuerda las variables de entorno y la persistencia de información.</h4>
+<pre class="language-txt"><code class="language-txt">usuario@debian:~/docker$ mkdir nextcloud<br>usuario@debian:~/docker$ cd nextcloud/<br>usuario@debian:~/docker/nextcloud$ nano docker-compose.yml</code></pre>
+<p>El contenido del fichero es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">version: '3.7'<br>services:<br>  nextcloud:<br>    image: nextcloud:latest<br>    container_name: nextcloud<br>    restart: always<br>    ports:<br>      - 8080:80<br>    volumes:<br>      - nextcloud:/var/www/html<br>    environment:<br>      - MYSQL_HOST=mariadb<br>      - MYSQL_DATABASE=nextcloud<br>      - MYSQL_USER=nextcloud<br>      - MYSQL_PASSWORD=nextcloud<br>      - MYSQL_ROOT_PASSWORD=nextcloud<br>    networks:<br>      - red-taller2<br>    depends_on:<br>      - mariadb<br>  mariadb:<br>    image: mariadb:latest<br>    container_name: mariadb<br>    restart: always<br>    volumes:<br>      - mariadb:/var/lib/mysql<br>    environment:<br>      - MYSQL_DATABASE=nextcloud<br>      - MYSQL_USER=nextcloud<br>      - MYSQL_PASSWORD=nextcloud<br>      - MYSQL_ROOT_PASSWORD=nextcloud<br>    networks:<br>      - red-taller2<br>volumes:<br>  nextcloud:<br>  mariadb:<br>networks:<br>  red-taller2:<br>    driver: bridge<br>    driver_opts:<br>      com.docker.network.driver.mtu: 1420</code></pre>
+<h4 id="3.-levanta-el-escenario-con-docker-compose." tabindex="-1">3. Levanta el escenario con docker-compose.</h4>
+<pre class="language-txt"><code class="language-txt">usuario@debian:~/docker/nextcloud$ docker-compose up -d<br>Creating mariadb ... done<br>Creating nextcloud ... done</code></pre>
+<h4 id="4.-muestra-los-contenedores-con-docker-compose." tabindex="-1">4. Muestra los contenedores con docker-compose.</h4>
+<pre class="language-txt"><code class="language-txt">usuario@debian:~/docker/nextcloud$ docker-compose ps<br>  Name                 Command               State          Ports        <br>-------------------------------------------------------------------------<br>mariadb     docker-entrypoint.sh mariadbd    Up      3306/tcp            <br>nextcloud   /entrypoint.sh apache2-for ...   Up      0.0.0.0:8080->80/tcp<br></code></pre>
+<h4 id="5.-accede-a-la-aplicaci%C3%B3n-y-comprueba-que-funciona." tabindex="-1">5. Accede a la aplicación y comprueba que funciona.</h4>
+<p><img src="/img/IAW-T6-T2.1.png" alt="IAW-T6-T2.1.png"></p>
+<h4 id="6.-comprueba-el-almacenamiento-que-has-definido-y-que-se-ha-creado-una-nueva-red-de-tipo-bridge." tabindex="-1">6. Comprueba el almacenamiento que has definido y que se ha creado una nueva red de tipo bridge.</h4>
+<pre class="language-txt"><code class="language-txt">usuario@debian:~/docker/nextcloud$ docker volume ls<br>DRIVER    VOLUME NAME<br>local     miweb<br>local     nextcloud_mariadb<br>local     nextcloud_nextcloud<br>usuario@debian:~/docker/nextcloud$ docker network ls<br>NETWORK ID     NAME                    DRIVER    SCOPE<br>0a056584eb52   bridge                  bridge    local<br>5a9854477fa0   host                    host      local<br>50145eea35b5   nextcloud_red-taller2   bridge    local<br>6819e5224e2d   none                    null      local<br>8812477bf491   red-taller1             bridge    local</code></pre>
+<h4 id="7.-borra-el-escenario-con-docker-compose." tabindex="-1">7. Borra el escenario con docker-compose.</h4>
+<pre class="language-txt"><code class="language-txt">usuario@debian:~/docker/nextcloud$ docker-compose down --volumes<br>Stopping nextcloud ... done<br>Stopping mariadb   ... done<br>Removing nextcloud ... done<br>Removing mariadb   ... done<br>Removing network nextcloud_red-taller2<br>Removing volume nextcloud_nextcloud<br>Removing volume nextcloud_mariadb<br>usuario@debian:~/docker/nextcloud$ docker network ls<br>NETWORK ID     NAME          DRIVER    SCOPE<br>0a056584eb52   bridge        bridge    local<br>5a9854477fa0   host          host      local<br>6819e5224e2d   none          null      local<br>8812477bf491   red-taller1   bridge    local<br>usuario@debian:~/docker/nextcloud$ docker volume ls<br>DRIVER    VOLUME NAME<br>local     miweb<br>usuario@debian:~/docker/nextcloud$ docker ps -a<br>CONTAINER ID   IMAGE       COMMAND                CREATED       STATUS                    PORTS                  NAMES<br>51e59b04534c   httpd:2.4   "httpd-foreground"     11 days ago   Exited (255) 4 days ago   0.0.0.0:8080->80/tcp   my-apache-app<br>5ea92851b3d2   ubuntu      "bash"                 11 days ago   Exited (0) 11 days ago                           contenedor1<br>76cb08ee11c3   ubuntu      "echo 'Hello world'"   11 days ago   Exited (0) 11 days ago                           priceless_hamilton</code></pre>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Siguiente post</p>
+            <p class="font-bold mb-2">
+                <a href="/post/ejercicios-con-docker./">Ejercicios con Docker.</a>
+            </p>
+        
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/instalacion-y-configuracion-inicial-de-openldap./">Instalación y configuración inicial de OpenLDAP.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
