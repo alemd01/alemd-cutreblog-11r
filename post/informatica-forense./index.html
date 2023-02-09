@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Informática forense. | Cutreblog">
+    <meta itemprop="description" content="Tercer taller de la unidad de Docker.">
+
+    
+    <meta name="twitter:title" content="Informática forense. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Tercer taller de la unidad de Docker.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Informática forense. | Cutreblog">
+    <meta name="og:description" content="Tercer taller de la unidad de Docker.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Informática forense. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Informática forense.</h2>
+
+        
+            <p class="excerpt">Tercer taller de la unidad de Docker.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SAD" href="/tag/SAD">SAD</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Tue Feb 07 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 7, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#m%C3%A1quina-windows.">Máquina Windows.</a>
+            
+                <ol>
+                    
+                    <li><a href="#1.-procesos-en-ejecuci%C3%B3n.">1. Procesos en ejecución.</a>
+            		</li>
+
+                    <li><a href="#2.-servicios-en-ejecuci%C3%B3n.">2. Servicios en ejecución.</a>
+            		</li>
+
+                    <li><a href="#3.-puertos-abiertos.">3. Puertos abiertos.</a>
+            		</li>
+
+                    <li><a href="#4.-conexiones-establecidas-por-la-m%C3%A1quina.">4. Conexiones establecidas por la máquina.</a>
+            		</li>
+
+                    <li><a href="#5.-sesiones-de-usuario-establecidas-remotamente.">5. Sesiones de usuario establecidas remotamente.</a>
+            		</li>
+
+                    <li><a href="#6.-ficheros-transferidos-recientemente-por-netbios.">6. Ficheros transferidos recientemente por NetBios.</a>
+            		</li>
+
+                    <li><a href="#7.-contenido-de-la-cach%C3%A9-dns.">7. Contenido de la caché DNS.</a>
+            		</li>
+
+                    <li><a href="#8.-variables-de-entorno.">8. Variables de entorno.</a>
+            		</li>
+
+                    <li><a href="#9.-dispositivos-usb-conectados">9. Dispositivos USB conectados</a>
+            		</li>
+
+                    <li><a href="#10.-redes-wifi-utilizadas-recientemente.">10. Redes wifi utilizadas recientemente.</a>
+            		</li>
+
+                    <li><a href="#11.-configuraci%C3%B3n-del-firewall-de-nodo.">11. Configuración del firewall de nodo.</a>
+            		</li>
+
+                    <li><a href="#12.-programas-que-se-ejecutan-en-el-inicio.">12. Programas que se ejecutan en el Inicio.</a>
+            		</li>
+
+                    <li><a href="#13.-asociaci%C3%B3n-de-extensiones-de-ficheros-y-aplicaciones.">13. Asociación de extensiones de ficheros y aplicaciones.</a>
+            		</li>
+
+                    <li><a href="#14.-aplicaciones-usadas-recientemente.">14. Aplicaciones usadas recientemente.</a>
+            		</li>
+
+                    <li><a href="#15.-ficheros-abiertos-recientemente.">15. Ficheros abiertos recientemente.</a>
+            		</li>
+
+                    <li><a href="#16.-software-instalado.">16. Software Instalado.</a>
+            		</li>
+
+                    <li><a href="#17.-contrase%C3%B1as-guardadas.">17. Contraseñas guardadas.</a>
+            		</li>
+
+                    <li><a href="#18.-cuentas-de-usuario">18. Cuentas de Usuario</a>
+            		</li>
+
+                    <li><a href="#19.-historial-de-navegaci%C3%B3n-y-descargas.-cookies.">19. Historial de navegación y descargas. Cookies.</a>
+            		</li>
+
+                    <li><a href="#20.-vol%C3%BAmenes-cifrados">20. Volúmenes cifrados</a>
+            		</li>
+
+                    <li><a href="#21.-archivos-con-extensi%C3%B3n-cambiada.">21. Archivos con extensión cambiada.</a>
+            		</li>
+
+                    <li><a href="#22.-archivos-eliminados.">22. Archivos eliminados.</a>
+            		</li>
+
+                    <li><a href="#23.-archivos-ocultos.">23. Archivos Ocultos.</a>
+            		</li>
+
+                    <li><a href="#24.-archivos-que-contienen-una-cadena-determinada.">24. Archivos que contienen una cadena determinada.</a>
+            		</li>
+
+                    <li><a href="#25.-b%C3%BAsqueda-de-im%C3%A1genes-por-ubicaci%C3%B3n.">25. Búsqueda de imágenes por ubicación.</a>
+            		</li>
+
+                    <li><a href="#26.-b%C3%BAsqueda-de-archivos-por-autor.">26. Búsqueda de archivos por autor.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#m%C3%A1quina-linux.">Máquina Linux.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <p>La informática forense es el conjunto de técnicas que nos permite obtener la máxima información posible tras un incidente o delito informático.</p>
+<p>En esta práctica, realizarás la fase de toma de evidencias y análisis de las mismas sobre una máquina Linux y otra Windows. Supondremos que pillamos al delincuente in fraganti y las máquinas se encontraban encendidas. Opcionalmente, podéis realizar el análisis de un dispositivo Android.</p>
+<p>Sobre cada una de las máquinas debes realizar un volcado de memoria y otro de disco duro, tomando las medidas necesarias para certificar posteriormente la cadena de custodia.</p>
+<p>Debes tratar de obtener las siguientes informaciones:</p>
+<h3 id="m%C3%A1quina-windows." tabindex="-1">Máquina Windows.</h3>
+<p>Lo primero que haremos será un volcado de memoria y un volcado de disco sobre los que trabajaremos. Para hacer un volcado de memoria en Windows 7, usaré una herramienta llamada DumpIt y la ejecutaremos:</p>
+<p><img src="/img/SAD-P7.12.png" alt="SAD-P7.12.png"></p>
+<p>Pasado unos minutos nos genera la siguiente imagen:</p>
+<p><img src="/img/SAD-P7.13.png" alt="SAD-P7.13.png"></p>
+<p>Para analizar esta imagen, usaremos la herramienta Volatility, la instalaremos en nuestro equipo debian, para ello tendremos que instalar python and pip si no lo tenemos instalado y con pip instalaremos distorm3.</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~$ sudo pip install distorm3<br>Collecting distorm3<br>  Downloading distorm3-3.5.2.tar.gz (138 kB)<br>     |████████████████████████████████| 138 kB 3.3 MB/s <br>Building wheels for collected packages: distorm3<br>  Building wheel for distorm3 (setup.py) ... done<br>  Created wheel for distorm3: filename=distorm3-3.5.2-cp39-cp39-linux_x86_64.whl size=126327 sha256=9f9b53cd375a137982810e36b7c0caf1b1f6b4f1f96e2627b211e08a4c43917e<br>  Stored in directory: /root/.cache/pip/wheels/eb/3a/b1/929df023c1328f8c1f94de335b110b1f2347aafa1a55edbf99<br>Successfully built distorm3<br>Installing collected packages: distorm3<br>Successfully installed distorm3-3.5.2<br></code></pre>
+<p>También necesitaremos git para copiar el repositorio de volatility.</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/2ASIR/SAD/volatility$ git clone https://github.com/volatilityfoundation/volatility3.git<br>Clonando en 'volatility3'...<br>remote: Enumerating objects: 30094, done.<br>remote: Counting objects: 100% (938/938), done.<br>remote: Compressing objects: 100% (463/463), done.<br>remote: Total 30094 (delta 561), reused 805 (delta 469), pack-reused 29156<br>Recibiendo objetos: 100% (30094/30094), 6.07 MiB | 6.70 MiB/s, listo.<br>Resolviendo deltas: 100% (22742/22742), listo.<br></code></pre>
+<p>Ahora me copiaré el dump a mi máquina para trabajar sobre él.</p>
+<p><strong>Por comandos:</strong></p>
+<h4 id="1.-procesos-en-ejecuci%C3%B3n." tabindex="-1">1. Procesos en ejecución.</h4>
+<p>Usando volatility con un dumpeo de un Windows 7, listo los procesos activos a la hora de hacer el dump:</p>
+<pre class="language-txt"><code class="language-txt">python3 vol.py -f USUARIO-PC-20230207-201216.raw windows.pslist.PsList</code></pre>
+<p><img src="/img/SAD-P7.14.png" alt="SAD-P7.14.png"></p>
+<p>Ahora realizo un escaneo de los procesos:</p>
+<p><img src="/img/SAD-P7.15.png" alt="SAD-P7.15.png"></p>
+<p>La diferencia entre psscan y pslist es que pslist muestra todos los procesos que hay en ERPROCESS y psscan busca en memoria procesos ocultos, por eso psscan tarda bastante más.</p>
+<h4 id="2.-servicios-en-ejecuci%C3%B3n." tabindex="-1">2. Servicios en ejecución.</h4>
+<p>Usando volatility y un dump de Windows 7, la sintaxis del comando es la siguiente:</p>
+<pre class="language-txt"><code class="language-txt">python3 vol.py -f USUARIO-PC-20230207-201216.raw windows.getservicesids.GetServiceSIDs</code></pre>
+<p><img src="/img/SAD-P7.16.png" alt="SAD-P7.16.png"></p>
+<h4 id="3.-puertos-abiertos." tabindex="-1">3. Puertos abiertos.</h4>
+<h4 id="4.-conexiones-establecidas-por-la-m%C3%A1quina." tabindex="-1">4. Conexiones establecidas por la máquina.</h4>
+<h4 id="5.-sesiones-de-usuario-establecidas-remotamente." tabindex="-1">5. Sesiones de usuario establecidas remotamente.</h4>
+<h4 id="6.-ficheros-transferidos-recientemente-por-netbios." tabindex="-1">6. Ficheros transferidos recientemente por NetBios.</h4>
+<h4 id="7.-contenido-de-la-cach%C3%A9-dns." tabindex="-1">7. Contenido de la caché DNS.</h4>
+<h4 id="8.-variables-de-entorno." tabindex="-1">8. Variables de entorno.</h4>
+<p>Para ver las variables de entorno he usado volatility y el dump de Windows 7:</p>
+<pre class="language-txt"><code class="language-txt"> python3 vol.py -f USUARIO-PC-20230207-201216.raw windows.envars.Envars</code></pre>
+<p><img src="/img/SAD-P7.17.png" alt="SAD-P7.17.png"></p>
+<p><strong>Analizando el Registro de Windows:</strong></p>
+<h4 id="9.-dispositivos-usb-conectados" tabindex="-1">9. Dispositivos USB conectados</h4>
+<h4 id="10.-redes-wifi-utilizadas-recientemente." tabindex="-1">10. Redes wifi utilizadas recientemente.</h4>
+<h4 id="11.-configuraci%C3%B3n-del-firewall-de-nodo." tabindex="-1">11. Configuración del firewall de nodo.</h4>
+<h4 id="12.-programas-que-se-ejecutan-en-el-inicio." tabindex="-1">12. Programas que se ejecutan en el Inicio.</h4>
+<h4 id="13.-asociaci%C3%B3n-de-extensiones-de-ficheros-y-aplicaciones." tabindex="-1">13. Asociación de extensiones de ficheros y aplicaciones.</h4>
+<h4 id="14.-aplicaciones-usadas-recientemente." tabindex="-1">14. Aplicaciones usadas recientemente.</h4>
+<h4 id="15.-ficheros-abiertos-recientemente." tabindex="-1">15. Ficheros abiertos recientemente.</h4>
+<h4 id="16.-software-instalado." tabindex="-1">16. Software Instalado.</h4>
+<h4 id="17.-contrase%C3%B1as-guardadas." tabindex="-1">17. Contraseñas guardadas.</h4>
+<h4 id="18.-cuentas-de-usuario" tabindex="-1">18. Cuentas de Usuario</h4>
+<p><strong>Con Aplicaciones de terceros:</strong></p>
+<h4 id="19.-historial-de-navegaci%C3%B3n-y-descargas.-cookies." tabindex="-1">19. Historial de navegación y descargas. Cookies.</h4>
+<h4 id="20.-vol%C3%BAmenes-cifrados" tabindex="-1">20. Volúmenes cifrados</h4>
+<p><strong>Sobre la imagen del disco:</strong></p>
+<h4 id="21.-archivos-con-extensi%C3%B3n-cambiada." tabindex="-1">21. Archivos con extensión cambiada.</h4>
+<h4 id="22.-archivos-eliminados." tabindex="-1">22. Archivos eliminados.</h4>
+<h4 id="23.-archivos-ocultos." tabindex="-1">23. Archivos Ocultos.</h4>
+<h4 id="24.-archivos-que-contienen-una-cadena-determinada." tabindex="-1">24. Archivos que contienen una cadena determinada.</h4>
+<h4 id="25.-b%C3%BAsqueda-de-im%C3%A1genes-por-ubicaci%C3%B3n." tabindex="-1">25. Búsqueda de imágenes por ubicación.</h4>
+<h4 id="26.-b%C3%BAsqueda-de-archivos-por-autor." tabindex="-1">26. Búsqueda de archivos por autor.</h4>
+<h3 id="m%C3%A1quina-linux." tabindex="-1">Máquina Linux.</h3>
+<p><strong>Intenta realizar las mismas operaciones en una máquina Linux para aquellos apartados que tengan sentido y no se realicen de manera idéntica a Windows.</strong></p>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Siguiente post</p>
+            <p class="font-bold mb-2">
+                <a href="/post/ejercicios-con-docker-iii./">Ejercicios con Docker III.</a>
+            </p>
+        
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/ejercicios-con-docker-ii./">Ejercicios con Docker II.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>

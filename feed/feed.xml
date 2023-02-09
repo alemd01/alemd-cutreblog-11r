@@ -69,6 +69,75 @@
 	</entry>
 	
 	<entry>
+		<title>Informática forense.</title>
+		<link href="https://reeseschultz.github.io/post/informatica-forense./"/>
+		<updated>2023-02-07T00:00:00Z</updated>
+		<id>https://reeseschultz.github.io/post/informatica-forense./</id>
+		<content type="html">&lt;p&gt;La informática forense es el conjunto de técnicas que nos permite obtener la máxima información posible tras un incidente o delito informático.&lt;/p&gt;
+&lt;p&gt;En esta práctica, realizarás la fase de toma de evidencias y análisis de las mismas sobre una máquina Linux y otra Windows. Supondremos que pillamos al delincuente in fraganti y las máquinas se encontraban encendidas. Opcionalmente, podéis realizar el análisis de un dispositivo Android.&lt;/p&gt;
+&lt;p&gt;Sobre cada una de las máquinas debes realizar un volcado de memoria y otro de disco duro, tomando las medidas necesarias para certificar posteriormente la cadena de custodia.&lt;/p&gt;
+&lt;p&gt;Debes tratar de obtener las siguientes informaciones:&lt;/p&gt;
+&lt;h3 id=&quot;m%C3%A1quina-windows.&quot; tabindex=&quot;-1&quot;&gt;Máquina Windows.&lt;/h3&gt;
+&lt;p&gt;Lo primero que haremos será un volcado de memoria y un volcado de disco sobre los que trabajaremos. Para hacer un volcado de memoria en Windows 7, usaré una herramienta llamada DumpIt y la ejecutaremos:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P7.12.png&quot; alt=&quot;SAD-P7.12.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Pasado unos minutos nos genera la siguiente imagen:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P7.13.png&quot; alt=&quot;SAD-P7.13.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Para analizar esta imagen, usaremos la herramienta Volatility, la instalaremos en nuestro equipo debian, para ello tendremos que instalar python and pip si no lo tenemos instalado y con pip instalaremos distorm3.&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;alemd@debian:~$ sudo pip install distorm3&lt;br /&gt;Collecting distorm3&lt;br /&gt;  Downloading distorm3-3.5.2.tar.gz (138 kB)&lt;br /&gt;     |████████████████████████████████| 138 kB 3.3 MB/s &lt;br /&gt;Building wheels for collected packages: distorm3&lt;br /&gt;  Building wheel for distorm3 (setup.py) ... done&lt;br /&gt;  Created wheel for distorm3: filename=distorm3-3.5.2-cp39-cp39-linux_x86_64.whl size=126327 sha256=9f9b53cd375a137982810e36b7c0caf1b1f6b4f1f96e2627b211e08a4c43917e&lt;br /&gt;  Stored in directory: /root/.cache/pip/wheels/eb/3a/b1/929df023c1328f8c1f94de335b110b1f2347aafa1a55edbf99&lt;br /&gt;Successfully built distorm3&lt;br /&gt;Installing collected packages: distorm3&lt;br /&gt;Successfully installed distorm3-3.5.2&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;También necesitaremos git para copiar el repositorio de volatility.&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;alemd@debian:~/2ASIR/SAD/volatility$ git clone https://github.com/volatilityfoundation/volatility3.git&lt;br /&gt;Clonando en &#39;volatility3&#39;...&lt;br /&gt;remote: Enumerating objects: 30094, done.&lt;br /&gt;remote: Counting objects: 100% (938/938), done.&lt;br /&gt;remote: Compressing objects: 100% (463/463), done.&lt;br /&gt;remote: Total 30094 (delta 561), reused 805 (delta 469), pack-reused 29156&lt;br /&gt;Recibiendo objetos: 100% (30094/30094), 6.07 MiB | 6.70 MiB/s, listo.&lt;br /&gt;Resolviendo deltas: 100% (22742/22742), listo.&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora me copiaré el dump a mi máquina para trabajar sobre él.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Por comandos:&lt;/strong&gt;&lt;/p&gt;
+&lt;h4 id=&quot;1.-procesos-en-ejecuci%C3%B3n.&quot; tabindex=&quot;-1&quot;&gt;1. Procesos en ejecución.&lt;/h4&gt;
+&lt;p&gt;Usando volatility con un dumpeo de un Windows 7, listo los procesos activos a la hora de hacer el dump:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;python3 vol.py -f USUARIO-PC-20230207-201216.raw windows.pslist.PsList&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P7.14.png&quot; alt=&quot;SAD-P7.14.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Ahora realizo un escaneo de los procesos:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P7.15.png&quot; alt=&quot;SAD-P7.15.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;La diferencia entre psscan y pslist es que pslist muestra todos los procesos que hay en ERPROCESS y psscan busca en memoria procesos ocultos, por eso psscan tarda bastante más.&lt;/p&gt;
+&lt;h4 id=&quot;2.-servicios-en-ejecuci%C3%B3n.&quot; tabindex=&quot;-1&quot;&gt;2. Servicios en ejecución.&lt;/h4&gt;
+&lt;p&gt;Usando volatility y un dump de Windows 7, la sintaxis del comando es la siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;python3 vol.py -f USUARIO-PC-20230207-201216.raw windows.getservicesids.GetServiceSIDs&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P7.16.png&quot; alt=&quot;SAD-P7.16.png&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;3.-puertos-abiertos.&quot; tabindex=&quot;-1&quot;&gt;3. Puertos abiertos.&lt;/h4&gt;
+&lt;h4 id=&quot;4.-conexiones-establecidas-por-la-m%C3%A1quina.&quot; tabindex=&quot;-1&quot;&gt;4. Conexiones establecidas por la máquina.&lt;/h4&gt;
+&lt;h4 id=&quot;5.-sesiones-de-usuario-establecidas-remotamente.&quot; tabindex=&quot;-1&quot;&gt;5. Sesiones de usuario establecidas remotamente.&lt;/h4&gt;
+&lt;h4 id=&quot;6.-ficheros-transferidos-recientemente-por-netbios.&quot; tabindex=&quot;-1&quot;&gt;6. Ficheros transferidos recientemente por NetBios.&lt;/h4&gt;
+&lt;h4 id=&quot;7.-contenido-de-la-cach%C3%A9-dns.&quot; tabindex=&quot;-1&quot;&gt;7. Contenido de la caché DNS.&lt;/h4&gt;
+&lt;h4 id=&quot;8.-variables-de-entorno.&quot; tabindex=&quot;-1&quot;&gt;8. Variables de entorno.&lt;/h4&gt;
+&lt;p&gt;Para ver las variables de entorno he usado volatility y el dump de Windows 7:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt; python3 vol.py -f USUARIO-PC-20230207-201216.raw windows.envars.Envars&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SAD-P7.17.png&quot; alt=&quot;SAD-P7.17.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Analizando el Registro de Windows:&lt;/strong&gt;&lt;/p&gt;
+&lt;h4 id=&quot;9.-dispositivos-usb-conectados&quot; tabindex=&quot;-1&quot;&gt;9. Dispositivos USB conectados&lt;/h4&gt;
+&lt;h4 id=&quot;10.-redes-wifi-utilizadas-recientemente.&quot; tabindex=&quot;-1&quot;&gt;10. Redes wifi utilizadas recientemente.&lt;/h4&gt;
+&lt;h4 id=&quot;11.-configuraci%C3%B3n-del-firewall-de-nodo.&quot; tabindex=&quot;-1&quot;&gt;11. Configuración del firewall de nodo.&lt;/h4&gt;
+&lt;h4 id=&quot;12.-programas-que-se-ejecutan-en-el-inicio.&quot; tabindex=&quot;-1&quot;&gt;12. Programas que se ejecutan en el Inicio.&lt;/h4&gt;
+&lt;h4 id=&quot;13.-asociaci%C3%B3n-de-extensiones-de-ficheros-y-aplicaciones.&quot; tabindex=&quot;-1&quot;&gt;13. Asociación de extensiones de ficheros y aplicaciones.&lt;/h4&gt;
+&lt;h4 id=&quot;14.-aplicaciones-usadas-recientemente.&quot; tabindex=&quot;-1&quot;&gt;14. Aplicaciones usadas recientemente.&lt;/h4&gt;
+&lt;h4 id=&quot;15.-ficheros-abiertos-recientemente.&quot; tabindex=&quot;-1&quot;&gt;15. Ficheros abiertos recientemente.&lt;/h4&gt;
+&lt;h4 id=&quot;16.-software-instalado.&quot; tabindex=&quot;-1&quot;&gt;16. Software Instalado.&lt;/h4&gt;
+&lt;h4 id=&quot;17.-contrase%C3%B1as-guardadas.&quot; tabindex=&quot;-1&quot;&gt;17. Contraseñas guardadas.&lt;/h4&gt;
+&lt;h4 id=&quot;18.-cuentas-de-usuario&quot; tabindex=&quot;-1&quot;&gt;18. Cuentas de Usuario&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Con Aplicaciones de terceros:&lt;/strong&gt;&lt;/p&gt;
+&lt;h4 id=&quot;19.-historial-de-navegaci%C3%B3n-y-descargas.-cookies.&quot; tabindex=&quot;-1&quot;&gt;19. Historial de navegación y descargas. Cookies.&lt;/h4&gt;
+&lt;h4 id=&quot;20.-vol%C3%BAmenes-cifrados&quot; tabindex=&quot;-1&quot;&gt;20. Volúmenes cifrados&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Sobre la imagen del disco:&lt;/strong&gt;&lt;/p&gt;
+&lt;h4 id=&quot;21.-archivos-con-extensi%C3%B3n-cambiada.&quot; tabindex=&quot;-1&quot;&gt;21. Archivos con extensión cambiada.&lt;/h4&gt;
+&lt;h4 id=&quot;22.-archivos-eliminados.&quot; tabindex=&quot;-1&quot;&gt;22. Archivos eliminados.&lt;/h4&gt;
+&lt;h4 id=&quot;23.-archivos-ocultos.&quot; tabindex=&quot;-1&quot;&gt;23. Archivos Ocultos.&lt;/h4&gt;
+&lt;h4 id=&quot;24.-archivos-que-contienen-una-cadena-determinada.&quot; tabindex=&quot;-1&quot;&gt;24. Archivos que contienen una cadena determinada.&lt;/h4&gt;
+&lt;h4 id=&quot;25.-b%C3%BAsqueda-de-im%C3%A1genes-por-ubicaci%C3%B3n.&quot; tabindex=&quot;-1&quot;&gt;25. Búsqueda de imágenes por ubicación.&lt;/h4&gt;
+&lt;h4 id=&quot;26.-b%C3%BAsqueda-de-archivos-por-autor.&quot; tabindex=&quot;-1&quot;&gt;26. Búsqueda de archivos por autor.&lt;/h4&gt;
+&lt;h3 id=&quot;m%C3%A1quina-linux.&quot; tabindex=&quot;-1&quot;&gt;Máquina Linux.&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Intenta realizar las mismas operaciones en una máquina Linux para aquellos apartados que tengan sentido y no se realicen de manera idéntica a Windows.&lt;/strong&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2 id=&quot;documento-realizado-por%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Documento realizado por:&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;✒️ &lt;strong&gt;Alejandro Montes Delgado&lt;/strong&gt; - &lt;em&gt;2º ASIR&lt;/em&gt;&lt;/p&gt;
+</content>
+	</entry>
+	
+	<entry>
 		<title>Ejercicios con Docker II.</title>
 		<link href="https://reeseschultz.github.io/post/ejercicios-con-docker-ii./"/>
 		<updated>2023-02-06T00:00:00Z</updated>
@@ -249,15 +318,15 @@
 &lt;p&gt;Activamos nfs:&lt;/p&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;ubuntu@delta:~$ sudo systemctl start nfs-client.target&lt;br /&gt;ubuntu@delta:~$ sudo systemctl enable nfs-client.target&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Creamos el directorio donde montaremos el servicio nfs:&lt;/p&gt;
-&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@delta:/home/ubuntu# mkdir /home/nfs&lt;br /&gt;root@delta:/home/ubuntu# mkdir /home/nfs/usuario1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@delta:/home/ubuntu# mkdir /nfs/users&lt;br /&gt;root@delta:/home/ubuntu# mkdir /nfs/users/usuario1&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Cambiamos el dueño al usuario1:&lt;/p&gt;
-&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@delta:/home/ubuntu# chown 2001:2001 /home/nfs/usuario1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@delta:/home/ubuntu# chown 2001:2001 /nfs/users/usuario1&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Ejecutamos lo siguiente para que se cargue automáticamente el módulo nfs:&lt;/p&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@delta:/home/ubuntu# echo NFS | tee -a /etc/modules&lt;br /&gt;NFS&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Creamos una nueva unidad de systemd:&lt;/p&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@delta:/home/ubuntu# nano /etc/systemd/system/nfs-users.mount&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Añadimos lo siguiente:&lt;/p&gt;
-&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[Unit]&lt;br /&gt;Description=Home centralizado&lt;br /&gt;Requires=network-online.target&lt;br /&gt;After=network-online.target&lt;br /&gt;[Mount]&lt;br /&gt;What=192.168.0.1:/nfs/users&lt;br /&gt;Where=/home/nfs&lt;br /&gt;Options=_netdev,auto&lt;br /&gt;Type=nfs&lt;br /&gt;[Install]&lt;br /&gt;WantedBy=multi-user.target&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[Unit]&lt;br /&gt;Description=Home centralizado&lt;br /&gt;Requires=network-online.target&lt;br /&gt;After=network-online.target&lt;br /&gt;[Mount]&lt;br /&gt;What=192.168.0.1:/nfs/users&lt;br /&gt;Where=/nfs/users&lt;br /&gt;Options=_netdev,auto&lt;br /&gt;Type=nfs&lt;br /&gt;[Install]&lt;br /&gt;WantedBy=multi-user.target&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Recargamos el demonio de systemd para que se agregue la nueva unidad y la encendemos:&lt;/p&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@delta:/home/ubuntu# systemctl daemon-reload&lt;br /&gt;root@delta:/home/ubuntu# systemctl start nfs-users.mount&lt;br /&gt;root@delta:/home/ubuntu# systemctl enable nfs-users.mount&lt;br /&gt;Created symlink /etc/systemd/system/multi-user.target.wants/nfs-users.mount → /etc/systemd/system/nfs-users.mount.&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&quot;comprobaciones&quot; tabindex=&quot;-1&quot;&gt;Comprobaciones&lt;/h3&gt;

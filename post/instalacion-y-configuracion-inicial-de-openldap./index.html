@@ -189,15 +189,15 @@
 <p>Activamos nfs:</p>
 <pre class="language-txt"><code class="language-txt">ubuntu@delta:~$ sudo systemctl start nfs-client.target<br>ubuntu@delta:~$ sudo systemctl enable nfs-client.target<br></code></pre>
 <p>Creamos el directorio donde montaremos el servicio nfs:</p>
-<pre class="language-txt"><code class="language-txt">root@delta:/home/ubuntu# mkdir /home/nfs<br>root@delta:/home/ubuntu# mkdir /home/nfs/usuario1</code></pre>
+<pre class="language-txt"><code class="language-txt">root@delta:/home/ubuntu# mkdir /nfs/users<br>root@delta:/home/ubuntu# mkdir /nfs/users/usuario1</code></pre>
 <p>Cambiamos el dueño al usuario1:</p>
-<pre class="language-txt"><code class="language-txt">root@delta:/home/ubuntu# chown 2001:2001 /home/nfs/usuario1</code></pre>
+<pre class="language-txt"><code class="language-txt">root@delta:/home/ubuntu# chown 2001:2001 /nfs/users/usuario1</code></pre>
 <p>Ejecutamos lo siguiente para que se cargue automáticamente el módulo nfs:</p>
 <pre class="language-txt"><code class="language-txt">root@delta:/home/ubuntu# echo NFS | tee -a /etc/modules<br>NFS</code></pre>
 <p>Creamos una nueva unidad de systemd:</p>
 <pre class="language-txt"><code class="language-txt">root@delta:/home/ubuntu# nano /etc/systemd/system/nfs-users.mount</code></pre>
 <p>Añadimos lo siguiente:</p>
-<pre class="language-txt"><code class="language-txt">[Unit]<br>Description=Home centralizado<br>Requires=network-online.target<br>After=network-online.target<br>[Mount]<br>What=192.168.0.1:/nfs/users<br>Where=/home/nfs<br>Options=_netdev,auto<br>Type=nfs<br>[Install]<br>WantedBy=multi-user.target</code></pre>
+<pre class="language-txt"><code class="language-txt">[Unit]<br>Description=Home centralizado<br>Requires=network-online.target<br>After=network-online.target<br>[Mount]<br>What=192.168.0.1:/nfs/users<br>Where=/nfs/users<br>Options=_netdev,auto<br>Type=nfs<br>[Install]<br>WantedBy=multi-user.target</code></pre>
 <p>Recargamos el demonio de systemd para que se agregue la nueva unidad y la encendemos:</p>
 <pre class="language-txt"><code class="language-txt">root@delta:/home/ubuntu# systemctl daemon-reload<br>root@delta:/home/ubuntu# systemctl start nfs-users.mount<br>root@delta:/home/ubuntu# systemctl enable nfs-users.mount<br>Created symlink /etc/systemd/system/multi-user.target.wants/nfs-users.mount → /etc/systemd/system/nfs-users.mount.<br></code></pre>
 <h3 id="comprobaciones" tabindex="-1">Comprobaciones</h3>
