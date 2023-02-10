@@ -92,16 +92,16 @@
             
                 <ol>
                     
-                    <li><a href="#*-indica-nombres-distintos-para-el-replicaset-y-para-el-contenedor-de-los-pods-que-va-a-controlar.">* Indica nombres distintos para el ReplicaSet y para el contenedor de los Pods que va a controlar.</a>
+                    <li><a href="#indica-nombres-distintos-para-el-replicaset-y-para-el-contenedor-de-los-pods-que-va-a-controlar.">Indica nombres distintos para el ReplicaSet y para el contenedor de los Pods que va a controlar.</a>
             		</li>
 
-                    <li><a href="#*-el-replicaset-va-a-crear-3-r%C3%A9plicas.">* El ReplicaSet va a crear 3 réplicas.</a>
+                    <li><a href="#el-replicaset-va-a-crear-3-r%C3%A9plicas.">El ReplicaSet va a crear 3 réplicas.</a>
             		</li>
 
-                    <li><a href="#*-la-imagen-que-debes-desplegar-es-iesgn%2Ftest_web%3Alatest.">* La imagen que debes desplegar es iesgn/test_web:latest.</a>
+                    <li><a href="#la-imagen-que-debes-desplegar-es-iesgn%2Ftest_web%3Alatest.">La imagen que debes desplegar es iesgn/test_web:latest.</a>
             		</li>
 
-                    <li><a href="#*-indica-de-manera-adecuada-una-etiqueta-en-la-especificaci%C3%B3n-del-pod-que-vas-a-definir-que-coincida-con-el-selector-del-replicaset.">* Indica de manera adecuada una etiqueta en la especificación del Pod que vas a definir que coincida con el selector del ReplicaSet.</a>
+                    <li><a href="#indica-de-manera-adecuada-una-etiqueta-en-la-especificaci%C3%B3n-del-pod-que-vas-a-definir-que-coincida-con-el-selector-del-replicaset.">Indica de manera adecuada una etiqueta en la especificación del Pod que vas a definir que coincida con el selector del ReplicaSet.</a>
             		</li>
                 </ol>
             		</li>
@@ -131,10 +131,20 @@
 
             <p><strong>Como indicamos en el contenido de este módulo, no se va a trabajar directamente con los Pods (realmente tampoco vamos a trabajar directamente con los ReplicaSet, en el siguiente módulo explicaremos los Deployments que serán el recurso con el que trabajaremos). En este ejercicio vamos a crear un ReplicaSet que va a controlar un conjunto de Pods. Para ello, realiza los siguientes pasos:</strong></p>
 <h3 id="crea-un-fichero-yaml-con-la-descripci%C3%B3n-del-recurso-replicaset%2C-teniendo-en-cuenta-los-siguientes-aspectos%3A" tabindex="-1">Crea un fichero yaml con la descripción del recurso ReplicaSet, teniendo en cuenta los siguientes aspectos:</h3>
-<h4 id="*-indica-nombres-distintos-para-el-replicaset-y-para-el-contenedor-de-los-pods-que-va-a-controlar." tabindex="-1">* Indica nombres distintos para el ReplicaSet y para el contenedor de los Pods que va a controlar.</h4>
-<h4 id="*-el-replicaset-va-a-crear-3-r%C3%A9plicas." tabindex="-1">* El ReplicaSet va a crear 3 réplicas.</h4>
-<h4 id="*-la-imagen-que-debes-desplegar-es-iesgn%2Ftest_web%3Alatest." tabindex="-1">* La imagen que debes desplegar es iesgn/test_web:latest.</h4>
-<h4 id="*-indica-de-manera-adecuada-una-etiqueta-en-la-especificaci%C3%B3n-del-pod-que-vas-a-definir-que-coincida-con-el-selector-del-replicaset." tabindex="-1">* Indica de manera adecuada una etiqueta en la especificación del Pod que vas a definir que coincida con el selector del ReplicaSet.</h4>
+<ul>
+<li>
+<h4 id="indica-nombres-distintos-para-el-replicaset-y-para-el-contenedor-de-los-pods-que-va-a-controlar." tabindex="-1">Indica nombres distintos para el ReplicaSet y para el contenedor de los Pods que va a controlar.</h4>
+</li>
+<li>
+<h4 id="el-replicaset-va-a-crear-3-r%C3%A9plicas." tabindex="-1">El ReplicaSet va a crear 3 réplicas.</h4>
+</li>
+<li>
+<h4 id="la-imagen-que-debes-desplegar-es-iesgn%2Ftest_web%3Alatest." tabindex="-1">La imagen que debes desplegar es iesgn/test_web:latest.</h4>
+</li>
+<li>
+<h4 id="indica-de-manera-adecuada-una-etiqueta-en-la-especificaci%C3%B3n-del-pod-que-vas-a-definir-que-coincida-con-el-selector-del-replicaset." tabindex="-1">Indica de manera adecuada una etiqueta en la especificación del Pod que vas a definir que coincida con el selector del ReplicaSet.</h4>
+</li>
+</ul>
 <p>El fichero es el siguiente:</p>
 <pre class="language-txt"><code class="language-txt">apiVersion: apps/v1<br>kind: ReplicaSet<br>metadata:<br>  name: replicaset-t2   <br>  labels:<br>    service: web<br>spec:<br>  replicas: 3<br>  selector:<br>    matchLabels:<br>      app: nginx<br>  template:<br>    metadata:<br>      labels:<br>        app: nginx<br>    spec:<br>      containers:<br>        - image: iesgn/test_web:latest<br>          name: contenedor-t2   </code></pre>
 <h3 id="crea-el-replicaset." tabindex="-1">Crea el ReplicaSet.</h3>

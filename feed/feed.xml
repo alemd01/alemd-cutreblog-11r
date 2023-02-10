@@ -69,10 +69,20 @@
 		<id>https://reeseschultz.github.io/post/ejercicios-de-k8s-ii./</id>
 		<content type="html">&lt;p&gt;&lt;strong&gt;Como indicamos en el contenido de este módulo, no se va a trabajar directamente con los Pods (realmente tampoco vamos a trabajar directamente con los ReplicaSet, en el siguiente módulo explicaremos los Deployments que serán el recurso con el que trabajaremos). En este ejercicio vamos a crear un ReplicaSet que va a controlar un conjunto de Pods. Para ello, realiza los siguientes pasos:&lt;/strong&gt;&lt;/p&gt;
 &lt;h3 id=&quot;crea-un-fichero-yaml-con-la-descripci%C3%B3n-del-recurso-replicaset%2C-teniendo-en-cuenta-los-siguientes-aspectos%3A&quot; tabindex=&quot;-1&quot;&gt;Crea un fichero yaml con la descripción del recurso ReplicaSet, teniendo en cuenta los siguientes aspectos:&lt;/h3&gt;
-&lt;h4 id=&quot;*-indica-nombres-distintos-para-el-replicaset-y-para-el-contenedor-de-los-pods-que-va-a-controlar.&quot; tabindex=&quot;-1&quot;&gt;* Indica nombres distintos para el ReplicaSet y para el contenedor de los Pods que va a controlar.&lt;/h4&gt;
-&lt;h4 id=&quot;*-el-replicaset-va-a-crear-3-r%C3%A9plicas.&quot; tabindex=&quot;-1&quot;&gt;* El ReplicaSet va a crear 3 réplicas.&lt;/h4&gt;
-&lt;h4 id=&quot;*-la-imagen-que-debes-desplegar-es-iesgn%2Ftest_web%3Alatest.&quot; tabindex=&quot;-1&quot;&gt;* La imagen que debes desplegar es iesgn/test_web:latest.&lt;/h4&gt;
-&lt;h4 id=&quot;*-indica-de-manera-adecuada-una-etiqueta-en-la-especificaci%C3%B3n-del-pod-que-vas-a-definir-que-coincida-con-el-selector-del-replicaset.&quot; tabindex=&quot;-1&quot;&gt;* Indica de manera adecuada una etiqueta en la especificación del Pod que vas a definir que coincida con el selector del ReplicaSet.&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;indica-nombres-distintos-para-el-replicaset-y-para-el-contenedor-de-los-pods-que-va-a-controlar.&quot; tabindex=&quot;-1&quot;&gt;Indica nombres distintos para el ReplicaSet y para el contenedor de los Pods que va a controlar.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;el-replicaset-va-a-crear-3-r%C3%A9plicas.&quot; tabindex=&quot;-1&quot;&gt;El ReplicaSet va a crear 3 réplicas.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;la-imagen-que-debes-desplegar-es-iesgn%2Ftest_web%3Alatest.&quot; tabindex=&quot;-1&quot;&gt;La imagen que debes desplegar es iesgn/test_web:latest.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;indica-de-manera-adecuada-una-etiqueta-en-la-especificaci%C3%B3n-del-pod-que-vas-a-definir-que-coincida-con-el-selector-del-replicaset.&quot; tabindex=&quot;-1&quot;&gt;Indica de manera adecuada una etiqueta en la especificación del Pod que vas a definir que coincida con el selector del ReplicaSet.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;El fichero es el siguiente:&lt;/p&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;apiVersion: apps/v1&lt;br /&gt;kind: ReplicaSet&lt;br /&gt;metadata:&lt;br /&gt;  name: replicaset-t2   &lt;br /&gt;  labels:&lt;br /&gt;    service: web&lt;br /&gt;spec:&lt;br /&gt;  replicas: 3&lt;br /&gt;  selector:&lt;br /&gt;    matchLabels:&lt;br /&gt;      app: nginx&lt;br /&gt;  template:&lt;br /&gt;    metadata:&lt;br /&gt;      labels:&lt;br /&gt;        app: nginx&lt;br /&gt;    spec:&lt;br /&gt;      containers:&lt;br /&gt;        - image: iesgn/test_web:latest&lt;br /&gt;          name: contenedor-t2   &lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&quot;crea-el-replicaset.&quot; tabindex=&quot;-1&quot;&gt;Crea el ReplicaSet.&lt;/h3&gt;
