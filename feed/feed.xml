@@ -5,11 +5,62 @@
 	
 	<link href="https://reeseschultz.github.io/feed/feed.xml" rel="self"/>
 	<link href="https://reeseschultz.github.io"/>
-	<updated>2023-02-07T00:00:00Z</updated>
+	<updated>2023-02-10T00:00:00Z</updated>
 	<id>https://example.com/</id>
 	<author> 
 		<name>Reese Schultz</name>
 	</author>
+	
+	<entry>
+		<title>Ejercicios de K8s.</title>
+		<link href="https://reeseschultz.github.io/post/ejercicios-de-k8s./"/>
+		<updated>2023-02-10T00:00:00Z</updated>
+		<id>https://reeseschultz.github.io/post/ejercicios-de-k8s./</id>
+		<content type="html">&lt;p&gt;&lt;strong&gt;Vamos a crear nuestro primer Pod, y para ellos vamos a desplegar una imagen que nos ofrece un servidor web con una página estática. Para ello realiza los siguientes pasos:&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&quot;crea-un-fichero-yaml-con-la-descripci%C3%B3n-del-recurso-pod%2C-teniendo-en-cuenta-los-siguientes-aspectos%3A&quot; tabindex=&quot;-1&quot;&gt;Crea un fichero yaml con la descripción del recurso Pod, teniendo en cuenta los siguientes aspectos:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;indica-nombres-distintos-para-el-pod-y-para-el-contenedor.&quot; tabindex=&quot;-1&quot;&gt;Indica nombres distintos para el Pod y para el contenedor.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;la-imagen-que-debes-desplegar-es-iesgn%2Ftest_web%3Alatest.&quot; tabindex=&quot;-1&quot;&gt;La imagen que debes desplegar es iesgn/test_web:latest.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;h4 id=&quot;indica-una-etiqueta-en-la-descripci%C3%B3n-del-pod.&quot; tabindex=&quot;-1&quot;&gt;Indica una etiqueta en la descripción del Pod.&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;El contenido del fichero es el siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;apiVersion: v1&lt;br /&gt;kind: Pod&lt;br /&gt;metadata:&lt;br /&gt; name: pod-t1&lt;br /&gt; labels:&lt;br /&gt;   app: nginx&lt;br /&gt;   service: web&lt;br /&gt;spec:&lt;br /&gt; containers:&lt;br /&gt;   - image: iesgn/test_web:latest&lt;br /&gt;     name: contenedor-t1&lt;br /&gt;     imagePullPolicy: Always&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;crea-el-pod.&quot; tabindex=&quot;-1&quot;&gt;Crea el Pod.&lt;/h3&gt;
+&lt;p&gt;Para crear el pod usamos el siguiente comando:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;alemd@debian:~/minikube$ kubectl create -f pod-t1.yaml&lt;br /&gt;pod/pod-t1 created&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;comprueba-que-el-pod-se-ha-creado-y-est%C3%A1-corriendo.&quot; tabindex=&quot;-1&quot;&gt;Comprueba que el Pod se ha creado y está corriendo.&lt;/h3&gt;
+&lt;p&gt;Para comprobar que el pod está creado usamos el siguiente comando:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;alemd@debian:~/minikube$ kubectl get pods&lt;br /&gt;NAME     READY   STATUS             RESTARTS   AGE&lt;br /&gt;pod-t1   0/1     ImagePullBackOff   0          2m11s&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;obt%C3%A9n-informaci%C3%B3n-detallada-del-pod-creado.&quot; tabindex=&quot;-1&quot;&gt;Obtén información detallada del Pod creado.&lt;/h3&gt;
+&lt;p&gt;Con el siguiente comando vemos información detallada del pod:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;alemd@debian:~/minikube$ kubectl describe pod pod-t1&lt;br /&gt;Name:             pod-t1&lt;br /&gt;Namespace:        default&lt;br /&gt;Priority:         0&lt;br /&gt;Service Account:  default&lt;br /&gt;Node:             minikube/192.168.39.178&lt;br /&gt;Start Time:       Fri, 10 Feb 2023 08:47:38 +0100&lt;br /&gt;Labels:           app=nginx&lt;br /&gt;                  service=web&lt;br /&gt;Annotations:      &amp;lt;none&gt;&lt;br /&gt;Status:           Running&lt;br /&gt;IP:               10.244.0.4&lt;br /&gt;IPs:&lt;br /&gt;  IP:  10.244.0.4&lt;br /&gt;Containers:&lt;br /&gt;  contenedor-t1:&lt;br /&gt;    Container ID:   docker://0dca5570cfa08f80d86a65045f964124dc1c994a7be10885e75a5015dee87904&lt;br /&gt;    Image:          iesgn/test_web:latest&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;accede-de-forma-interactiva-al-pod-y-comprueba-los-ficheros-que-est%C3%A1n-en-el-documentroot-(usr%2Flocal%2Fapache2%2Fhtdocs%2F).&quot; tabindex=&quot;-1&quot;&gt;Accede de forma interactiva al Pod y comprueba los ficheros que están en el DocumentRoot (usr/local/apache2/htdocs/).&lt;/h3&gt;
+&lt;p&gt;Los comandos ejecutados son los siguientes:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;alemd@debian:~/minikube$ kubectl exec -it pod-t1 -- /bin/bash&lt;br /&gt;root@pod-t1:/usr/local/apache2# ls&lt;br /&gt;bin  build  cgi-bin  conf  error  htdocs  icons  include  logs	modules&lt;br /&gt;root@pod-t1:/usr/local/apache2# cd htdocs/&lt;br /&gt;root@pod-t1:/usr/local/apache2/htdocs# ls&lt;br /&gt;index.html&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;crea-una-redirecci%C3%B3n-con-kubectl-port-forward-utilizando-el-puerto-de-localhost-8888-y-sabiendo-que-el-pod-ofrece-el-servicio-en-el-puerto-80.-accede-a-la-aplicaci%C3%B3n-desde-un-navegador.&quot; tabindex=&quot;-1&quot;&gt;Crea una redirección con kubectl port-forward utilizando el puerto de localhost 8888 y sabiendo que el Pod ofrece el servicio en el puerto 80. Accede a la aplicación desde un navegador.&lt;/h3&gt;
+&lt;p&gt;Muestro el comando usado para redireccionar el puerto:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;alemd@debian:~/minikube$ kubectl port-forward pod-t1 8888:80&lt;br /&gt;Forwarding from 127.0.0.1:8888 -&gt; 80&lt;br /&gt;Forwarding from [::1]:8888 -&gt; 80&lt;br /&gt;Handling connection for 8888&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Muestro una captura accediendo por el puerto 8888.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-T8-T1.1.png&quot; alt=&quot;SRI-T8-T1.1.png&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;muestra-los-logs-del-pod-y-comprueba-que-se-visualizan-los-logs-de-los-accesos-que-hemos-realizado-en-el-punto-anterior.&quot; tabindex=&quot;-1&quot;&gt;Muestra los logs del Pod y comprueba que se visualizan los logs de los accesos que hemos realizado en el punto anterior.&lt;/h3&gt;
+&lt;p&gt;El comando para mostrar los logs el siguiente:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;alemd@debian:~/minikube$ kubectl logs pod-t1 &lt;br /&gt;AH00558: httpd: Could not reliably determine the server&#39;s fully qualified domain name, using 10.244.0.4. Set the &#39;ServerName&#39; directive globally to suppress this message&lt;br /&gt;AH00558: httpd: Could not reliably determine the server&#39;s fully qualified domain name, using 10.244.0.4. Set the &#39;ServerName&#39; directive globally to suppress this message&lt;br /&gt;[Fri Feb 10 07:50:08.134095 2023] [mpm_event:notice] [pid 1:tid 140490452923520] AH00489: Apache/2.4.46 (Unix) configured -- resuming normal operations&lt;br /&gt;[Fri Feb 10 07:50:08.135109 2023] [core:notice] [pid 1:tid 140490452923520] AH00094: Command line: &#39;httpd -D FOREGROUND&#39;&lt;br /&gt;127.0.0.1 - - [10/Feb/2023:07:55:18 +0000] &quot;GET / HTTP/1.1&quot; 200 2884&lt;br /&gt;127.0.0.1 - - [10/Feb/2023:07:55:19 +0000] &quot;GET /favicon.ico HTTP/1.1&quot; 404 196&lt;br /&gt;127.0.0.1 - - [10/Feb/2023:07:57:24 +0000] &quot;GET / HTTP/1.1&quot; 200 2884&lt;br /&gt;127.0.0.1 - - [10/Feb/2023:07:57:24 +0000] &quot;GET /favicon.ico HTTP/1.1&quot; 404 196&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;elimina-el-pod%2C-y-comprueba-que-ha-sido-eliminado.&quot; tabindex=&quot;-1&quot;&gt;Elimina el Pod, y comprueba que ha sido eliminado.&lt;/h3&gt;
+&lt;p&gt;La instrucción usada para eliminar el pod es:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;alemd@debian:~/minikube$ kubectl delete pod pod-t1&lt;br /&gt;pod &quot;pod-t1&quot; deleted&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Muestro los pods para verificar que se ha borrado:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;alemd@debian:~/minikube$ kubectl get pod&lt;br /&gt;No resources found in default namespace.&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;h2 id=&quot;documento-realizado-por%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Documento realizado por:&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;✒️ &lt;strong&gt;Alejandro Montes Delgado&lt;/strong&gt; - &lt;em&gt;2º ASIR&lt;/em&gt;&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>Ejercicios con Docker III.</title>

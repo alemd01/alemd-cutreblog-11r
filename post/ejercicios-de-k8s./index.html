@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Ejercicios de K8s. | Cutreblog">
+    <meta itemprop="description" content="Primer taller de la unidad de Docker.">
+
+    
+    <meta name="twitter:title" content="Ejercicios de K8s. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Primer taller de la unidad de Docker.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Ejercicios de K8s. | Cutreblog">
+    <meta name="og:description" content="Primer taller de la unidad de Docker.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Ejercicios de K8s. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Ejercicios de K8s.</h2>
+
+        
+            <p class="excerpt">Primer taller de la unidad de Docker.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SRI" href="/tag/SRI">SRI</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Fri Feb 10 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 10, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#crea-un-fichero-yaml-con-la-descripci%C3%B3n-del-recurso-pod%2C-teniendo-en-cuenta-los-siguientes-aspectos%3A">Crea un fichero yaml con la descripción del recurso Pod, teniendo en cuenta los siguientes aspectos:</a>
+            
+                <ol>
+                    
+                    <li><a href="#indica-nombres-distintos-para-el-pod-y-para-el-contenedor.">Indica nombres distintos para el Pod y para el contenedor.</a>
+            		</li>
+
+                    <li><a href="#la-imagen-que-debes-desplegar-es-iesgn%2Ftest_web%3Alatest.">La imagen que debes desplegar es iesgn/test_web:latest.</a>
+            		</li>
+
+                    <li><a href="#indica-una-etiqueta-en-la-descripci%C3%B3n-del-pod.">Indica una etiqueta en la descripción del Pod.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#crea-el-pod.">Crea el Pod.</a>
+            		</li>
+
+                    <li><a href="#comprueba-que-el-pod-se-ha-creado-y-est%C3%A1-corriendo.">Comprueba que el Pod se ha creado y está corriendo.</a>
+            		</li>
+
+                    <li><a href="#obt%C3%A9n-informaci%C3%B3n-detallada-del-pod-creado.">Obtén información detallada del Pod creado.</a>
+            		</li>
+
+                    <li><a href="#accede-de-forma-interactiva-al-pod-y-comprueba-los-ficheros-que-est%C3%A1n-en-el-documentroot-(usr%2Flocal%2Fapache2%2Fhtdocs%2F).">Accede de forma interactiva al Pod y comprueba los ficheros que están en el DocumentRoot (usr/local/apache2/htdocs/).</a>
+            		</li>
+
+                    <li><a href="#crea-una-redirecci%C3%B3n-con-kubectl-port-forward-utilizando-el-puerto-de-localhost-8888-y-sabiendo-que-el-pod-ofrece-el-servicio-en-el-puerto-80.-accede-a-la-aplicaci%C3%B3n-desde-un-navegador.">Crea una redirección con kubectl port-forward utilizando el puerto de localhost 8888 y sabiendo que el Pod ofrece el servicio en el puerto 80. Accede a la aplicación desde un navegador.</a>
+            		</li>
+
+                    <li><a href="#muestra-los-logs-del-pod-y-comprueba-que-se-visualizan-los-logs-de-los-accesos-que-hemos-realizado-en-el-punto-anterior.">Muestra los logs del Pod y comprueba que se visualizan los logs de los accesos que hemos realizado en el punto anterior.</a>
+            		</li>
+
+                    <li><a href="#elimina-el-pod%2C-y-comprueba-que-ha-sido-eliminado.">Elimina el Pod, y comprueba que ha sido eliminado.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <p><strong>Vamos a crear nuestro primer Pod, y para ellos vamos a desplegar una imagen que nos ofrece un servidor web con una página estática. Para ello realiza los siguientes pasos:</strong></p>
+<h3 id="crea-un-fichero-yaml-con-la-descripci%C3%B3n-del-recurso-pod%2C-teniendo-en-cuenta-los-siguientes-aspectos%3A" tabindex="-1">Crea un fichero yaml con la descripción del recurso Pod, teniendo en cuenta los siguientes aspectos:</h3>
+<ul>
+<li>
+<h4 id="indica-nombres-distintos-para-el-pod-y-para-el-contenedor." tabindex="-1">Indica nombres distintos para el Pod y para el contenedor.</h4>
+</li>
+<li>
+<h4 id="la-imagen-que-debes-desplegar-es-iesgn%2Ftest_web%3Alatest." tabindex="-1">La imagen que debes desplegar es iesgn/test_web:latest.</h4>
+</li>
+<li>
+<h4 id="indica-una-etiqueta-en-la-descripci%C3%B3n-del-pod." tabindex="-1">Indica una etiqueta en la descripción del Pod.</h4>
+</li>
+</ul>
+<p>El contenido del fichero es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">apiVersion: v1<br>kind: Pod<br>metadata:<br> name: pod-t1<br> labels:<br>   app: nginx<br>   service: web<br>spec:<br> containers:<br>   - image: iesgn/test_web:latest<br>     name: contenedor-t1<br>     imagePullPolicy: Always<br></code></pre>
+<h3 id="crea-el-pod." tabindex="-1">Crea el Pod.</h3>
+<p>Para crear el pod usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl create -f pod-t1.yaml<br>pod/pod-t1 created</code></pre>
+<h3 id="comprueba-que-el-pod-se-ha-creado-y-est%C3%A1-corriendo." tabindex="-1">Comprueba que el Pod se ha creado y está corriendo.</h3>
+<p>Para comprobar que el pod está creado usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl get pods<br>NAME     READY   STATUS             RESTARTS   AGE<br>pod-t1   0/1     ImagePullBackOff   0          2m11s</code></pre>
+<h3 id="obt%C3%A9n-informaci%C3%B3n-detallada-del-pod-creado." tabindex="-1">Obtén información detallada del Pod creado.</h3>
+<p>Con el siguiente comando vemos información detallada del pod:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl describe pod pod-t1<br>Name:             pod-t1<br>Namespace:        default<br>Priority:         0<br>Service Account:  default<br>Node:             minikube/192.168.39.178<br>Start Time:       Fri, 10 Feb 2023 08:47:38 +0100<br>Labels:           app=nginx<br>                  service=web<br>Annotations:      &lt;none><br>Status:           Running<br>IP:               10.244.0.4<br>IPs:<br>  IP:  10.244.0.4<br>Containers:<br>  contenedor-t1:<br>    Container ID:   docker://0dca5570cfa08f80d86a65045f964124dc1c994a7be10885e75a5015dee87904<br>    Image:          iesgn/test_web:latest</code></pre>
+<h3 id="accede-de-forma-interactiva-al-pod-y-comprueba-los-ficheros-que-est%C3%A1n-en-el-documentroot-(usr%2Flocal%2Fapache2%2Fhtdocs%2F)." tabindex="-1">Accede de forma interactiva al Pod y comprueba los ficheros que están en el DocumentRoot (usr/local/apache2/htdocs/).</h3>
+<p>Los comandos ejecutados son los siguientes:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl exec -it pod-t1 -- /bin/bash<br>root@pod-t1:/usr/local/apache2# ls<br>bin  build  cgi-bin  conf  error  htdocs  icons  include  logs	modules<br>root@pod-t1:/usr/local/apache2# cd htdocs/<br>root@pod-t1:/usr/local/apache2/htdocs# ls<br>index.html<br></code></pre>
+<h3 id="crea-una-redirecci%C3%B3n-con-kubectl-port-forward-utilizando-el-puerto-de-localhost-8888-y-sabiendo-que-el-pod-ofrece-el-servicio-en-el-puerto-80.-accede-a-la-aplicaci%C3%B3n-desde-un-navegador." tabindex="-1">Crea una redirección con kubectl port-forward utilizando el puerto de localhost 8888 y sabiendo que el Pod ofrece el servicio en el puerto 80. Accede a la aplicación desde un navegador.</h3>
+<p>Muestro el comando usado para redireccionar el puerto:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl port-forward pod-t1 8888:80<br>Forwarding from 127.0.0.1:8888 -> 80<br>Forwarding from [::1]:8888 -> 80<br>Handling connection for 8888</code></pre>
+<p>Muestro una captura accediendo por el puerto 8888.</p>
+<p><img src="/img/SRI-T8-T1.1.png" alt="SRI-T8-T1.1.png"></p>
+<h3 id="muestra-los-logs-del-pod-y-comprueba-que-se-visualizan-los-logs-de-los-accesos-que-hemos-realizado-en-el-punto-anterior." tabindex="-1">Muestra los logs del Pod y comprueba que se visualizan los logs de los accesos que hemos realizado en el punto anterior.</h3>
+<p>El comando para mostrar los logs el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl logs pod-t1 <br>AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 10.244.0.4. Set the 'ServerName' directive globally to suppress this message<br>AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 10.244.0.4. Set the 'ServerName' directive globally to suppress this message<br>[Fri Feb 10 07:50:08.134095 2023] [mpm_event:notice] [pid 1:tid 140490452923520] AH00489: Apache/2.4.46 (Unix) configured -- resuming normal operations<br>[Fri Feb 10 07:50:08.135109 2023] [core:notice] [pid 1:tid 140490452923520] AH00094: Command line: 'httpd -D FOREGROUND'<br>127.0.0.1 - - [10/Feb/2023:07:55:18 +0000] "GET / HTTP/1.1" 200 2884<br>127.0.0.1 - - [10/Feb/2023:07:55:19 +0000] "GET /favicon.ico HTTP/1.1" 404 196<br>127.0.0.1 - - [10/Feb/2023:07:57:24 +0000] "GET / HTTP/1.1" 200 2884<br>127.0.0.1 - - [10/Feb/2023:07:57:24 +0000] "GET /favicon.ico HTTP/1.1" 404 196</code></pre>
+<h3 id="elimina-el-pod%2C-y-comprueba-que-ha-sido-eliminado." tabindex="-1">Elimina el Pod, y comprueba que ha sido eliminado.</h3>
+<p>La instrucción usada para eliminar el pod es:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl delete pod pod-t1<br>pod "pod-t1" deleted</code></pre>
+<p>Muestro los pods para verificar que se ha borrado:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl get pod<br>No resources found in default namespace.<br></code></pre>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/ejercicios-con-docker-iii./">Ejercicios con Docker III.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
