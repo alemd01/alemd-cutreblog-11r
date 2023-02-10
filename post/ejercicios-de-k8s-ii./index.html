@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Ejercicios de K8s II. | Cutreblog">
+    <meta itemprop="description" content="Segundo taller de la unidad de Kubernetes.">
+
+    
+    <meta name="twitter:title" content="Ejercicios de K8s II. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Segundo taller de la unidad de Kubernetes.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Ejercicios de K8s II. | Cutreblog">
+    <meta name="og:description" content="Segundo taller de la unidad de Kubernetes.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Ejercicios de K8s II. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Ejercicios de K8s II.</h2>
+
+        
+            <p class="excerpt">Segundo taller de la unidad de Kubernetes.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SRI" href="/tag/SRI">SRI</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Fri Feb 10 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 10, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#crea-un-fichero-yaml-con-la-descripci%C3%B3n-del-recurso-replicaset%2C-teniendo-en-cuenta-los-siguientes-aspectos%3A">Crea un fichero yaml con la descripción del recurso ReplicaSet, teniendo en cuenta los siguientes aspectos:</a>
+            
+                <ol>
+                    
+                    <li><a href="#*-indica-nombres-distintos-para-el-replicaset-y-para-el-contenedor-de-los-pods-que-va-a-controlar.">* Indica nombres distintos para el ReplicaSet y para el contenedor de los Pods que va a controlar.</a>
+            		</li>
+
+                    <li><a href="#*-el-replicaset-va-a-crear-3-r%C3%A9plicas.">* El ReplicaSet va a crear 3 réplicas.</a>
+            		</li>
+
+                    <li><a href="#*-la-imagen-que-debes-desplegar-es-iesgn%2Ftest_web%3Alatest.">* La imagen que debes desplegar es iesgn/test_web:latest.</a>
+            		</li>
+
+                    <li><a href="#*-indica-de-manera-adecuada-una-etiqueta-en-la-especificaci%C3%B3n-del-pod-que-vas-a-definir-que-coincida-con-el-selector-del-replicaset.">* Indica de manera adecuada una etiqueta en la especificación del Pod que vas a definir que coincida con el selector del ReplicaSet.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#crea-el-replicaset.">Crea el ReplicaSet.</a>
+            		</li>
+
+                    <li><a href="#comprueba-que-se-ha-creado-el-replicaset-y-los-3-pods.">Comprueba que se ha creado el ReplicaSet y los 3 Pods.</a>
+            		</li>
+
+                    <li><a href="#obt%C3%A9n-informaci%C3%B3n-detallada-del-replicaset-creado.">Obtén información detallada del ReplicaSet creado.</a>
+            		</li>
+
+                    <li><a href="#vamos-a-probar-la-tolerancia-a-fallos%3A-elimina-uno-de-los-3-pods%2C-y-comprueba-que-inmediatamente-se-ha-vuelto-a-crear-un-nuevo-pod.">Vamos a probar la tolerancia a fallos: Elimina uno de los 3 Pods, y comprueba que inmediatamente se ha vuelto a crear un nuevo Pod.</a>
+            		</li>
+
+                    <li><a href="#vamos-a-comprobar-la-escalabilidad%3A-escala-el-replicaset-para-tener-6-pods-de-la-aplicaci%C3%B3n.">Vamos a comprobar la escalabilidad: escala el ReplicaSet para tener 6 Pods de la aplicación.</a>
+            		</li>
+
+                    <li><a href="#elimina-el-replicaset-y-comprueba-que-se-han-borrado-todos-los-pods.">Elimina el ReplicaSet y comprueba que se han borrado todos los Pods.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <p><strong>Como indicamos en el contenido de este módulo, no se va a trabajar directamente con los Pods (realmente tampoco vamos a trabajar directamente con los ReplicaSet, en el siguiente módulo explicaremos los Deployments que serán el recurso con el que trabajaremos). En este ejercicio vamos a crear un ReplicaSet que va a controlar un conjunto de Pods. Para ello, realiza los siguientes pasos:</strong></p>
+<h3 id="crea-un-fichero-yaml-con-la-descripci%C3%B3n-del-recurso-replicaset%2C-teniendo-en-cuenta-los-siguientes-aspectos%3A" tabindex="-1">Crea un fichero yaml con la descripción del recurso ReplicaSet, teniendo en cuenta los siguientes aspectos:</h3>
+<h4 id="*-indica-nombres-distintos-para-el-replicaset-y-para-el-contenedor-de-los-pods-que-va-a-controlar." tabindex="-1">* Indica nombres distintos para el ReplicaSet y para el contenedor de los Pods que va a controlar.</h4>
+<h4 id="*-el-replicaset-va-a-crear-3-r%C3%A9plicas." tabindex="-1">* El ReplicaSet va a crear 3 réplicas.</h4>
+<h4 id="*-la-imagen-que-debes-desplegar-es-iesgn%2Ftest_web%3Alatest." tabindex="-1">* La imagen que debes desplegar es iesgn/test_web:latest.</h4>
+<h4 id="*-indica-de-manera-adecuada-una-etiqueta-en-la-especificaci%C3%B3n-del-pod-que-vas-a-definir-que-coincida-con-el-selector-del-replicaset." tabindex="-1">* Indica de manera adecuada una etiqueta en la especificación del Pod que vas a definir que coincida con el selector del ReplicaSet.</h4>
+<p>El fichero es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">apiVersion: apps/v1<br>kind: ReplicaSet<br>metadata:<br>  name: replicaset-t2   <br>  labels:<br>    service: web<br>spec:<br>  replicas: 3<br>  selector:<br>    matchLabels:<br>      app: nginx<br>  template:<br>    metadata:<br>      labels:<br>        app: nginx<br>    spec:<br>      containers:<br>        - image: iesgn/test_web:latest<br>          name: contenedor-t2   </code></pre>
+<h3 id="crea-el-replicaset." tabindex="-1">Crea el ReplicaSet.</h3>
+<p>Usamos el siguiente comando para crear el ReplicaSet:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl apply -f pod-t2.yaml<br>replicaset.apps/replicaset-t2 created</code></pre>
+<h3 id="comprueba-que-se-ha-creado-el-replicaset-y-los-3-pods." tabindex="-1">Comprueba que se ha creado el ReplicaSet y los 3 Pods.</h3>
+<p>El comando para ver los pods es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl get rs<br>NAME            DESIRED   CURRENT   READY   AGE<br>replicaset-t2   3         3         3       4m2s<br>alemd@debian:~/minikube$ kubectl get pods<br>NAME                  READY   STATUS    RESTARTS   AGE<br>replicaset-t2-56w4m   1/1     Running   0          116s<br>replicaset-t2-9jnsp   1/1     Running   0          116s<br>replicaset-t2-mbhkx   1/1     Running   0          116s<br></code></pre>
+<h3 id="obt%C3%A9n-informaci%C3%B3n-detallada-del-replicaset-creado." tabindex="-1">Obtén información detallada del ReplicaSet creado.</h3>
+<p>Usamos el siguiente comando para ver información detallada del ReplicaSet:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl describe rs replicaset-t2<br>Name:         replicaset-t2<br>Namespace:    default<br>Selector:     app=nginx<br>Labels:       service=web<br>Annotations:  &lt;none><br>Replicas:     3 current / 3 desired<br>Pods Status:  3 Running / 0 Waiting / 0 Succeeded / 0 Failed<br>Pod Template:<br>  Labels:  app=nginx<br>  Containers:<br>   contenedor-t2:<br>    Image:        iesgn/test_web:latest<br>    Port:         &lt;none><br>    Host Port:    &lt;none><br>    Environment:  &lt;none><br>    Mounts:       &lt;none><br>  Volumes:        &lt;none><br>Events:<br>  Type    Reason            Age    From                   Message<br>  ----    ------            ----   ----                   -------<br>  Normal  SuccessfulCreate  4m49s  replicaset-controller  Created pod: replicaset-t2-9jnsp<br>  Normal  SuccessfulCreate  4m49s  replicaset-controller  Created pod: replicaset-t2-56w4m<br>  Normal  SuccessfulCreate  4m49s  replicaset-controller  Created pod: replicaset-t2-mbhkx</code></pre>
+<h3 id="vamos-a-probar-la-tolerancia-a-fallos%3A-elimina-uno-de-los-3-pods%2C-y-comprueba-que-inmediatamente-se-ha-vuelto-a-crear-un-nuevo-pod." tabindex="-1">Vamos a probar la tolerancia a fallos: Elimina uno de los 3 Pods, y comprueba que inmediatamente se ha vuelto a crear un nuevo Pod.</h3>
+<p>Borramos un pod y acto seguido lo mostramos y veremos que se ha creado otro automáticamente:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl delete pod replicaset-t2-56w4m<br>pod "replicaset-t2-56w4m" deleted<br>alemd@debian:~/minikube$ kubectl get pods<br>NAME                  READY   STATUS    RESTARTS   AGE<br>replicaset-t2-9jnsp   1/1     Running   0          5m38s<br>replicaset-t2-mbhkx   1/1     Running   0          5m38s<br>replicaset-t2-zt5dx   1/1     Running   0          10s</code></pre>
+<h3 id="vamos-a-comprobar-la-escalabilidad%3A-escala-el-replicaset-para-tener-6-pods-de-la-aplicaci%C3%B3n." tabindex="-1">Vamos a comprobar la escalabilidad: escala el ReplicaSet para tener 6 Pods de la aplicación.</h3>
+<p>Cambiamos el número de réplicas y mostramos los pods que tenemos:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl scale rs replicaset-t2 --replicas=6<br>replicaset.apps/replicaset-t2 scaled<br>alemd@debian:~/minikube$ kubectl get pods<br>NAME                  READY   STATUS              RESTARTS   AGE<br>replicaset-t2-5fgnq   0/1     ContainerCreating   0          13s<br>replicaset-t2-8fzgx   0/1     ContainerCreating   0          13s<br>replicaset-t2-9jnsp   1/1     Running             0          7m1s<br>replicaset-t2-chxc9   0/1     ContainerCreating   0          13s<br>replicaset-t2-mbhkx   1/1     Running             0          7m1s<br>replicaset-t2-zt5dx   1/1     Running             0          93s</code></pre>
+<h3 id="elimina-el-replicaset-y-comprueba-que-se-han-borrado-todos-los-pods." tabindex="-1">Elimina el ReplicaSet y comprueba que se han borrado todos los Pods.</h3>
+<p>Los eliminamos y los mostramos, como vemos tarda un poco ya que al hacer el primer get pods el estado de las réplicas era Terminating.</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl delete rs replicaset-t2<br>replicaset.apps "replicaset-t2" deleted<br>alemd@debian:~/minikube$ kubectl get pods<br>NAME                  READY   STATUS        RESTARTS   AGE<br>replicaset-t2-5fgnq   1/1     Terminating   0          63s<br>replicaset-t2-8fzgx   1/1     Terminating   0          63s<br>replicaset-t2-9jnsp   1/1     Terminating   0          7m51s<br>replicaset-t2-chxc9   1/1     Terminating   0          63s<br>replicaset-t2-mbhkx   1/1     Terminating   0          7m51s<br>replicaset-t2-zt5dx   1/1     Terminating   0          2m23s<br>alemd@debian:~/minikube$ kubectl get pods<br>No resources found in default namespace.</code></pre>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Siguiente post</p>
+            <p class="font-bold mb-2">
+                <a href="/post/ejercicios-de-k8s./">Ejercicios de K8s.</a>
+            </p>
+        
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/ejercicios-con-docker-iii./">Ejercicios con Docker III.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
