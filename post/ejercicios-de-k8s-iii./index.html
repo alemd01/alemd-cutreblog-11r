@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Ejercicios de K8s III. | Cutreblog">
+    <meta itemprop="description" content="Tercer taller de la unidad de Kubernetes.">
+
+    
+    <meta name="twitter:title" content="Ejercicios de K8s III. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Tercer taller de la unidad de Kubernetes.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Ejercicios de K8s III. | Cutreblog">
+    <meta name="og:description" content="Tercer taller de la unidad de Kubernetes.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Ejercicios de K8s III. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Ejercicios de K8s III.</h2>
+
+        
+            <p class="excerpt">Tercer taller de la unidad de Kubernetes.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SRI" href="/tag/SRI">SRI</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Sun Feb 12 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 12, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#trabajando-con-deployments.">Trabajando con Deployments.</a>
+            
+                <ol>
+                    
+                    <li><a href="#1.-crea-un-fichero-yaml-con-la-descripci%C3%B3n-del-recurso-deployment%2C-teniendo-en-cuenta-los-siguientes-aspectos%3A">1. Crea un fichero yaml con la descripción del recurso Deployment, teniendo en cuenta los siguientes aspectos:</a>
+            		</li>
+
+                    <li><a href="#2.-crea-el-deployment.">2. Crea el Deployment.</a>
+            		</li>
+
+                    <li><a href="#3.-comprueba-los-recursos-que-se-han-creado%3A-deployment%2C-replicaset-y-pods.">3. Comprueba los recursos que se han creado: Deployment, ReplicaSet y Pods.</a>
+            		</li>
+
+                    <li><a href="#4.-obt%C3%A9n-informaci%C3%B3n-detallada-del-deployment-creado.">4. Obtén información detallada del Deployment creado.</a>
+            		</li>
+
+                    <li><a href="#5.-crea-un-una-redirecci%C3%B3n-utilizando-el-port-forward-para-acceder-a-la-aplicaci%C3%B3n%2C-sabiendo-que-la-aplicaci%C3%B3n-ofrece-el-servicio-en-el-puerto-80%2C-y-accede-a-la-aplicaci%C3%B3n-con-un-navegador-web.">5. Crea un una redirección utilizando el port-forward para acceder a la aplicación, sabiendo que la aplicación ofrece el servicio en el puerto 80, y accede a la aplicación con un navegador web.</a>
+            		</li>
+
+                    <li><a href="#6.-accede-a-los-logs-del-despliegue-para-comprobar-el-acceso-que-has-hecho-en-el-punto-anterior.">6. Accede a los logs del despliegue para comprobar el acceso que has hecho en el punto anterior.</a>
+            		</li>
+
+                    <li><a href="#7.-elimina-el-deployment-y-comprueba-que-se-han-borrado-todos-los-recursos-creados.">7. Elimina el Deployment y comprueba que se han borrado todos los recursos creados.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#actualizaci%C3%B3n-y-desactualizaci%C3%B3n-de-nuestra-aplicaci%C3%B3n.">Actualización y desactualización de nuestra aplicación.</a>
+            
+                <ol>
+                    
+                    <li><a href="#1.-crea-un-fichero-yaml-(puedes-usar-el-de-la-actividad-anterior)-para-desplegar-la-imagen%3A-iesgn%2Ftest_web%3Aversion1.">1. Crea un fichero yaml (puedes usar el de la actividad anterior) para desplegar la imagen: iesgn/test_web:version1.</a>
+            		</li>
+
+                    <li><a href="#2.-crea-el-deployment%2C-recuerda-realizar-una-anotaci%C3%B3n-para-indicar-las-caracter%C3%ADsticas-del-despliegue.">2. Crea el Deployment, recuerda realizar una anotación para indicar las características del despliegue.</a>
+            		</li>
+
+                    <li><a href="#3.-crea-una-redirecci%C3%B3n-utilizando-el-port-forward-para-acceder-a-la-aplicaci%C3%B3n%2C-sabiendo-que-la-aplicaci%C3%B3n-ofrece-el-servicio-en-el-puerto-80%2C-y-accede-a-la-aplicaci%C3%B3n-con-un-navegador-web.">3. Crea una redirección utilizando el port-forward para acceder a la aplicación, sabiendo que la aplicación ofrece el servicio en el puerto 80, y accede a la aplicación con un navegador web.</a>
+            		</li>
+
+                    <li><a href="#4.-realiza-la-actualizaci%C3%B3n-del-despliegue-utilizando-la-nueva-imagen-(no-olvides-anotar-la-causa).">4. Realiza la actualización del despliegue utilizando la nueva imagen (no olvides anotar la causa).</a>
+            		</li>
+
+                    <li><a href="#5.-comprueba-los-recursos-que-se-han-creado%3A-deployment%2C-replicaset-y-pods.">5. Comprueba los recursos que se han creado: Deployment, ReplicaSet y Pods.</a>
+            		</li>
+
+                    <li><a href="#6.-visualiza-el-historial-de-actualizaciones.">6. Visualiza el historial de actualizaciones.</a>
+            		</li>
+
+                    <li><a href="#7.-crea-una-redirecci%C3%B3n-utilizando-el-port-forward-para-acceder-a-la-aplicaci%C3%B3n%2C-sabiendo-que-la-aplicaci%C3%B3n-ofrece-el-servicio-en-el-puerto-80%2C-y-accede-a-la-aplicaci%C3%B3n-con-un-navegador-web.">7. Crea una redirección utilizando el port-forward para acceder a la aplicación, sabiendo que la aplicación ofrece el servicio en el puerto 80, y accede a la aplicación con un navegador web.</a>
+            		</li>
+
+                    <li><a href="#8.-realiza-la-actualizaci%C3%B3n-del-despliegue-utilizando-la-nueva-imagen-(no-olvides-anotar-la-causa).">8. Realiza la actualización del despliegue utilizando la nueva imagen (no olvides anotar la causa).</a>
+            		</li>
+
+                    <li><a href="#9.-comprueba-los-recursos-que-se-han-creado%3A-deployment%2C-replicaset-y-pods.">9. Comprueba los recursos que se han creado: Deployment, ReplicaSet y Pods.</a>
+            		</li>
+
+                    <li><a href="#10.-visualiza-el-historial-de-actualizaciones.">10. Visualiza el historial de actualizaciones.</a>
+            		</li>
+
+                    <li><a href="#11.-crea-una-redirecci%C3%B3n-utilizando-el-port-forward-para-acceder-a-la-aplicaci%C3%B3n%2C-sabiendo-que-la-aplicaci%C3%B3n-ofrece-el-servicio-en-el-puerto-80%2C-y-accede-a-la-aplicaci%C3%B3n-con-un-navegador-web.">11. Crea una redirección utilizando el port-forward para acceder a la aplicación, sabiendo que la aplicación ofrece el servicio en el puerto 80, y accede a la aplicación con un navegador web.</a>
+            		</li>
+
+                    <li><a href="#12.-ejecuta-la-instrucci%C3%B3n-que-nos-permite-hacer-un-rollback-de-nuestro-despliegue.">12. Ejecuta la instrucción que nos permite hacer un rollback de nuestro despliegue.</a>
+            		</li>
+
+                    <li><a href="#13.-comprueba-los-recursos-que-se-han-creado%3A-deployment%2C-replicaset-y-pods.">13. Comprueba los recursos que se han creado: Deployment, ReplicaSet y Pods.</a>
+            		</li>
+
+                    <li><a href="#14.-visualiza-el-historial-de-actualizaciones.">14. Visualiza el historial de actualizaciones.</a>
+            		</li>
+
+                    <li><a href="#15.-crea-una-redirecci%C3%B3n-utilizando-el-port-forward-para-acceder-a-la-aplicaci%C3%B3n%2C-sabiendo-que-la-aplicaci%C3%B3n-ofrece-el-servicio-en-el-puerto-80%2C-y-accede-a-la-aplicaci%C3%B3n-con-un-navegador-web.">15. Crea una redirección utilizando el port-forward para acceder a la aplicación, sabiendo que la aplicación ofrece el servicio en el puerto 80, y accede a la aplicación con un navegador web.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#despliegue-de-la-aplicaci%C3%B3n-guestbook.">Despliegue de la aplicación GuestBook.</a>
+            
+                <ol>
+                    
+                    <li><a href="#1.-usando-los-ficheros-anteriores-crea-los-dos-deployments.">1. Usando los ficheros anteriores crea los dos Deployments.</a>
+            		</li>
+
+                    <li><a href="#2.-comprueba-que-los-recursos-que-se-han-creado%3A-deployment%2C-replicaset-y-pods.">2. Comprueba que los recursos que se han creado: Deployment, ReplicaSet y Pods.</a>
+            		</li>
+
+                    <li><a href="#3.-crea-una-redirecci%C3%B3n-utilizando-el-port-forward-para-acceder-a-la-aplicaci%C3%B3n%2C-sabiendo-que-la-aplicaci%C3%B3n-ofrece-el-servicio-en-el-puerto-5000%2C-y-accede-a-la-aplicaci%C3%B3n-con-un-navegador-web.">3. Crea una redirección utilizando el port-forward para acceder a la aplicación, sabiendo que la aplicación ofrece el servicio en el puerto 5000, y accede a la aplicación con un navegador web.</a>
+            		</li>
+                </ol>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="trabajando-con-deployments." tabindex="-1">Trabajando con Deployments.</h3>
+<p><strong>En este taller vamos a crear un Deployment de una aplicación web. Sigamos los siguientes pasos:</strong></p>
+<h4 id="1.-crea-un-fichero-yaml-con-la-descripci%C3%B3n-del-recurso-deployment%2C-teniendo-en-cuenta-los-siguientes-aspectos%3A" tabindex="-1">1. Crea un fichero yaml con la descripción del recurso Deployment, teniendo en cuenta los siguientes aspectos:</h4>
+<ul>
+<li><strong>Indica nombres distintos para el Deployment y para el contenedor de los Pods que va a controlar.</strong></li>
+<li><strong>El Deployment va a crear 2 réplicas.</strong></li>
+<li><strong>La imagen que debes desplegar es iesgn/test_web:latest.</strong></li>
+<li><strong>Indica de manera adecuada una etiqueta en la especificación del Pod que vas a definir que coincida con el selector del Deployment.</strong></li>
+</ul>
+<p>El yaml creado es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">apiVersion: apps/v1<br>kind: Deployment<br>metadata:<br>  name: deployment-t3   <br>  labels:<br>    app: nginx<br>spec:<br>  revisionHistoryLimit: 2<br>  strategy:<br>    type: RollingUpdate<br>  replicas: 2<br>  selector:<br>    matchLabels:<br>      app: nginx<br>  template:<br>    metadata:<br>      labels:<br>        app: nginx<br>    spec:<br>      containers:<br>      - image: iesgn/test_web:latest<br>        name: contendor-t3   <br>        ports:<br>        - name: http<br>          containerPort: 80</code></pre>
+<h4 id="2.-crea-el-deployment." tabindex="-1">2. Crea el Deployment.</h4>
+<p>Para crear el deployment usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl apply -f pod-t3.yaml<br>deployment.apps/deployment-t3 created</code></pre>
+<h4 id="3.-comprueba-los-recursos-que-se-han-creado%3A-deployment%2C-replicaset-y-pods." tabindex="-1">3. Comprueba los recursos que se han creado: Deployment, ReplicaSet y Pods.</h4>
+<p>Para ver todos los recursos usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl get all<br>NAME                                 READY   STATUS    RESTARTS   AGE<br>pod/deployment-t3-6cb4d64f6f-64mzx   1/1     Running   0          61s<br>pod/deployment-t3-6cb4d64f6f-m4448   1/1     Running   0          61s<br><br>NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE<br>service/kubernetes   ClusterIP   10.96.0.1    &lt;none>        443/TCP   11d<br><br>NAME                            READY   UP-TO-DATE   AVAILABLE   AGE<br>deployment.apps/deployment-t3   2/2     2            2           61s<br><br>NAME                                       DESIRED   CURRENT   READY   AGE<br>replicaset.apps/deployment-t3-6cb4d64f6f   2         2         2       61s</code></pre>
+<h4 id="4.-obt%C3%A9n-informaci%C3%B3n-detallada-del-deployment-creado." tabindex="-1">4. Obtén información detallada del Deployment creado.</h4>
+<p>Usamos el siguiente comando para ver información detallada del deployment:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl describe deployment deployment-t3<br>Name:                   deployment-t3<br>Namespace:              default<br>CreationTimestamp:      Fri, 10 Feb 2023 18:33:15 +0100<br>Labels:                 app=nginx<br>Annotations:            deployment.kubernetes.io/revision: 1<br>Selector:               app=nginx<br>Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable<br>StrategyType:           RollingUpdate<br>MinReadySeconds:        0<br>RollingUpdateStrategy:  25% max unavailable, 25% max surge<br>Pod Template:<br>  Labels:  app=nginx<br>  Containers:<br>   contendor-t3:<br>    Image:        iesgn/test_web:latest<br>    Port:         80/TCP<br>    Host Port:    0/TCP<br>    Environment:  &lt;none><br>    Mounts:       &lt;none><br>  Volumes:        &lt;none><br>Conditions:<br>  Type           Status  Reason<br>  ----           ------  ------<br>  Available      True    MinimumReplicasAvailable<br>  Progressing    True    NewReplicaSetAvailable<br>OldReplicaSets:  &lt;none><br>NewReplicaSet:   deployment-t3-6cb4d64f6f (2/2 replicas created)<br>Events:<br>  Type    Reason             Age    From                   Message<br>  ----    ------             ----   ----                   -------<br>  Normal  ScalingReplicaSet  2m30s  deployment-controller  Scaled up replica set deployment-t3-6cb4d64f6f to 2</code></pre>
+<h4 id="5.-crea-un-una-redirecci%C3%B3n-utilizando-el-port-forward-para-acceder-a-la-aplicaci%C3%B3n%2C-sabiendo-que-la-aplicaci%C3%B3n-ofrece-el-servicio-en-el-puerto-80%2C-y-accede-a-la-aplicaci%C3%B3n-con-un-navegador-web." tabindex="-1">5. Crea un una redirección utilizando el port-forward para acceder a la aplicación, sabiendo que la aplicación ofrece el servicio en el puerto 80, y accede a la aplicación con un navegador web.</h4>
+<p>Para realizar el port-forward con un deployment usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl port-forward deployment/deployment-t3 8088:80<br>Forwarding from 127.0.0.1:8088 -> 80<br>Forwarding from [::1]:8088 -> 80</code></pre>
+<p>Accedemos a la página web por el puerto 8088:</p>
+<p><img src="/img/SRI-K8S-T3.1.png" alt="SRI-K8S-T3.1.png"></p>
+<h4 id="6.-accede-a-los-logs-del-despliegue-para-comprobar-el-acceso-que-has-hecho-en-el-punto-anterior." tabindex="-1">6. Accede a los logs del despliegue para comprobar el acceso que has hecho en el punto anterior.</h4>
+<p>A continuación, muestro los logs del deployment.</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl logs deployments/deployment-t3<br>Found 2 pods, using pod/deployment-t3-6cb4d64f6f-m4448<br>AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 10.244.0.14. Set the 'ServerName' directive globally to suppress this message<br>AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 10.244.0.14. Set the 'ServerName' directive globally to suppress this message<br>[Fri Feb 10 17:33:26.060609 2023] [mpm_event:notice] [pid 1:tid 140502009566336] AH00489: Apache/2.4.46 (Unix) configured -- resuming normal operations<br>[Fri Feb 10 17:33:26.196721 2023] [core:notice] [pid 1:tid 140502009566336] AH00094: Command line: 'httpd -D FOREGROUND'<br>127.0.0.1 - - [10/Feb/2023:17:38:47 +0000] "GET / HTTP/1.1" 200 2884<br>127.0.0.1 - - [10/Feb/2023:17:38:47 +0000] "GET /favicon.ico HTTP/1.1" 404 196<br></code></pre>
+<h4 id="7.-elimina-el-deployment-y-comprueba-que-se-han-borrado-todos-los-recursos-creados." tabindex="-1">7. Elimina el Deployment y comprueba que se han borrado todos los recursos creados.</h4>
+<p>Usamos el deplete deplyment:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl delete deployments.apps deployment-t3<br>deployment.apps "deployment-t3" deleted</code></pre>
+<h3 id="actualizaci%C3%B3n-y-desactualizaci%C3%B3n-de-nuestra-aplicaci%C3%B3n." tabindex="-1">Actualización y desactualización de nuestra aplicación.</h3>
+<p><strong>El equipo de desarrollo ha creado una primera versión preliminar de una aplicación web y ha creado una imagen de contenedor con el siguiente nombre: iesgn/test_web:version1.</strong></p>
+<p><strong>Vamos a desplegar esta primera versión de la aplicación, para ello:</strong></p>
+<h4 id="1.-crea-un-fichero-yaml-(puedes-usar-el-de-la-actividad-anterior)-para-desplegar-la-imagen%3A-iesgn%2Ftest_web%3Aversion1." tabindex="-1">1. Crea un fichero yaml (puedes usar el de la actividad anterior) para desplegar la imagen: iesgn/test_web:version1.</h4>
+<p>He usado el mismo fichero que en el anterior ejercicio, no lo vuelvo a poner para no duplicar información, el cambio en el fichero es en container la imagen es <code>iesgn/test_web:version1</code>.</p>
+<h4 id="2.-crea-el-deployment%2C-recuerda-realizar-una-anotaci%C3%B3n-para-indicar-las-caracter%C3%ADsticas-del-despliegue." tabindex="-1">2. Crea el Deployment, recuerda realizar una anotación para indicar las características del despliegue.</h4>
+<p>Creamos el deployment y lo anotamos con los siguientes comandos:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl apply -f deployment-t3.yaml<br>deployment.apps/deployment-t3 created<br>alemd@debian:~/minikube$ kubectl annotate deployment/deployment-t3 iesgn/test_web="despliegue version 1"<br>deployment.apps/deployment-t3 annotated</code></pre>
+<h4 id="3.-crea-una-redirecci%C3%B3n-utilizando-el-port-forward-para-acceder-a-la-aplicaci%C3%B3n%2C-sabiendo-que-la-aplicaci%C3%B3n-ofrece-el-servicio-en-el-puerto-80%2C-y-accede-a-la-aplicaci%C3%B3n-con-un-navegador-web." tabindex="-1">3. Crea una redirección utilizando el port-forward para acceder a la aplicación, sabiendo que la aplicación ofrece el servicio en el puerto 80, y accede a la aplicación con un navegador web.</h4>
+<p>Adjunto el comando para el port-forward:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl port-forward deployment/deployment-t3 8088:80<br>Forwarding from 127.0.0.1:8088 -> 80<br>Forwarding from [::1]:8088 -> 80<br>Handling connection for 8088</code></pre>
+<p><img src="/img/SRI-K8S-T3.2.png" alt="SRI-K8S-T3.2.png"></p>
+<p><strong>Nuestro equipo de desarrollo ha seguido trabajando y ya tiene lista la versión 2 de nuestra aplicación, han creado una imagen que se llama: iesgn/test_web:version2. Vamos a actualizar nuestro despliegue con la nueva versión, para ello:</strong></p>
+<h4 id="4.-realiza-la-actualizaci%C3%B3n-del-despliegue-utilizando-la-nueva-imagen-(no-olvides-anotar-la-causa)." tabindex="-1">4. Realiza la actualización del despliegue utilizando la nueva imagen (no olvides anotar la causa).</h4>
+<p>Lo primero que haremos será editar nuestro fichero yaml, cambiando <code>iesgn/test_web:version1</code> por <code>iesgn/test_web:version2</code>. Volvemos a hacer un apply:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl apply -f deployment-t3.yaml<br>deployment.apps/deployment-t3 configured</code></pre>
+<p>Lo anotamos:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl annotate deployment/deployment-t3 iesgn/test_web2="despliegue version 2"<br>deployment.apps/deployment-t3 annotated</code></pre>
+<h4 id="5.-comprueba-los-recursos-que-se-han-creado%3A-deployment%2C-replicaset-y-pods." tabindex="-1">5. Comprueba los recursos que se han creado: Deployment, ReplicaSet y Pods.</h4>
+<p>Usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl get all<br>NAME                                 READY   STATUS    RESTARTS   AGE<br>pod/deployment-t3-548d4685f4-6cfxc   1/1     Running   0          4m50s<br>pod/deployment-t3-548d4685f4-z4tqf   1/1     Running   0          4m39s<br><br>NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE<br>service/kubernetes   ClusterIP   10.96.0.1    &lt;none>        443/TCP   11d<br><br>NAME                            READY   UP-TO-DATE   AVAILABLE   AGE<br>deployment.apps/deployment-t3   2/2     2            2           12m<br><br>NAME                                       DESIRED   CURRENT   READY   AGE<br>replicaset.apps/deployment-t3-548d4685f4   2         2         2       4m50s<br>replicaset.apps/deployment-t3-55f8ffb8f5   0         0         0       12m<br></code></pre>
+<h4 id="6.-visualiza-el-historial-de-actualizaciones." tabindex="-1">6. Visualiza el historial de actualizaciones.</h4>
+<p>Para ver el historial de actualizaciones usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl rollout history deployment/deployment-t3<br>deployment.apps/deployment-t3 <br>REVISION  CHANGE-CAUSE<br>1         &lt;none><br>2         &lt;none></code></pre>
+<h4 id="7.-crea-una-redirecci%C3%B3n-utilizando-el-port-forward-para-acceder-a-la-aplicaci%C3%B3n%2C-sabiendo-que-la-aplicaci%C3%B3n-ofrece-el-servicio-en-el-puerto-80%2C-y-accede-a-la-aplicaci%C3%B3n-con-un-navegador-web." tabindex="-1">7. Crea una redirección utilizando el port-forward para acceder a la aplicación, sabiendo que la aplicación ofrece el servicio en el puerto 80, y accede a la aplicación con un navegador web.</h4>
+<p>Creamos la redirección:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl port-forward deployment/deployment-t3 8088:80<br>Forwarding from 127.0.0.1:8088 -> 80<br>Forwarding from [::1]:8088 -> 80</code></pre>
+<p>Accedemos a la página web.</p>
+<p><img src="/img/SRI-K8S-T3.3.png" alt="SRI-K8S-T3.3.png"></p>
+<p><strong>Finalmente después de un trabajo muy duro, el equipo de desarrollo ha creado la imagen iesgn/test_web:version3 con la última versión de nuestra aplicación y la vamos a poner en producción, para ello:</strong></p>
+<h4 id="8.-realiza-la-actualizaci%C3%B3n-del-despliegue-utilizando-la-nueva-imagen-(no-olvides-anotar-la-causa)." tabindex="-1">8. Realiza la actualización del despliegue utilizando la nueva imagen (no olvides anotar la causa).</h4>
+<p>Actualizamos a la version 3, adjunto todos los comandos:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl set image deployment/deployment-t3 contendor-t3=iesgn/test_web:version3<br>deployment.apps/deployment-t3 image updated<br>alemd@debian:~/minikube$ kubectl annotate deployment/deployment-t3 iesgn/change_cause="despliegue version 3"<br>deployment.apps/deployment-t3 annotated</code></pre>
+<h4 id="9.-comprueba-los-recursos-que-se-han-creado%3A-deployment%2C-replicaset-y-pods." tabindex="-1">9. Comprueba los recursos que se han creado: Deployment, ReplicaSet y Pods.</h4>
+<p>Vemos todos los recursos:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl get all<br>NAME                                 READY   STATUS    RESTARTS   AGE<br>pod/deployment-t3-56fc8df8d9-lss46   1/1     Running   0          75s<br>pod/deployment-t3-56fc8df8d9-ts7tv   1/1     Running   0          86s<br><br>NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE<br>service/kubernetes   ClusterIP   10.96.0.1    &lt;none>        443/TCP   11d<br><br>NAME                            READY   UP-TO-DATE   AVAILABLE   AGE<br>deployment.apps/deployment-t3   2/2     2            2           26m<br><br>NAME                                       DESIRED   CURRENT   READY   AGE<br>replicaset.apps/deployment-t3-548d4685f4   0         0         0       18m<br>replicaset.apps/deployment-t3-55f8ffb8f5   0         0         0       26m<br>replicaset.apps/deployment-t3-56fc8df8d9   2         2         2       86s</code></pre>
+<h4 id="10.-visualiza-el-historial-de-actualizaciones." tabindex="-1">10. Visualiza el historial de actualizaciones.</h4>
+<p>Muestro el historial de versiones:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl rollout history deployment/deployment-t3<br>deployment.apps/deployment-t3 <br>REVISION  CHANGE-CAUSE<br>2         &lt;none><br>3         &lt;none><br>4         &lt;none></code></pre>
+<h4 id="11.-crea-una-redirecci%C3%B3n-utilizando-el-port-forward-para-acceder-a-la-aplicaci%C3%B3n%2C-sabiendo-que-la-aplicaci%C3%B3n-ofrece-el-servicio-en-el-puerto-80%2C-y-accede-a-la-aplicaci%C3%B3n-con-un-navegador-web." tabindex="-1">11. Crea una redirección utilizando el port-forward para acceder a la aplicación, sabiendo que la aplicación ofrece el servicio en el puerto 80, y accede a la aplicación con un navegador web.</h4>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl port-forward deployment/deployment-t3 8088:80<br>Forwarding from 127.0.0.1:8088 -> 80<br>Forwarding from [::1]:8088 -> 80</code></pre>
+<p>Muestro la página web:</p>
+<p><img src="/img/SRI-K8S-T3.4.png" alt="SRI-K8S-T3.4.png"></p>
+<p><strong>¡Vaya!, parece que esta versión tiene un fallo, y no se ve de forma adecuada la hoja de estilos, tenemos que volver a la versión anterior:</strong></p>
+<h4 id="12.-ejecuta-la-instrucci%C3%B3n-que-nos-permite-hacer-un-rollback-de-nuestro-despliegue." tabindex="-1">12. Ejecuta la instrucción que nos permite hacer un rollback de nuestro despliegue.</h4>
+<p>Hacemos el rollback:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl set image deployment deployment-t3 contendor-t3=iesgn/test_web:version2<br>deployment.apps/deployment-t3 image updated</code></pre>
+<h4 id="13.-comprueba-los-recursos-que-se-han-creado%3A-deployment%2C-replicaset-y-pods." tabindex="-1">13. Comprueba los recursos que se han creado: Deployment, ReplicaSet y Pods.</h4>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl get all<br>NAME                                 READY   STATUS    RESTARTS   AGE<br>pod/deployment-t3-548d4685f4-4wbkh   1/1     Running   0          3m4s<br>pod/deployment-t3-548d4685f4-r9492   1/1     Running   0          3m10s<br><br>NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE<br>service/kubernetes   ClusterIP   10.96.0.1    &lt;none>        443/TCP   11d<br><br>NAME                            READY   UP-TO-DATE   AVAILABLE   AGE<br>deployment.apps/deployment-t3   2/2     2            2           33m<br><br>NAME                                       DESIRED   CURRENT   READY   AGE<br>replicaset.apps/deployment-t3-548d4685f4   2         2         2       25m<br>replicaset.apps/deployment-t3-55f8ffb8f5   0         0         0       33m<br>replicaset.apps/deployment-t3-56fc8df8d9   0         0         0       8m35s</code></pre>
+<h4 id="14.-visualiza-el-historial-de-actualizaciones." tabindex="-1">14. Visualiza el historial de actualizaciones.</h4>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl rollout history deployment/deployment-t3<br>deployment.apps/deployment-t3 <br>REVISION  CHANGE-CAUSE<br>3         &lt;none><br>4         &lt;none><br>5         &lt;none></code></pre>
+<h4 id="15.-crea-una-redirecci%C3%B3n-utilizando-el-port-forward-para-acceder-a-la-aplicaci%C3%B3n%2C-sabiendo-que-la-aplicaci%C3%B3n-ofrece-el-servicio-en-el-puerto-80%2C-y-accede-a-la-aplicaci%C3%B3n-con-un-navegador-web." tabindex="-1">15. Crea una redirección utilizando el port-forward para acceder a la aplicación, sabiendo que la aplicación ofrece el servicio en el puerto 80, y accede a la aplicación con un navegador web.</h4>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl port-forward deployment/deployment-t3 8088:80<br>Forwarding from 127.0.0.1:8088 -> 80<br>Forwarding from [::1]:8088 -> 80<br>Handling connection for 8088</code></pre>
+<p><img src="/img/SRI-K8S-T3.5.png" alt="SRI-K8S-T3.5.png"></p>
+<h3 id="despliegue-de-la-aplicaci%C3%B3n-guestbook." tabindex="-1">Despliegue de la aplicación GuestBook.</h3>
+<p><strong>En esta tarea vamos a desplegar una aplicación web que requiere de dos servicios para su ejecución. La aplicación se llama GuestBook y necesita los siguientes servicios:</strong></p>
+<ul>
+<li><strong>La aplicación Guestbook es una aplicación web desarrollada en python que es servida en el puerto 5000/tcp. Utilizaremos la imagen iesgn/guestbook.</strong></li>
+<li><strong>Esta aplicación guarda la información en una base de datos no relacional redis, que utiliza el puerto 6379/tcp para recibir las conexiones. Usaremos la imagen redis.</strong></li>
+</ul>
+<p><strong>Por lo tanto si tenemos dos servicios distintos, tendremos dos ficheros yaml para crear dos recursos Deployment, uno para cada servicio. Con esta manera de trabajar podemos obtener las siguientes características:</strong></p>
+<p><strong>1. Cada conjunto de Pods creado en cada despliegue ejecutarán un solo proceso para ofrecer el servicio.</strong>
+<strong>2. Cada conjunto de Pods se puede escalar de manera independiente. Esto es importante, si identificamos que al acceder a alguno de los servicios se crea un cuello de botella, podemos escalarlo para tener más Pods ejecutando el servicio.</strong>
+<strong>3. Las actualizaciones de los distintos servicios no interfieren en el resto.</strong>
+<strong>4. Lo estudiaremos en un módulo posterior, pero podremos gestionar el almacenamiento de cada servicio de forma independiente.</strong></p>
+<p><strong>Por lo tanto para desplegar la aplicaciones tendremos dos ficheros.yaml:</strong></p>
+<ul>
+<li><strong>guestbook-deployment.yaml</strong></li>
+<li><strong>redis-deployment.yaml</strong></li>
+</ul>
+<p><strong>Para realizar el despliegue realiza los siguientes pasos:</strong></p>
+<h4 id="1.-usando-los-ficheros-anteriores-crea-los-dos-deployments." tabindex="-1">1. Usando los ficheros anteriores crea los dos Deployments.</h4>
+<p>Ejecutamos los siguientes comandos:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl apply -f guestbook-deployment.yaml <br>deployment.apps/guestbook created<br>alemd@debian:~/minikube$ kubectl apply -f redis-deployment.yaml <br>deployment.apps/redis created</code></pre>
+<h4 id="2.-comprueba-que-los-recursos-que-se-han-creado%3A-deployment%2C-replicaset-y-pods." tabindex="-1">2. Comprueba que los recursos que se han creado: Deployment, ReplicaSet y Pods.</h4>
+<p>Muestro todos los recursos:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl get all<br>NAME                             READY   STATUS    RESTARTS   AGE<br>pod/guestbook-8555449655-46576   1/1     Running   0          2m23s<br>pod/guestbook-8555449655-7sr82   1/1     Running   0          2m23s<br>pod/guestbook-8555449655-hrvld   1/1     Running   0          2m23s<br>pod/redis-6db6c7bfb5-5rn57       1/1     Running   0          2m17s<br><br>NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE<br>service/kubernetes   ClusterIP   10.96.0.1    &lt;none>        443/TCP   11d<br><br>NAME                        READY   UP-TO-DATE   AVAILABLE   AGE<br>deployment.apps/guestbook   3/3     3            3           2m24s<br>deployment.apps/redis       1/1     1            1           2m17s<br><br>NAME                                   DESIRED   CURRENT   READY   AGE<br>replicaset.apps/guestbook-8555449655   3         3         3       2m23s<br>replicaset.apps/redis-6db6c7bfb5       1         1         1       2m17s</code></pre>
+<h4 id="3.-crea-una-redirecci%C3%B3n-utilizando-el-port-forward-para-acceder-a-la-aplicaci%C3%B3n%2C-sabiendo-que-la-aplicaci%C3%B3n-ofrece-el-servicio-en-el-puerto-5000%2C-y-accede-a-la-aplicaci%C3%B3n-con-un-navegador-web." tabindex="-1">3. Crea una redirección utilizando el port-forward para acceder a la aplicación, sabiendo que la aplicación ofrece el servicio en el puerto 5000, y accede a la aplicación con un navegador web.</h4>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl port-forward deployment/guestbook 8088:5000<br>Forwarding from 127.0.0.1:8088 -> 5000<br>Forwarding from [::1]:8088 -> 5000<br></code></pre>
+<p>Muestro la web:</p>
+<p><img src="/img/SRI-K8S-T3.6.png" alt="SRI-K8S-T3.6.png"></p>
+<p><strong>¿Qué aparece en la página principal de la aplicación?. Aparece el siguiente mensaje: Waiting for database connection…. Por lo tanto podemos indicar varias conclusiones:</strong></p>
+<p><strong>1. Hasta ahora no estamos accediendo de forma “normal” a las aplicaciones. El uso de la opción port-forward es un mecanismo que realmente nos posibilita acceder a la aplicación, pero utilizando un proxy. Deberíamos acceder a las aplicaciones usando una ip y un puerto determinado.</strong>
+<strong>2. Parece que tampoco hay acceso entre los Pods de los distintos despliegues. Parece que los Pods de la aplicación guestbook no pueden acceder al Pod donde se está ejecutando la base de datos redis.</strong></p>
+<p><strong>En el siguiente módulo estudiaremos los recursos que nos ofrece la API de Kubernetes para permitirnos el acceso a las aplicaciones desde el exterior, y para que los distintos Pods de los despliegues puedan acceder entre ellos.</strong></p>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/ejercicios-de-k8s-ii./">Ejercicios de K8s II.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
