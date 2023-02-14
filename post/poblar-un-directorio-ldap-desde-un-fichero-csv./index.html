@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Poblar un directorio LDAP desde un fichero CSV. | Cutreblog">
+    <meta itemprop="description" content="Crear un fichero CSV que incluya información personal de cada uno incluyendo los siguientes datos.">
+
+    
+    <meta name="twitter:title" content="Poblar un directorio LDAP desde un fichero CSV. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Crear un fichero CSV que incluya información personal de cada uno incluyendo los siguientes datos.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Poblar un directorio LDAP desde un fichero CSV. | Cutreblog">
+    <meta name="og:description" content="Crear un fichero CSV que incluya información personal de cada uno incluyendo los siguientes datos.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Poblar un directorio LDAP desde un fichero CSV. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Poblar un directorio LDAP desde un fichero CSV.</h2>
+
+        
+            <p class="excerpt">Crear un fichero CSV que incluya información personal de cada uno incluyendo los siguientes datos.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag ASO" href="/tag/ASO">ASO</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Tue Feb 14 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 14, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#creaci%C3%B3n-del-fichero-csv.">Creación del fichero CSV.</a>
+            		</li>
+
+                    <li><a href="#creaci%C3%B3n-de-script-en-python-para-poblar-el-directorio-ldap.">Creación de Script en python para poblar el directorio LDAP.</a>
+            		</li>
+
+                    <li><a href="#configurar-el-sistema-para-que-funcionen-los-usuarios-de-ldap.">Configurar el sistema para que funcionen los usuarios de LDAP.</a>
+            		</li>
+
+                    <li><a href="#configurar-el-servicio-ssh-para-que-permita-acceder-a-los-usuarios-del-ldap-utilizando-las-claves-p%C3%BAblicas-que-hay-all%C3%AD%2C-en-lugar-de-almacenarlas-en-.ssh%2Fauthorized_keys-y-que-se-cree-el-directorio-%E2%80%9Chome%E2%80%9D-al-vuelo.">Configurar el servicio ssh para que permita acceder a los usuarios del LDAP utilizando las claves públicas que hay allí, en lugar de almacenarlas en .ssh/authorized_keys y que se cree el directorio “home” al vuelo.</a>
+            		</li>
+
+                    <li><a href="#comprobaciones.">Comprobaciones.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="creaci%C3%B3n-del-fichero-csv." tabindex="-1">Creación del fichero CSV.</h3>
+<p>Lo primero que tenemos que hacer es crear un fichero CSV con información de mis compañeros. El fichero CSV queda de la siguiente manera:</p>
+<pre class="language-txt"><code class="language-txt">Alejandro,Montes Delgado,aaleemd11@gmail.com,alemd,ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCvd5Lg3K1k1WeHYHE3T5aPSEx/duCM87J2LFhgFODU3Z0+1mE5bjDUzvrUTVoHdMu1phOd8IS2vPCL2Ei8PjooLdLrsqHtFN9JYvtBRRhTs5tV3JSGaaFrljYtiITbulVTHBTqssrr4VfJ1jxMF9aSVcPjfVxsNMo01AhK8PAnCiSVBru9BUYgoG+7rCVMeB78qTXyuKNLoFqsuIPmQeV8D0JGKGozS2cikflyEOgYC+UwILUliV0dVtlpPltOOMLKngWF1fyjnfsJykiULI+l20Iid5QtDx5SK6nLRTtrr9MYCZbSJqAKVsxxKIYY5I+qSNsikgNrTnWJVq6z4zr5u4AqazjiDqX+266cDBf7rEq9GA9OZuul4/Kzy+PB9+w5rCgneSP7iL38ehQSjWzfpD1ny8mxCFmwuEwFBpGYhYHNywBYg8f1iMayjBeatFIU8WUCrCct0y1Zlf/Hn+Lzd5xb4aJgWd+mMyMmhZPcTAC6UN03tM2b0s6wjP8DzJc= ubuntu@delta<br>Angel,Suarez Perez,angelsuarezperez@gmail.com,angel,ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFEJGJIWb1KviE3kwQRoUV2C4E0d9L0mq9XjSt1kmznXSXMODJBdHwa7GOb9iwmW3OKkTa6RGokB2nKvs+2IBm9HcPYM0WM78wxEazuUvwpHR4mV58gzif/ETM48/ceQcf1fqADW1456Mfk7zFHwgf8vjyNfFCtR6NGve7wb7ojm79a9CJpqZEJ9X+EVxjbKysdvhS3BsNo5L3aJwPsAHE29+lFhDmOOzuEXWTjvFRkC1aFN1iVyxdolNJuh3onWXZDzPI55Q/DHtkpjKZ4cYqBsmwZFjWlum5aWRltgYMZtvoGOBglIxBQWjY4sl7WCiW89b+6zIcG4vWq48qhoO76ROYEPJL4pdkxxUZbjk4xApHLoO56+fXCtoo+fO/zQiHyTElzXBg/v2MmqxUrFQmQCzhbAuKK88rycZVFdIknuc+Raoi3faiX2x5N9AL4PMpEVJaTi7b/n7NMZVTkuVT9U/X9pwABSi1yngxlr2BpTg2FJD5iId15v51nx1ynXE= angelsuarez@charlie<br>Juan Jesus,Alejo Sillero,juanjesusalejosillero@gmail.com,juanje,ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDzLgcT2qKvflOcKWjUGX0ecoVWN+phHx7dEws3b/rY/xAichGJ6oP8ucD4lVJ8XVrEOaUgqQ1laPK33+u9MmzARx4g17/jKcwepUWdkKVA2++RWG3bsNgxCCkR1Gi7XMAAjwq8/17OjCj+4bvfTPlW5FSjDqaLhfqqeDtKpFJ3wjGG5sjNPC0GU4cRKzggZaR40ld7siaOiMteQ8X6bIggeXw+ULGiUhB4/uoLu0z69AzGgDfoPJuJEx4pPlcnOip/TAuL/pUjTjdUUDTsrZSJegWoLmRwylKvwtX8WojqI2TnTOyLT0IG1oStq4gC4AKOiCqfiBOm25bFfX0lW0uUaR1RjEuGz3jV0vkH3pCiuarNk5KnEQQqUO0x6ZvdCvOlsWYoiDQ6MclGKfUkUzC1uST5khs4xB1zQAZ5795on4SV8STASTwjpxuTuk7v4lTxrm8bTAF4bWiezgOQ0aFr7P0APygX0rbCR1aXoGfSyrrvqOUtkUzpiWwZwOpj0K0= juanjesus@delta.juanjesus.gonzalonazareno.org<br>Ivan,Pina Castillo,ivanpicas88@gmail.com,ivan,ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCfYm123AV12rRYM+tPkrd0Hrzc9Py32Ov8JVZCnH5zVBj3I/IxE08LUhccSSx9aD0DrW+RdfpmLCSBTgGnbdM9eYlq3jxoBqqye4DQeXLSPyXcp/qRPGPsNO+eGypVhRB+Oq9B+ktrHgzAXQSP1yjmjN57H7GVBnMEJhpCEVXk5vWgMhVNxsDSF6lHrbiaYLtunTtt+fNgrprzXuUqhUwEDRt6/ktwad420J7kmqkB4dQuex3hV+16l1GyNH8AJzNzoinTiLr/jW8Ja0udgIknsxFvZ5Df+ACCrXfIFwvdPTm6Nya0jCm9vFx5yc5O1E07qlbAAn3FiIfS5Udjs6rNZjfFH5GmlpodhcGy4nkCYZvylnEayIa/ak4wA7oDft60hlHBMCHMoyY3ZcIkWGmVkwnTB3xfxfykPeD14zQAlIuMol9RNmPUbDYtbfY64npLPmagUIHSpwwbs1byEBbzzqzG8qcCAPUk3mK6oB5+OKUNJDv+4MM+suj+Y/PnWM8= debian@delta</code></pre>
+<p>Una vez tengamos el fichero, añadiremos el esquema openssh-lpk. Tendremos que crear el siguiente fichero:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# nano /etc/ldap/schema/openssh-lpk.ldif</code></pre>
+<p>El contenido es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">dn: cn=openssh-lpk,cn=schema,cn=config<br>objectClass: olcSchemaConfig<br>cn: openssh-lpk<br>olcAttributeTypes: ( 1.3.6.1.4.1.24552.500.1.1.1.13 NAME 'sshPublicKey'<br>  DESC 'MANDATORY: OpenSSH Public key'<br>  EQUALITY octetStringMatch<br>  SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )<br>olcObjectClasses: ( 1.3.6.1.4.1.24552.500.1.1.2.0 NAME 'ldapPublicKey' SUP top AUXILIARY<br>  DESC 'MANDATORY: OpenSSH LPK objectclass'<br>  MAY ( sshPublicKey $ uid )<br>  )</code></pre>
+<p>Importamos el esquema con el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/ldap/schema/openssh-lpk.ldif<br>SASL/EXTERNAL authentication started<br>SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth<br>SASL SSF: 0<br>adding new entry "cn=openssh-lpk,cn=schema,cn=config"</code></pre>
+<h3 id="creaci%C3%B3n-de-script-en-python-para-poblar-el-directorio-ldap." tabindex="-1">Creación de Script en python para poblar el directorio LDAP.</h3>
+<p>Para crear el script, tenemos que instalar python y los entornos virtuales:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ sudo apt install python3-venv<br>Reading package lists... Done<br>Building dependency tree... Done<br>Reading state information... Done<br>The following additional packages will be installed:<br>  python-pip-whl python3.9-venv<br>The following NEW packages will be installed:<br>  python-pip-whl python3-venv python3.9-venv<br>0 upgraded, 3 newly installed, 0 to remove and 0 not upgraded.<br>Need to get 1954 kB of archives.<br>After this operation, 2327 kB of additional disk space will be used.<br>Do you want to continue? [Y/n] y<br>Get:1 https://deb.debian.org/debian bullseye/main amd64 python-pip-whl all 20.3.4-4+deb11u1 [1948 kB]<br>Get:2 https://deb.debian.org/debian bullseye/main amd64 python3.9-venv amd64 3.9.2-1 [5396 B]<br>Get:3 https://deb.debian.org/debian bullseye/main amd64 python3-venv amd64</code></pre>
+<p>Creamos un entorno virtual y lo activamos:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ python3 -m venv ldap<br>usuario@alfa:~$ source ldap/bin/activate<br>(ldap) usuario@alfa:~$ </code></pre>
+<p>Instalamos con pip python3-ldap y ldap.</p>
+<pre class="language-txt"><code class="language-txt">(ldap) usuario@alfa:~$ pip install python3-ldap<br>Collecting python3-ldap<br>  Downloading python3_ldap-0.9.8.4-py2.py3-none-any.whl (295 kB)<br>     |████████████████████████████████| 295 kB 1.8 MB/s <br>Collecting pyasn1>=0.1.7<br>  Downloading pyasn1-0.4.8-py2.py3-none-any.whl (77 kB)<br>     |████████████████████████████████| 77 kB 1.2 MB/s <br>Installing collected packages: pyasn1, python3-ldap<br>Successfully installed pyasn1-0.4.8 python3-ldap-0.9.8.4<br>(ldap) usuario@alfa:~$ pip install ldap3==2.6<br>Collecting ldap3==2.6<br>  Downloading ldap3-2.6-py2.py3-none-any.whl (393 kB)<br>     |████████████████████████████████| 393 kB 1.6 MB/s <br>Requirement already satisfied: pyasn1>=0.1.8 in ./ldap/lib/python3.9/site-packages (from ldap3==2.6) (0.4.8)<br>Installing collected packages: ldap3<br>Successfully installed ldap3-2.6</code></pre>
+<p>Una vez tengamos instalado el entorno virtual y las dependencias, procederemos a crear el script en python:</p>
+<pre class="language-python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span><br><br><span class="token keyword">import</span> ldap3<br><span class="token keyword">from</span> ldap3 <span class="token keyword">import</span> Connection<span class="token punctuation">,</span> ALL<br><span class="token keyword">from</span> getpass <span class="token keyword">import</span> getpass<br><span class="token keyword">from</span> sys <span class="token keyword">import</span> exit<br><br><span class="token comment">### VARIABLES</span><br><br><span class="token comment"># Shell que se le asigna a los usuarios</span><br>shell <span class="token operator">=</span> <span class="token string">'/bin/bash'</span><br><br><span class="token comment"># Ruta absoluta del directorio que contiene los directorios personales de los usuarios. Terminado en "/"</span><br>home_dir <span class="token operator">=</span> <span class="token string">'/home/ldap/'</span><br><br><span class="token comment"># El valor inicial para los UID que se asignan al insertar usuarios. </span><br>uid_number <span class="token operator">=</span> <span class="token number">5000</span><br><br><span class="token comment"># El GID que se le asigna a los usuarios. Si no se manda al anadir el usuario da error.</span><br>gid <span class="token operator">=</span> <span class="token number">5000</span><br><br><span class="token comment">### VARIABLES</span><br><br><span class="token comment"># Leemos el fichero .csv de los usuarios y guardamos cada linea en una lista.</span><br><span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'usuarios.csv'</span><span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> usuarios<span class="token punctuation">:</span><br>  usuarios <span class="token operator">=</span> usuarios<span class="token punctuation">.</span>readlines<span class="token punctuation">(</span><span class="token punctuation">)</span><br><br><br><span class="token comment">### Parametros para la conexion</span><br>ldap_ip <span class="token operator">=</span> <span class="token string">'ldap://alfa.alejandro-montes.gonzalonazareno.org:389'</span><br>dominio_base <span class="token operator">=</span> <span class="token string">'dc=alejandro-montes,dc=gonzalonazareno,dc=org'</span><br>user_admin <span class="token operator">=</span> <span class="token string">'admin'</span> <br>contrasena <span class="token operator">=</span> getpass<span class="token punctuation">(</span><span class="token string">'Contrasena: '</span><span class="token punctuation">)</span><br><br><span class="token comment"># Intenta realizar la conexion.</span><br>conn <span class="token operator">=</span> Connection<span class="token punctuation">(</span>ldap_ip<span class="token punctuation">,</span> <span class="token string">'cn={},{}'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>user_admin<span class="token punctuation">,</span> dominio_base<span class="token punctuation">)</span><span class="token punctuation">,</span>contrasena<span class="token punctuation">)</span><br><br><span class="token comment"># conn.bind() devuelve "True" si se ha establecido la conexion y "False" en caso contrario.</span><br><br><span class="token comment"># Si no se establece la conexion imprime por pantalla un error de conexion.</span><br><span class="token keyword">if</span> <span class="token keyword">not</span> conn<span class="token punctuation">.</span>bind<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span><br>  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'No se ha podido conectar con ldap'</span><span class="token punctuation">)</span> <br>  <span class="token keyword">if</span> conn<span class="token punctuation">.</span>result<span class="token punctuation">[</span><span class="token string">'description'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'invalidCredentials'</span><span class="token punctuation">:</span><br>    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Credenciales no validas.'</span><span class="token punctuation">)</span><br>  <span class="token comment"># Termina el script.</span><br>  exit<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><br><br><span class="token comment"># Recorre la lista de usuarios</span><br><span class="token keyword">for</span> user <span class="token keyword">in</span> usuarios<span class="token punctuation">:</span><br>  <span class="token comment"># Separa los valores del usuario usando como delimitador ",", y asigna cada valor a la variable correspondiente.</span><br>  user <span class="token operator">=</span> user<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><br>  cn <span class="token operator">=</span> user<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><br>  sn <span class="token operator">=</span> user<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><br>  mail <span class="token operator">=</span> user<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><br>  uid <span class="token operator">=</span> user<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><br>  ssh <span class="token operator">=</span> user<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><br><br>  <span class="token comment">#Anade el usuario.</span><br>  conn<span class="token punctuation">.</span>add<span class="token punctuation">(</span><br>    <span class="token string">'uid={},ou=Personas,{}'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>uid<span class="token punctuation">,</span> dominio_base<span class="token punctuation">)</span><span class="token punctuation">,</span><br>    object_class <span class="token operator">=</span> <br>      <span class="token punctuation">[</span><br>      <span class="token string">'inetOrgPerson'</span><span class="token punctuation">,</span><br>      <span class="token string">'posixAccount'</span><span class="token punctuation">,</span> <br>      <span class="token string">'ldapPublicKey'</span><br>      <span class="token punctuation">]</span><span class="token punctuation">,</span><br>    attributes <span class="token operator">=</span><br>      <span class="token punctuation">{</span><br>      <span class="token string">'cn'</span><span class="token punctuation">:</span> cn<span class="token punctuation">,</span><br>      <span class="token string">'sn'</span><span class="token punctuation">:</span> sn<span class="token punctuation">,</span><br>      <span class="token string">'mail'</span><span class="token punctuation">:</span> mail<span class="token punctuation">,</span><br>      <span class="token string">'uid'</span><span class="token punctuation">:</span> uid<span class="token punctuation">,</span><br>      <span class="token string">'uidNumber'</span><span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">(</span>uid_number<span class="token punctuation">)</span><span class="token punctuation">,</span><br>      <span class="token string">'gidNumber'</span><span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">(</span>gid<span class="token punctuation">)</span><span class="token punctuation">,</span><br>      <span class="token string">'homeDirectory'</span><span class="token punctuation">:</span> <span class="token string">'{}{}'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>home_dir<span class="token punctuation">,</span>uid<span class="token punctuation">)</span><span class="token punctuation">,</span><br>      <span class="token string">'loginShell'</span><span class="token punctuation">:</span> shell<span class="token punctuation">,</span><br>      <span class="token string">'sshPublicKey'</span><span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">(</span>ssh<span class="token punctuation">)</span><br>      <span class="token punctuation">}</span><span class="token punctuation">)</span><br><br>  <span class="token keyword">if</span> conn<span class="token punctuation">.</span>result<span class="token punctuation">[</span><span class="token string">'description'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'entryAlreadyExists'</span><span class="token punctuation">:</span><br>    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'El usuario {} ya existe.'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>uid<span class="token punctuation">)</span><span class="token punctuation">)</span><br><br>  <span class="token comment"># Aumenta el contador para asignar un UID diferente a cada usuario (cada vez que ejecutemos el script debemos asegurarnos de ante mano que no existe dicho uid en el directorio ldap, o se solaparian los datos)</span><br>  uid_number <span class="token operator">+=</span> <span class="token number">1</span><br><br><span class="token comment">#Cierra la conexion.</span><br>conn<span class="token punctuation">.</span>unbind<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>Ejecutamos el script:</p>
+<pre class="language-txt"><code class="language-txt">(ldap) usuario@alfa:~$ nano usuarios.csv<br>(ldap) usuario@alfa:~$ python3 usuarios.py <br>Contrasena:<br>(ldap) usuario@alfa:~$ </code></pre>
+<p>Si hacemos un LDAP search el resultado es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">(ldap) usuario@alfa:~$ ldapsearch -x -D "cn=admin,dc=alejandro-montes,dc=gonzalonazareno,dc=org" -b "dc=alejandro-montes,dc=gonzalonazareno,dc=org" -W<br></code></pre>
+<p><img src="/img/LDAP-III.1.png" alt="LDAP-III.1.png"></p>
+<h3 id="configurar-el-sistema-para-que-funcionen-los-usuarios-de-ldap." tabindex="-1">Configurar el sistema para que funcionen los usuarios de LDAP.</h3>
+<p>En el <strong>cliente</strong> de LDAP editamos la configuración de LDAP y ponemos lo siguiente(Si has seguido los pasos de la práctica anterior, este paso lo tendremos hecho):</p>
+<pre class="language-txt"><code class="language-txt">BASE    dc=alejandro-montes,dc=gonzalonazareno,dc=org<br>URI     ldap://alfa.alejandro-montes.gonzalonazareno.org</code></pre>
+<h3 id="configurar-el-servicio-ssh-para-que-permita-acceder-a-los-usuarios-del-ldap-utilizando-las-claves-p%C3%BAblicas-que-hay-all%C3%AD%2C-en-lugar-de-almacenarlas-en-.ssh%2Fauthorized_keys-y-que-se-cree-el-directorio-%E2%80%9Chome%E2%80%9D-al-vuelo." tabindex="-1">Configurar el servicio ssh para que permita acceder a los usuarios del LDAP utilizando las claves públicas que hay allí, en lugar de almacenarlas en .ssh/authorized_keys y que se cree el directorio “home” al vuelo.</h3>
+<p>Para configurar que el servicio ssh cree el home nada más crearse, tenemos que ejecutar el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# echo "session    required        pam_mkhomedir.so" >> /etc/pam.d/common-session</code></pre>
+<p>Ahora realizaremos un script que encuentre las claves públicas de los usuarios. El script debe de estar en una ruta con los permisos correspondientes para que funcione:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# nano /opt/sshsearch.sh<br><br>#!/bin/bash<br><br>ldapsearch -x -u -LLL -o ldif-wrap=no '(&amp;(objectClass=posixAccount)(uid='"$1"'))' 'sshPublicKey' | sed -n 's/^[ \t]*sshPublicKey::[ \t]*\(.*\)/\1/p' | base64 -d<br>root@alfa:/home/usuario# chmod 755 /opt/sshsearch.sh</code></pre>
+<p>Si ejecutamos el script vemos que funciona correctamente:</p>
+<pre class="language-txt"><code class="language-txt">(ldap) usuario@alfa:~$ source /opt/sshsearch.sh alemd<br>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCvd5Lg3K1k1WeHYHE3T5aPSEx/duCM87J2LFhgFODU3Z0+1mE5bjDUzvrUTVoHdMu1phOd8IS2vPCL2Ei8PjooLdLrsqHtFN9JYvtBRRhTs5tV3JSGaaFrljYtiITbulVTHBTqssrr4VfJ1jxMF9aSVcPjfVxsNMo01AhK8PAnCiSVBru9BUYgoG+7rCVMeB78qTXyuKNLoFqsuIPmQeV8D0JGKGozS2cikflyEOgYC+UwILUliV0dVtlpPltOOMLKngWF1fyjnfsJykiULI+l20Iid5QtDx5SK6nLRTtrr9MYCZbSJqAKVsxxKIYY5I+qSNsikgNrTnWJVq6z4zr5u4AqazjiDqX+266cDBf7rEq9GA9OZuul4/Kzy+PB9+w5rCgneSP7iL38ehQSjWzfpD1ny8mxCFmwuEwFBpGYhYHNywBYg8f1iMayjBeatFIU8WUCrCct0y1Zlf/Hn+Lzd5xb4aJgWd+mMyMmhZPcTAC6UN03tM2b0s6wjP8DzJc= ubuntu@delta<br>(ldap) usuario@alfa:~$ source /opt/sshsearch.sh ivan<br>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCfYm123AV12rRYM+tPkrd0Hrzc9Py32Ov8JVZCnH5zVBj3I/IxE08LUhccSSx9aD0DrW+RdfpmLCSBTgGnbdM9eYlq3jxoBqqye4DQeXLSPyXcp/qRPGPsNO+eGypVhRB+Oq9B+ktrHgzAXQSP1yjmjN57H7GVBnMEJhpCEVXk5vWgMhVNxsDSF6lHrbiaYLtunTtt+fNgrprzXuUqhUwEDRt6/ktwad420J7kmqkB4dQuex3hV+16l1GyNH8AJzNzoinTiLr/jW8Ja0udgIknsxFvZ5Df+ACCrXfIFwvdPTm6Nya0jCm9vFx5yc5O1E07qlbAAn3FiIfS5Udjs6rNZjfFH5GmlpodhcGy4nkCYZvylnEayIa/ak4wA7oDft60hlHBMCHMoyY3ZcIkWGmVkwnTB3xfxfykPeD14zQAlIuMol9RNmPUbDYtbfY64npLPmagUIHSpwwbs1byEBbzzqzG8qcCAPUk3mK6oB5+OKUNJDv+4MM+suj+Y/PnWM8= debian@delta</code></pre>
+<p>Añadimos al fichero sshd_config lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# nano /etc/ssh/sshd_config<br></code></pre>
+<pre class="language-txt"><code class="language-txt">AuthorizedKeysCommand /opt/buscarclave.sh<br>AuthorizedKeysCommandUser nobody</code></pre>
+<p>reiniciamos ssh:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# systemctl restart sshd</code></pre>
+<h3 id="comprobaciones." tabindex="-1">Comprobaciones.</h3>
+<p>Desde el cliente delta, accedo con el usuario <code>alemd</code> y creo una carpeta y un usuario:</p>
+<pre class="language-txt"><code class="language-txt">ubuntu@delta:~$ ssh alemd@alfa.alejandro-montes.gonzalonazareno.org<br>The authenticity of host 'alfa.alejandro-montes.gonzalonazareno.org (192.168.0.1)' can't be established.<br>ECDSA key fingerprint is SHA256:Keks1avOP1EmyzMJEwSoAL+mcSzp7ag4TWkE5gjB4m8.<br>Are you sure you want to continue connecting (yes/no/[fingerprint])? yes<br>Warning: Permanently added 'alfa.alejandro-montes.gonzalonazareno.org,192.168.0.1' (ECDSA) to the list of known hosts.<br>Creating directory '/home/ldap/alemd'.<br>Linux alfa 5.10.0-21-amd64 #1 SMP Debian 5.10.162-1 (2023-01-21) x86_64<br><br>The programs included with the Debian GNU/Linux system are free software;<br>the exact distribution terms for each program are described in the<br>individual files in /usr/share/doc/*/copyright.<br><br>Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent<br>permitted by applicable law.<br>alemd@alfa:~$ mkdir prueba<br>alemd@alfa:~$ touch prueba2<br>alemd@alfa:~$ ls -l<br>total 4<br>drwxr-xr-x 2 alemd 5000 4096 Feb 14 09:42 prueba<br>-rw-r--r-- 1 alemd 5000    0 Feb 14 09:42 prueba2</code></pre>
+<p>Desde alfa muestro que en la carpeta /home/ldap se ha creado el usuario alemd y se encuentran los archivos que he creado desde delta.</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/ldap# ls<br>alemd<br>root@alfa:/home/ldap# cd alemd/<br>root@alfa:/home/ldap/alemd# ls<br>prueba	prueba2<br>root@alfa:/home/ldap/alemd# ls -l<br>total 4<br>drwxr-xr-x 2 alemd 5000 4096 Feb 14 09:42 prueba<br>-rw-r--r-- 1 alemd 5000    0 Feb 14 09:42 prueba2</code></pre>
+<p>Ahora ivan se conecta a mi servidor y crea un fichero y una carpeta:</p>
+<p><img src="/img/LDAP-III.2.png" alt="LDAP-III.2.png"></p>
+<p>Desde el servidor muestro que se ha creado el Home y los ficheros que el ha creado.</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:/home/ldap$ ls<br>alemd  ivan<br>usuario@alfa:/home/ldap$ cd ivan/<br>usuario@alfa:/home/ldap/ivan$ ls -l<br>total 4<br>drwxr-xr-x 2 ivan 5000 4096 Feb 14 09:48 FUNCIONA<br>-rw-r--r-- 1 ivan 5000    0 Feb 14 09:49 soy-Ivan</code></pre>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/ejercicios-de-k8s-iv./">Ejercicios de K8s IV.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>

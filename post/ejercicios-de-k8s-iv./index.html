@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Ejercicios de K8s IV. | Cutreblog">
+    <meta itemprop="description" content="Cuarto taller de la unidad de Kubernetes.">
+
+    
+    <meta name="twitter:title" content="Ejercicios de K8s IV. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Cuarto taller de la unidad de Kubernetes.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Ejercicios de K8s IV. | Cutreblog">
+    <meta name="og:description" content="Cuarto taller de la unidad de Kubernetes.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Ejercicios de K8s IV. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Ejercicios de K8s IV.</h2>
+
+        
+            <p class="excerpt">Cuarto taller de la unidad de Kubernetes.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SRI" href="/tag/SRI">SRI</a><a class="tag Kubernetes" href="/tag/Kubernetes">Kubernetes</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Mon Feb 13 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 13, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#despliegue-y-acceso-de-la-aplicaci%C3%B3n-guestbook.">Despliegue y acceso de la aplicación GuestBook.</a>
+            
+                <ol>
+                    
+                    <li><a href="#1.-elabora-el-fichero-yaml-con-la-definici%C3%B3n-del-service%2C-y-cr%C3%A9alo.">1. Elabora el fichero yaml con la definición del Service, y créalo.</a>
+            		</li>
+
+                    <li><a href="#2.-comprueba-el-puerto-que-le-han-asignado-al-service-para-acceder-desde-el-exterior.">2. Comprueba el puerto que le han asignado al Service para acceder desde el exterior.</a>
+            		</li>
+
+                    <li><a href="#3.-accede-a-la-ip-del-nodo-master-y-al-puerto-asignado-desde-un-navegador-web-para-ver-la-aplicaci%C3%B3n.">3. Accede a la ip del nodo master y al puerto asignado desde un navegador web para ver la aplicación.</a>
+            		</li>
+
+                    <li><a href="#4.-responde-la-siguiente-pregunta%3A-%C2%BFpor-qu%C3%A9-aparece-el-mensaje-de-error%3A-waiting-for-database-connection%E2%80%A6%3F">4. Responde la siguiente pregunta: ¿Por qué aparece el mensaje de error: Waiting for database connection…?</a>
+            		</li>
+
+                    <li><a href="#1.-elabora-el-fichero-yaml-con-la-definici%C3%B3n-del-service%2C-y-cr%C3%A9alo.-1">1. Elabora el fichero yaml con la definición del Service, y créalo.</a>
+            		</li>
+
+                    <li><a href="#2.-lista-los-services-que-has-creado.">2. Lista los Services que has creado.</a>
+            		</li>
+
+                    <li><a href="#3.-accede-a-la-ip-del-nodo-master-y-al-puerto-asignado-desde-un-navegador-web-para-ver-la-aplicaci%C3%B3n.-comprueba-que-funciona-sin-ning%C3%BAn-problema.">3. Accede a la ip del nodo master y al puerto asignado desde un navegador web para ver la aplicación. Comprueba que funciona sin ningún problema.</a>
+            		</li>
+
+                    <li><a href="#1.-activa-el-addon-ingress-en-minikube-para-instalar-el-ingress-controller.">1. Activa el addon ingress en minikube para instalar el Ingress Controller.</a>
+            		</li>
+
+                    <li><a href="#2.-crea-la-definici%C3%B3n-del-recurso-ingress-con-los-datos-sugeridos%2C-y-crea-el-recurso-ingress.">2. Crea La definición del recurso Ingress con los datos sugeridos, y crea el recurso Ingress.</a>
+            		</li>
+
+                    <li><a href="#3.-modifica-el-fichero-%2Fetc%2Fhosts-de-tu-ordenador-para-configurar-la-resoluci%C3%B3n-est%C3%A1tica.">3. Modifica el fichero /etc/hosts de tu ordenador para configurar la resolución estática.</a>
+            		</li>
+
+                    <li><a href="#4.-accede-a-la-aplicaci%C3%B3n-usando-el-nombre-que-has-asignado.">4. Accede a la aplicación usando el nombre que has asignado.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#despliegue-y-acceso-de-la-aplicaci%C3%B3n-lets-chat.">Despliegue y acceso de la Aplicación Lets-Chat.</a>
+            
+                <ol>
+                    
+                    <li><a href="#1.-utilizando-como-modelos-los-ficheros-yaml-de-la-actividad-anterior%2C-crea-los-ficheros-necesarios-para-crear-los-recursos-en-tu-cluster-de-kubernetes-para-desplegar-esta-aplicaci%C3%B3n.">1. Utilizando como modelos los ficheros yaml de la actividad anterior, crea los ficheros necesarios para crear los recursos en tu cluster de Kubernetes para desplegar esta aplicación.</a>
+            		</li>
+                </ol>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="despliegue-y-acceso-de-la-aplicaci%C3%B3n-guestbook." tabindex="-1">Despliegue y acceso de la aplicación GuestBook.</h3>
+<p>Una vez que tenemos creado el despliegue de la aplicación GuestBook, que realizamos en el anterioor taller, vamos a crear los Services correspondientes para acceder a ella:</p>
+<p><strong>Service para acceder a la aplicación.</strong></p>
+<p>El primer Service que vamos a crear nos va a permitir acceder a la aplicación GuestBook desde el exterior, para ello crea un fichero yaml con la definición del Service a partir de la siguiente plantilla:</p>
+<pre class="language-yaml"><code class="language-yaml">  <span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1<br>  <span class="token key atrule">kind</span><span class="token punctuation">:</span> Service<br>  <span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>    <span class="token key atrule">name</span><span class="token punctuation">:</span> guestbook<br>    <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>      <span class="token key atrule">app</span><span class="token punctuation">:</span> guestbook<br>      <span class="token key atrule">tier</span><span class="token punctuation">:</span> frontend<br>  <span class="token key atrule">spec</span><span class="token punctuation">:</span><br>    <span class="token key atrule">type</span><span class="token punctuation">:</span> <br>    <span class="token key atrule">ports</span><span class="token punctuation">:</span><br>    <span class="token punctuation">-</span> <span class="token key atrule">port</span><span class="token punctuation">:</span> <br>      <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> <br>    <span class="token key atrule">selector</span><span class="token punctuation">:</span><br>      <span class="token key atrule">app</span><span class="token punctuation">:</span> guestbook<br>      <span class="token key atrule">tier</span><span class="token punctuation">:</span> frontend</code></pre>
+<p>Tienes que poner el tipo del Service, el puerto del servicio será el 80 y el nombre del puerto de la aplicación que hemos asignado en el Deployment es http-server.</p>
+<p>Realiza los siguientes pasos:</p>
+<h4 id="1.-elabora-el-fichero-yaml-con-la-definici%C3%B3n-del-service%2C-y-cr%C3%A9alo." tabindex="-1">1. Elabora el fichero yaml con la definición del Service, y créalo.</h4>
+<p>El fichero queda de la siguiente manera:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> Service<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>  <span class="token key atrule">name</span><span class="token punctuation">:</span> guestbook<br>  <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>    <span class="token key atrule">app</span><span class="token punctuation">:</span> guestbook<br>    <span class="token key atrule">tier</span><span class="token punctuation">:</span> frontend<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">type</span><span class="token punctuation">:</span> NodePort<br>  <span class="token key atrule">ports</span><span class="token punctuation">:</span><br>  <span class="token punctuation">-</span> <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">80</span><br>    <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> http<span class="token punctuation">-</span>server<br>  <span class="token key atrule">selector</span><span class="token punctuation">:</span><br>    <span class="token key atrule">app</span><span class="token punctuation">:</span> guestbook</code></pre>
+<p>Creamos el sevicio:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl apply -f service-guestbook.yaml <br>service/guestbook created</code></pre>
+<h4 id="2.-comprueba-el-puerto-que-le-han-asignado-al-service-para-acceder-desde-el-exterior." tabindex="-1">2. Comprueba el puerto que le han asignado al Service para acceder desde el exterior.</h4>
+<p>Con el siguiente comando vemos la ip de minikube:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ minikube ip<br>192.168.39.178</code></pre>
+<p>Ahora vemos información de los servicios para ver el puerto:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl get service<br>NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE<br>guestbook    NodePort    10.97.200.110   &lt;none>        80:31272/TCP   4m1s<br>kubernetes   ClusterIP   10.96.0.1       &lt;none>        443/TCP        13d</code></pre>
+<p>Vemos que tiene el puerto 31272.</p>
+<h4 id="3.-accede-a-la-ip-del-nodo-master-y-al-puerto-asignado-desde-un-navegador-web-para-ver-la-aplicaci%C3%B3n." tabindex="-1">3. Accede a la ip del nodo master y al puerto asignado desde un navegador web para ver la aplicación.</h4>
+<p><img src="/img/SRI-K8S-T4.1.png" alt="SRI-K8S-T4.1.png"></p>
+<h4 id="4.-responde-la-siguiente-pregunta%3A-%C2%BFpor-qu%C3%A9-aparece-el-mensaje-de-error%3A-waiting-for-database-connection%E2%80%A6%3F" tabindex="-1">4. Responde la siguiente pregunta: ¿Por qué aparece el mensaje de error: Waiting for database connection…?</h4>
+<p>Porque hemos configurado el front-end, falta configurar la base de datos para que funcione.</p>
+<p><strong>Service para acceder a la base de datos.</strong></p>
+<p>A continuación vamos a crear el Service para acceder a la base de datos. Vamos a crear el fichero yaml para su definición a partir de la siguiente plantilla:</p>
+<pre class="language-yaml"><code class="language-yaml">  <span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1<br>  <span class="token key atrule">kind</span><span class="token punctuation">:</span> Service<br>  <span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>    <span class="token key atrule">name</span><span class="token punctuation">:</span> redis<br>    <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>      <span class="token key atrule">app</span><span class="token punctuation">:</span> redis<br>      <span class="token key atrule">tier</span><span class="token punctuation">:</span> backend<br>  <span class="token key atrule">spec</span><span class="token punctuation">:</span><br>    <span class="token key atrule">type</span><span class="token punctuation">:</span> <br>    <span class="token key atrule">ports</span><span class="token punctuation">:</span><br>    <span class="token punctuation">-</span> <span class="token key atrule">port</span><span class="token punctuation">:</span> <br>      <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> <br>    <span class="token key atrule">selector</span><span class="token punctuation">:</span><br>      <span class="token key atrule">app</span><span class="token punctuation">:</span> redis<br>      <span class="token key atrule">tier</span><span class="token punctuation">:</span> backend</code></pre>
+<p>Tienes que poner el tipo del Service, el puerto del servicio será el 6379 y el nombre del puerto de la base de datos que hemos asignado en el Deployment es redis-server. Nota: No cambies el nombre del Service, ya que la aplicación guestbook va a acceder por defecto a la base de datos usando el nombre redis.</p>
+<p>Realiza los siguientes pasos:</p>
+<h4 id="1.-elabora-el-fichero-yaml-con-la-definici%C3%B3n-del-service%2C-y-cr%C3%A9alo.-1" tabindex="-1">1. Elabora el fichero yaml con la definición del Service, y créalo.</h4>
+<p>El fichero yaml queda de la siguiente manera:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> Service<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>  <span class="token key atrule">name</span><span class="token punctuation">:</span> redis<br>  <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>    <span class="token key atrule">app</span><span class="token punctuation">:</span> redis<br>    <span class="token key atrule">tier</span><span class="token punctuation">:</span> backend<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">type</span><span class="token punctuation">:</span> ClusterIP<br>  <span class="token key atrule">ports</span><span class="token punctuation">:</span><br>  <span class="token punctuation">-</span> <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">6379</span><br>    <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> redis<span class="token punctuation">-</span>server<br>  <span class="token key atrule">selector</span><span class="token punctuation">:</span><br>    <span class="token key atrule">app</span><span class="token punctuation">:</span> redis<br>    <span class="token key atrule">tier</span><span class="token punctuation">:</span> backend</code></pre>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl apply -f service-guestbook2.yaml <br>service/redis created</code></pre>
+<h4 id="2.-lista-los-services-que-has-creado." tabindex="-1">2. Lista los Services que has creado.</h4>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl get services<br>NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE<br>guestbook    NodePort    10.97.200.110   &lt;none>        80:31272/TCP   57m<br>kubernetes   ClusterIP   10.96.0.1       &lt;none>        443/TCP        13d<br>redis        ClusterIP   10.98.117.225   &lt;none>        6379/TCP       97s</code></pre>
+<h4 id="3.-accede-a-la-ip-del-nodo-master-y-al-puerto-asignado-desde-un-navegador-web-para-ver-la-aplicaci%C3%B3n.-comprueba-que-funciona-sin-ning%C3%BAn-problema." tabindex="-1">3. Accede a la ip del nodo master y al puerto asignado desde un navegador web para ver la aplicación. Comprueba que funciona sin ningún problema.</h4>
+<p><img src="/img/SRI-K8S-T4.2.png" alt="SRI-K8S-T4.2.png"></p>
+<p><strong>Acceso a la aplicación usando Ingress</strong></p>
+<p>Vamos a crear el fichero yaml de definición del recurso Ingress para acceder a la aplicación a partir de la siguiente plantilla:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> networking.k8s.io/v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> Ingress<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>  <span class="token key atrule">name</span><span class="token punctuation">:</span> guestbook<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">rules</span><span class="token punctuation">:</span><br>  <span class="token punctuation">-</span> <span class="token key atrule">host</span><span class="token punctuation">:</span> <br>    <span class="token key atrule">http</span><span class="token punctuation">:</span><br>      <span class="token key atrule">paths</span><span class="token punctuation">:</span><br>      <span class="token punctuation">-</span> <span class="token key atrule">path</span><span class="token punctuation">:</span> /<br>        <span class="token key atrule">pathType</span><span class="token punctuation">:</span> Prefix<br>        <span class="token key atrule">backend</span><span class="token punctuation">:</span><br>          <span class="token key atrule">service</span><span class="token punctuation">:</span><br>            <span class="token key atrule">name</span><span class="token punctuation">:</span> <br>            <span class="token key atrule">port</span><span class="token punctuation">:</span><br>              <span class="token key atrule">number</span><span class="token punctuation">:</span> <span class="token number">80</span></code></pre>
+<p>Indica un host del tipo <a href="http://www.tunombre.org">www.tunombre.org</a>, indica el nombre del Service que creaste para acceder a la aplicación guestbook y ten en cuenta que el puerto de dicho servicio era el 80.</p>
+<p>Realiza los siguientes pasos:</p>
+<h4 id="1.-activa-el-addon-ingress-en-minikube-para-instalar-el-ingress-controller." tabindex="-1">1. Activa el addon ingress en minikube para instalar el Ingress Controller.</h4>
+<p>Para activar el addon ingress usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ minikube addons enable ingress<br>💡  ingress is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.<br>You can view the list of minikube maintainers at: https://github.com/kubernetes/minikube/blob/master/OWNERS<br>    ▪ Using image registry.k8s.io/ingress-nginx/controller:v1.5.1<br>    ▪ Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v20220916-gd32f8c343<br>    ▪ Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v20220916-gd32f8c343<br>🔎  Verifying ingress addon...<br>🌟  The 'ingress' addon is enabled</code></pre>
+<h4 id="2.-crea-la-definici%C3%B3n-del-recurso-ingress-con-los-datos-sugeridos%2C-y-crea-el-recurso-ingress." tabindex="-1">2. Crea La definición del recurso Ingress con los datos sugeridos, y crea el recurso Ingress.</h4>
+<p>El fichero yaml queda de la siguiente manera:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> networking.k8s.io/v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> Ingress<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>  <span class="token key atrule">name</span><span class="token punctuation">:</span> guestbook<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">rules</span><span class="token punctuation">:</span><br>  <span class="token punctuation">-</span> <span class="token key atrule">host</span><span class="token punctuation">:</span> www.alejandro<span class="token punctuation">-</span>montes.org<br>    <span class="token key atrule">http</span><span class="token punctuation">:</span><br>      <span class="token key atrule">paths</span><span class="token punctuation">:</span><br>      <span class="token punctuation">-</span> <span class="token key atrule">path</span><span class="token punctuation">:</span> /<br>        <span class="token key atrule">pathType</span><span class="token punctuation">:</span> Prefix<br>        <span class="token key atrule">backend</span><span class="token punctuation">:</span><br>          <span class="token key atrule">service</span><span class="token punctuation">:</span><br>            <span class="token key atrule">name</span><span class="token punctuation">:</span> guestbook<br>            <span class="token key atrule">port</span><span class="token punctuation">:</span><br>              <span class="token key atrule">number</span><span class="token punctuation">:</span> <span class="token number">80</span></code></pre>
+<p>Y creamos el ingress:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl apply -f service-guestbook3.yaml <br>ingress.networking.k8s.io/guestbook created</code></pre>
+<h4 id="3.-modifica-el-fichero-%2Fetc%2Fhosts-de-tu-ordenador-para-configurar-la-resoluci%C3%B3n-est%C3%A1tica." tabindex="-1">3. Modifica el fichero /etc/hosts de tu ordenador para configurar la resolución estática.</h4>
+<p>Configuramos el /etc/hosts de nuestro ordenador con la ip de minikube y <a href="http://www.tunombre.org">www.tunombre.org</a>.</p>
+<h4 id="4.-accede-a-la-aplicaci%C3%B3n-usando-el-nombre-que-has-asignado." tabindex="-1">4. Accede a la aplicación usando el nombre que has asignado.</h4>
+<p><img src="/img/SRI-K8S-T4.3.png" alt="SRI-K8S-T4.3.png"></p>
+<h3 id="despliegue-y-acceso-de-la-aplicaci%C3%B3n-lets-chat." tabindex="-1">Despliegue y acceso de la Aplicación Lets-Chat.</h3>
+<p>Let’s Chat es una aplicación web escrita en Node.js que utilizando una base de datos MongoDB nos posibilita la creación de salas de chats.</p>
+<p>Vamos a realiza el despliegue y acceso a esta aplicación teniendo en cuenta los siguientes aspectos:</p>
+<ul>
+<li>La imagen docker que vamos a usar para el despliegue de Let’s Chat es sdelements/lets-chat y para desplegar mongoDB utilizaremos la imagen mongo. Nota: utiliza imagen mongo:4, Let’s Chat es una aplicación antigua y no funciona con las últimas versiones de mongo.</li>
+<li>Al crear el despliegue de Let’s Chat podemos poner varias replicas, pero el despliegue de la base de datos, sólo creará una replica.</li>
+<li>El puerto en el que responde la aplicación es el 8080. La base de datos utiliza el puerto 27017.</li>
+<li>Vamos acceder desde el exterior a la aplicación. Sin embargo, no es necesario acceder desde el exterior a la base de datos.</li>
+<li>El nombre del Service para acceder a la base de datos debe ser mongo ya que por defecto la aplicación va a conectar a la base de datos usando ese nombre.</li>
+<li>Queremos acceder a la aplicación usando un nombre del tipo <a href="http://www.chat-tunombre.org">www.chat-tunombre.org</a>.</li>
+</ul>
+<p>Realiza los siguientes pasos:</p>
+<h4 id="1.-utilizando-como-modelos-los-ficheros-yaml-de-la-actividad-anterior%2C-crea-los-ficheros-necesarios-para-crear-los-recursos-en-tu-cluster-de-kubernetes-para-desplegar-esta-aplicaci%C3%B3n." tabindex="-1">1. Utilizando como modelos los ficheros yaml de la actividad anterior, crea los ficheros necesarios para crear los recursos en tu cluster de Kubernetes para desplegar esta aplicación.</h4>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Siguiente post</p>
+            <p class="font-bold mb-2">
+                <a href="/post/poblar-un-directorio-ldap-desde-un-fichero-csv./">Poblar un directorio LDAP desde un fichero CSV.</a>
+            </p>
+        
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/ejercicios-de-k8s-iii./">Ejercicios de K8s III.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
