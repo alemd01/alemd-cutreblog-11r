@@ -139,6 +139,23 @@
 &lt;/ul&gt;
 &lt;p&gt;Realiza los siguientes pasos:&lt;/p&gt;
 &lt;h4 id=&quot;1.-utilizando-como-modelos-los-ficheros-yaml-de-la-actividad-anterior%2C-crea-los-ficheros-necesarios-para-crear-los-recursos-en-tu-cluster-de-kubernetes-para-desplegar-esta-aplicaci%C3%B3n.&quot; tabindex=&quot;-1&quot;&gt;1. Utilizando como modelos los ficheros yaml de la actividad anterior, crea los ficheros necesarios para crear los recursos en tu cluster de Kubernetes para desplegar esta aplicación.&lt;/h4&gt;
+&lt;p&gt;Adjunto los deployments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Deployment de letschat:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Deployment de mongo:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Service de letschat:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Service de mongo:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;hr /&gt;
 &lt;h2 id=&quot;documento-realizado-por%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Documento realizado por:&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;✒️ &lt;strong&gt;Alejandro Montes Delgado&lt;/strong&gt; - &lt;em&gt;2º ASIR&lt;/em&gt;&lt;/p&gt;
@@ -347,8 +364,7 @@
 &lt;p&gt;Comprobamos su funcionamiento con una consulta DNS:&lt;/p&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@maquina:/home/debian# dig @8.8.8.8 www.josedomingo.org&lt;br /&gt;&lt;br /&gt;; &amp;lt;&amp;lt;&gt;&gt; DiG 9.16.37-Debian &amp;lt;&amp;lt;&gt;&gt; @8.8.8.8 www.josedomingo.org&lt;br /&gt;; (1 server found)&lt;br /&gt;;; global options: +cmd&lt;br /&gt;;; Got answer:&lt;br /&gt;;; -&gt;&gt;HEADER&amp;lt;&amp;lt;- opcode: QUERY, status: NOERROR, id: 17100&lt;br /&gt;;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1&lt;br /&gt;&lt;br /&gt;;; OPT PSEUDOSECTION:&lt;br /&gt;; EDNS: version: 0, flags:; udp: 512&lt;br /&gt;;; QUESTION SECTION:&lt;br /&gt;;www.josedomingo.org.		IN	A&lt;br /&gt;&lt;br /&gt;;; ANSWER SECTION:&lt;br /&gt;www.josedomingo.org.	900	IN	CNAME	endor.josedomingo.org.&lt;br /&gt;endor.josedomingo.org.	900	IN	A	37.187.119.60&lt;br /&gt;&lt;br /&gt;;; Query time: 304 msec&lt;br /&gt;;; SERVER: 8.8.8.8#53(8.8.8.8)&lt;br /&gt;;; WHEN: Tue Feb 14 11:51:49 UTC 2023&lt;br /&gt;;; MSG SIZE  rcvd: 84&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&quot;tr%C3%A1fico-https.&quot; tabindex=&quot;-1&quot;&gt;Tráfico https.&lt;/h3&gt;
-&lt;p&gt;iptables -A OUTPUT -o ens3 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A INPUT -i ens3 -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@maquina:/home/debian# iptables -A OUTPUT -o ens3 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT&lt;br /&gt;root@maquina:/home/debian# iptables -A INPUT -i ens3 -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&quot;tr%C3%A1fico-http%2Fhttps.&quot; tabindex=&quot;-1&quot;&gt;Tráfico http/https.&lt;/h3&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@maquina:/home/debian# iptables -A OUTPUT -o ens3 -p tcp -m multiport --dports 80,443 -m state --state NEW,ESTABLISHED -j ACCEPT&lt;br /&gt;root@maquina:/home/debian# iptables -A INPUT -i ens3 -p tcp -m multiport --sports 80,443 -m state --state ESTABLISHED -j ACCEPT&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&quot;permitimos-el-acceso-a-nuestro-servidor-web.&quot; tabindex=&quot;-1&quot;&gt;Permitimos el acceso a nuestro servidor web.&lt;/h3&gt;

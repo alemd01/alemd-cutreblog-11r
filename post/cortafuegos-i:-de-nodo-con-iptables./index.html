@@ -167,8 +167,7 @@
 <p>Comprobamos su funcionamiento con una consulta DNS:</p>
 <pre class="language-txt"><code class="language-txt">root@maquina:/home/debian# dig @8.8.8.8 www.josedomingo.org<br><br>; &lt;&lt;>> DiG 9.16.37-Debian &lt;&lt;>> @8.8.8.8 www.josedomingo.org<br>; (1 server found)<br>;; global options: +cmd<br>;; Got answer:<br>;; ->>HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 17100<br>;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1<br><br>;; OPT PSEUDOSECTION:<br>; EDNS: version: 0, flags:; udp: 512<br>;; QUESTION SECTION:<br>;www.josedomingo.org.		IN	A<br><br>;; ANSWER SECTION:<br>www.josedomingo.org.	900	IN	CNAME	endor.josedomingo.org.<br>endor.josedomingo.org.	900	IN	A	37.187.119.60<br><br>;; Query time: 304 msec<br>;; SERVER: 8.8.8.8#53(8.8.8.8)<br>;; WHEN: Tue Feb 14 11:51:49 UTC 2023<br>;; MSG SIZE  rcvd: 84</code></pre>
 <h3 id="tr%C3%A1fico-https." tabindex="-1">Tráfico https.</h3>
-<p>iptables -A OUTPUT -o ens3 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A INPUT -i ens3 -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT</p>
+<pre class="language-txt"><code class="language-txt">root@maquina:/home/debian# iptables -A OUTPUT -o ens3 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@maquina:/home/debian# iptables -A INPUT -i ens3 -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT</code></pre>
 <h3 id="tr%C3%A1fico-http%2Fhttps." tabindex="-1">Tráfico http/https.</h3>
 <pre class="language-txt"><code class="language-txt">root@maquina:/home/debian# iptables -A OUTPUT -o ens3 -p tcp -m multiport --dports 80,443 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@maquina:/home/debian# iptables -A INPUT -i ens3 -p tcp -m multiport --sports 80,443 -m state --state ESTABLISHED -j ACCEPT</code></pre>
 <h3 id="permitimos-el-acceso-a-nuestro-servidor-web." tabindex="-1">Permitimos el acceso a nuestro servidor web.</h3>
