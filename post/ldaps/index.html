@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="LDAPs | Cutreblog">
+    <meta itemprop="description" content="En este post, veremos como convertir el servidor LDAP en LDAPs.">
+
+    
+    <meta name="twitter:title" content="LDAPs | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="En este post, veremos como convertir el servidor LDAP en LDAPs.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="LDAPs | Cutreblog">
+    <meta name="og:description" content="En este post, veremos como convertir el servidor LDAP en LDAPs.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>LDAPs | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>LDAPs</h2>
+
+        
+            <p class="excerpt">En este post, veremos como convertir el servidor LDAP en LDAPs.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag ASO" href="/tag/ASO">ASO</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Thu Feb 16 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 16, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#configuraci%C3%B3n-del-servidor(alfa).">Configuración del servidor(Alfa).</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-de-cliente-ubuntu(delta).">Configuración de cliente Ubuntu(Delta).</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-de-cliente-rocky-linux(bravo).">Configuración de cliente Rocky Linux(Bravo).</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <p>Usaremos los certificados proporcionados a principio de curso mediante la página de gestiona del centro. para ello los llevaremos al servidor y una vez en el servidor los moveremos a sus rutas correspondientes:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:/etc/ssl$ sudo mv alemd.crt /etc/ssl/certs<br>usuario@alfa:/etc/ssl$ sudo mv gonzalonazareno.crt /etc/ssl/certs<br>usuario@alfa:/etc/ssl$ sudo mv alemd.key /etc/ssl/private/</code></pre>
+<p>Nos tenemos que asegurar de que el dueño de los archivos es root y tiene los privilegios correctos. Ahora tendremos que crear unas acls para que el usuario openldap que es el que se conecta con ldap tenga permisos sobre los ficheros anteriores.</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/etc/ssl# setfacl -m u:openldap:r-x /etc/ssl/private<br>root@alfa:/etc/ssl# setfacl -m u:openldap:r-x /etc/ssl/certs<br>root@alfa:/etc/ssl# setfacl -m u:openldap:r-x /etc/ssl/private/alemd.key</code></pre>
+<h3 id="configuraci%C3%B3n-del-servidor(alfa)." tabindex="-1">Configuración del servidor(Alfa).</h3>
+<p>Ahora tenemos que incorporar los cambios con un registro ldif y aplicamos la configuración.</p>
+<pre class="language-txt"><code class="language-txt">nano ldaps_config.ldif<br><br>dn: cn=config<br>changetype: modify<br>replace: olcTLSCACertificateFile<br>olcTLSCACertificateFile: /etc/ssl/certs/gonzalonazareno.crt<br>-<br>replace: olcTLSCertificateKeyFile<br>olcTLSCertificateKeyFile: /etc/ssl/private/alemd.key<br>-<br>replace: olcTLSCertificateFile<br>olcTLSCertificateFile: /etc/ssl/certs/alemd.crt</code></pre>
+<p>Para aplicar la configuración usamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f ldaps_config.ldif <br>SASL/EXTERNAL authentication started<br>SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth<br>SASL SSF: 0<br>modifying entry "cn=config"</code></pre>
+<p>Editamos el siguiente fichero para habilitar que ldap use el puerto 636. El fichero que tendremos que editar es <code>/etc/default/slapd</code>:</p>
+<p>La siguiente línea editada queda así:</p>
+<pre class="language-txt"><code class="language-txt">SLAPD_SERVICES="ldap:/// ldapi:/// ldaps:///"</code></pre>
+<p>Muestro que ya se encuentra escuchando por el puerto 636:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# netstat -tlnp | egrep slap<br>tcp        0      0 0.0.0.0:636             0.0.0.0:*               LISTEN      8551/slapd          <br>tcp        0      0 0.0.0.0:389             0.0.0.0:*               LISTEN      8551/slapd          <br>tcp6       0      0 :::636                  :::*                    LISTEN      8551/slapd          <br>tcp6       0      0 :::389                  :::*                    LISTEN      8551/slapd   </code></pre>
+<p>Copiamos el certificado a la siguiente ruta, que es la ruta donde se ponen los certificados instalados localmente:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# cp /etc/ssl/certs/gonzalonazareno.crt /usr/local/share/ca-certificates/</code></pre>
+<p>Ahora actualizamos la lista de los certificados para que ca-certificates realice el enlace simbólico:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# update-ca-certificates<br>Updating certificates in /etc/ssl/certs...<br>rehash: warning: skipping duplicate certificate in gonzalonazareno.crt<br>1 added, 0 removed; done.<br>Running hooks in /etc/ca-certificates/update.d...<br>done.</code></pre>
+<p>Estos 2 pasos anteriores, lo tenemos que repetir en todos los clientes que queramos que use LDAPs.</p>
+<p>Editamos la siguiente línea en el caso de que no tengamos un certificado válido(no es necesario):</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# nano /etc/ldap/ldap.conf</code></pre>
+<p>Añadimos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">TLS_REQCERT     allow</code></pre>
+<p>Ahora podremos ejecutar peticiones al servidor ldap usando SSL/TLS. Realizo una consulta para mostrar que funciona:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ ldapsearch -x -b "dc=alejandro-montes,dc=gonzalonazareno,dc=org" -H ldaps://localhost:636<br># extended LDIF<br>#<br># LDAPv3<br># base &lt;dc=alejandro-montes,dc=gonzalonazareno,dc=org> with scope subtree<br># filter: (objectclass=*)<br># requesting: ALL<br>#<br><br># alejandro-montes.gonzalonazareno.org<br>dn: dc=alejandro-montes,dc=gonzalonazareno,dc=org<br>objectClass: top<br>objectClass: dcObject<br>objectClass: organization<br>o: alejandro-montes.gonzalonazareno.org<br>dc: alejandro-montes<br><br># Personas, alejandro-montes.gonzalonazareno.org<br>dn: ou=Personas,dc=alejandro-montes,dc=gonzalonazareno,dc=org<br>objectClass: organizationalUnit<br>ou: Personas<br><br># Grupos, alejandro-montes.gonzalonazareno.org<br>dn: ou=Grupos,dc=alejandro-montes,dc=gonzalonazareno,dc=org<br>objectClass: organizationalUnit<br>ou: Grupos<br><br># prueba, Grupos, alejandro-montes.gonzalonazareno.org<br>dn: cn=prueba,ou=Grupos,dc=alejandro-montes,dc=gonzalonazareno,dc=org<br>objectClass: top<br>objectClass: posixGroup<br>gidNumber: 2001<br>cn: prueba</code></pre>
+<p>Para que el cliente use por defecto LDAPs para realizar las conexiones, vamos a modificar el fichero de configuración del cliente y añadir lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">root@delta:/home/ubuntu# nano /etc/ldap/ldap.conf </code></pre>
+<p>Modificamos esta línea y queda así:</p>
+<pre class="language-txt"><code class="language-txt">URI     ldaps://alfa.alejandro-montes.gonzalonazareno.org</code></pre>
+<p>Hacemos una consulta al servidor LDAPs desde un cliente ubuntu para verificar que funciona:</p>
+<p><img src="/img/LDAPS.1.png" alt="LDAPS.1.png"></p>
+<h3 id="configuraci%C3%B3n-de-cliente-ubuntu(delta)." tabindex="-1">Configuración de cliente Ubuntu(Delta).</h3>
+<p>Como hemos visto antes, en el clientes tenemos que pasarnos el certificado de la entidad certificadora y actualizar los certificados locales. Adjunto los comandos usados:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# scp /usr/local/share/ca-certificates/gonzalonazareno.crt ubuntu@192.168.0.3:<br>ubuntu@192.168.0.3's password: <br>gonzalonazareno.crt                                                                                100% 3634     4.2MB/s   00:00  <br>root@delta:/home/ubuntu# chown root: gonzalonazareno.crt <br>root@delta:/home/ubuntu# mv gonzalonazareno.crt /usr/local/share/ca-certificates/<br>root@delta:/home/ubuntu# update-ca-certificates <br>Updating certificates in /etc/ssl/certs...<br>rehash: warning: skipping ca-certificates.crt,it does not contain exactly one certificate or CRL<br>rehash: warning: skipping duplicate certificate in gonzalonazareno.crt<br>1 added, 0 removed; done.<br>Running hooks in /etc/ca-certificates/update.d...<br>done.<br></code></pre>
+<p>En el archivo de configuración de LDAP tenemos que indicar en el URI que sea ldaps:</p>
+<pre class="language-txt"><code class="language-txt">root@delta:/home/ubuntu# nano /etc/ldap/ldap.conf <br><br>URI     ldaps://alfa.alejandro-montes.gonzalonazareno.org<br></code></pre>
+<p>Debemos de hacer lo mismo en el archivo <code>/etc/ldap.conf</code>. Una vez hecho esto, ya podemos realizar el login desde Delta:</p>
+<pre class="language-txt"><code class="language-txt">root@delta:/home/ubuntu# login usuario1<br>Password: <br>Welcome to Ubuntu 20.04.5 LTS (GNU/Linux 5.10.0-21-amd64 x86_64)<br><br> * Documentation:  https://help.ubuntu.com<br> * Management:     https://landscape.canonical.com<br> * Support:        https://ubuntu.com/advantage<br>Last login: Tue Feb  7 08:33:57 UTC 2023 on pts/4<br>usuario1@delta:~$ ls<br>prueba	pruebadelta  rafa1.txt</code></pre>
+<p>Como vemos al hacer el ls siguen las carpetas y los archivos creados anteriormente.</p>
+<h3 id="configuraci%C3%B3n-de-cliente-rocky-linux(bravo)." tabindex="-1">Configuración de cliente Rocky Linux(Bravo).</h3>
+<p>Antes que nada, tenemos que acordarnos de mover el certificado y actualizar los certificados locales. Dejo los comandos usados para actualizar los certificados en Rocky Linux:</p>
+<pre class="language-txt"><code class="language-txt">usuario@alfa:~$ scp /usr/local/share/ca-certificates/gonzalonazareno.crt usuario@172.16.0.200:<br>gonzalonazareno.crt                                                                                          100% 3634     1.2MB/s   00:00 <br><br>[root@bravo usuario]# chown root: gonzalonazareno.crt<br>[root@bravo usuario]# mv gonzalonazareno.crt /usr/share/pki/ca-trust-source/anchors/<br>[root@bravo usuario]# update-ca-trust </code></pre>
+<p>Si queremos configurar un cliente de LDAP en rocky linux, lo primero es instalar el paquete del cliente de ldap:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo usuario]# dnf install openldap-clients<br>Failed to set locale, defaulting to C.UTF-8<br>Last metadata expiration check: 2:18:55 ago on Sat Feb 18 17:57:07 2023.<br>Package openldap-clients-2.6.2-3.el9.x86_64 is already installed.<br>Dependencies resolved.<br>Nothing to do.<br>Complete!</code></pre>
+<p>En mi caso ya está instalado. Ahora editaremos el archivo de configuración PAM. El archivo se encuentra en la siguiente ruta:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo usuario]# nano /etc/pam.d/common-auth</code></pre>
+<p>Y contiene la siguiente línea:</p>
+<pre class="language-txt"><code class="language-txt">auth sufficient pam_ldap.so</code></pre>
+<p>Ahora nos vamos al archivo de configuración de LDAP:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo usuario]# nano /etc/openldap/ldap.conf</code></pre>
+<p>y añadimos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">BASE dc=alejandro-montes,dc=gonzalonazareno,dc=org<br>URI ldaps://alfa.alejandro-montes.gonzalonazareno.org</code></pre>
+<p>Por último, para permitir que el usuario LDAP acceda a su home, debemos de editar el siguiente archivo de configuración PAM:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo usuario]# nano /etc/pam.d/common-session</code></pre>
+<p>Y añadimos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">session sufficient pam_mkhomedir.so umask=0022 skel=/etc/skel/</code></pre>
+<p>Realizo una consulta al servidor LDAP desde bravo para probar que funciona:</p>
+<p><img src="/img/LDAPS.2.png" alt="LDAPS.2.png"></p>
+<p>Ahora instalaremos los paquetes necesariso para hacer el login con LDAP:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo usuario]# dnf -y install openldap-clients sssd sssd-ldap oddjob-mkhomedir <br>Failed to set locale, defaulting to C.UTF-8<br>Last metadata expiration check: 1:21:38 ago on Sat Feb 18 21:02:59 2023.<br>Package openldap-clients-2.6.2-3.el9.x86_64 is already installed.<br>Package sssd-2.7.3-4.el9_1.1.x86_64 is already installed.<br>Package sssd-ldap-2.7.3-4.el9_1.1.x86_64 is already installed.<br>Package oddjob-mkhomedir-0.34.7-6.el9.x86_64 is already installed.<br>Dependencies resolved.<br>======================================================================================================================================================<br> Package                                  Architecture                   Version                                 Repository                      Size<br>======================================================================================================================================================<br>Upgrading:<br> libipa_hbac                              x86_64                         2.7.3-4.el9_1.3                         baseos                          36 k<br> libsss_certmap                           x86_64                         2.7.3-4.el9_1.3                         baseos                          78 k<br> libsss_idmap                             x86_64                         2.7.3-4.el9_1.3                         baseos                          42 k<br> libsss_nss_idmap                         x86_64                         2.7.3-4.el9_1.3                         baseos                          45 k<br> libsss_sudo                              x86_64                         2.7.3-4.el9_1.3                         baseos                          35 k<br> sssd                                     x86_64                         2.7.3-4.el9_1.3                         baseos                          27 k<br> sssd-ad                                  x86_64                         2.7.3-4.el9_1.3                         baseos                         211 k<br> sssd-client                              x86_64                         2.7.3-4.el9_1.3                         baseos                         150 k<br> sssd-common                              x86_64                         2.7.3-4.el9_1.3                         baseos                         1.6 M<br> sssd-common-pac                          x86_64                         2.7.3-4.el9_1.3                         baseos                          95 k<br> sssd-ipa                                 x86_64                         2.7.3-4.el9_1.3                         baseos                         274 k<br> sssd-kcm                                 x86_64                         2.7.3-4.el9_1.3                         baseos                         108 k<br> sssd-krb5                                x86_64                         2.7.3-4.el9_1.3                         baseos                          73 k<br> sssd-krb5-common                         x86_64                         2.7.3-4.el9_1.3                         baseos                          89 k<br> sssd-ldap                                x86_64                         2.7.3-4.el9_1.3                         baseos                         156 k<br> sssd-nfs-idmap                           x86_64                         2.7.3-4.el9_1.3                         baseos                          39 k<br> sssd-proxy                               x86_64                         2.7.3-4.el9_1.3                         baseos                          70 k</code></pre>
+<p>Ejecutamos el siguiente comando para que mkhomedir cree el directorio home del usuario en el momento en el que inicia sesión:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo usuario]# authselect select sssd with-mkhomedir --force<br>Backup stored at /var/lib/authselect/backups/2023-02-18-22-25-09.ddiDdO<br>Profile "sssd" was selected.<br>The following nsswitch maps are overwritten by the profile:<br>- passwd<br>- group<br>- netgroup<br>- automount<br>- services<br><br>Make sure that SSSD service is configured and enabled. See SSSD documentation for more information.<br> <br>- with-mkhomedir is selected, make sure pam_oddjob_mkhomedir module<br>  is present and oddjobd service is enabled and active<br>  - systemctl enable --now oddjobd.service</code></pre>
+<p>Editamos el archivo de configuración de SSSD:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo usuario]# nano /etc/sssd/sssd.conf</code></pre>
+<p>Y añadimos las siguientes líneas al archivo_</p>
+<pre class="language-txt"><code class="language-txt">[domain/default]<br>id_provider = ldap<br>autofs_provider = ldap<br>auth_provider = ldap<br>chpass_provider = ldap<br>ldap_uri = ldaps://alfa.alejandro-montes.gonzalonazareno.org<br>ldap_search_base = dc=alejandro-montes,dc=gonzalonazareno,dc=org<br>ldap_id_use_start_tls = True<br>ldap_tls_cacertdir = /etc/openldap/certs<br>cache_credentials = True<br>ldap_tls_reqcert = allow<br><br>[sssd]<br>services = nss, pam, autofs<br>domains = default<br><br>[nss]<br>homedir_substring = /nfs/users</code></pre>
+<p>Copiamos el certificado en el siguiente directorio:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo usuario]# cp /usr/share/pki/ca-trust-source/anchors/gonzalonazareno.crt /etc/openldap/certs/</code></pre>
+<p>Reiniciamos el servicio y lo habilitamos:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo usuario]# chmod 600 /etc/sssd/sssd.conf <br>[root@bravo usuario]# systemctl restart sssd<br>[root@bravo usuario]# systemctl enable sssd</code></pre>
+<p>Ahora creamos una unidad NFS donde se montará el home de todos los usuarios LDAP:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo usuario]# mkdir /nfs<br>[root@bravo usuario]# mkdir /nfs/users<br>[root@bravo usuario]# nano /etc/systemd/system/nfs-users.mount</code></pre>
+<p>El contenido de la unidad es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">[Unit]<br>Description=Unidad de montaje NFS<br>Requires=NetworkManager.service<br>After=NetworkManager.service<br>[Mount]<br>What=172.16.0.1:/nfs/users<br>Where=/nfs/users<br>Options=_netdev,auto<br>Type=nfs<br>[Install]<br>WantedBy=multi-user.target</code></pre>
+<p>Recargamos el demonio y activamos la unidad:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo usuario]# systemctl daemon-reload<br>[root@bravo usuario]# systemctl start nfs-users.mount</code></pre>
+<p>Hago un df -h para comprobar que se ha montado correctamente:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo usuario]# df -h<br>Filesystem                  Size  Used Avail Use% Mounted on<br>devtmpfs                    4.0M     0  4.0M   0% /dev<br>tmpfs                       383M     0  383M   0% /dev/shm<br>tmpfs                       153M   20M  134M  13% /run<br>/dev/vda5                    29G  1.8G   28G   7% /<br>/dev/vda2                   994M  345M  649M  35% /boot<br>/dev/vda1                   100M  7.0M   93M   7% /boot/efi<br>172.16.0.1:/media/Archivos  2.0G     0  1.9G   0% /home/usuario/archivos<br>tmpfs                        77M     0   77M   0% /run/user/1000<br>172.16.0.1:/nfs/users        30G  5.9G   23G  21% /nfs/users<br>[root@bravo usuario]# </code></pre>
+<p>Ahora realizamos un login con el usuario1 y creamos una carpeta:</p>
+<pre class="language-txt"><code class="language-txt">[root@bravo ~]# su - usuario1<br>Last failed login: Sat Feb 18 22:42:09 UTC 2023 on pts/0<br>There was 1 failed login attempt since the last successful login.<br>[usuario1@bravo ~]$ ls<br>prueba  pruebadelta  rafa1.txt<br>[usuario1@bravo ~]$ mkdir desde-bravo</code></pre>
+<p>La visualizo desde alfa:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ exit<br>logout<br>Connection to 172.16.0.200 closed.<br>usuario@alfa:~$ sudo su<br>root@alfa:/home/usuario# cd<br>root@alfa:~# cd /nfs/users/usuario1/<br>root@alfa:/nfs/users/usuario1# ls<br>desde-bravo  prueba  pruebadelta  rafa1.txt<br>root@alfa:/nfs/users/usuario1# </code></pre>
+<p>Como vemos a creado correctamente la carpeta en el home nfs.</p>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Siguiente post</p>
+            <p class="font-bold mb-2">
+                <a href="/post/practica:-implantacion-de-aplicaciones-web-php-en-docker./">Práctica: Implantación de aplicaciones web PHP en docker.</a>
+            </p>
+        
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/poblar-un-directorio-ldap-desde-un-fichero-csv./">Poblar un directorio LDAP desde un fichero CSV.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>

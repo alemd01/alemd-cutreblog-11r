@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Ejercicios de K8s V. | Cutreblog">
+    <meta itemprop="description" content="Quinto taller de la unidad de Kubernetes.">
+
+    
+    <meta name="twitter:title" content="Ejercicios de K8s V. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Quinto taller de la unidad de Kubernetes.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Ejercicios de K8s V. | Cutreblog">
+    <meta name="og:description" content="Quinto taller de la unidad de Kubernetes.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Ejercicios de K8s V. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Ejercicios de K8s V.</h2>
+
+        
+            <p class="excerpt">Quinto taller de la unidad de Kubernetes.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SRI" href="/tag/SRI">SRI</a><a class="tag Kubernetes" href="/tag/Kubernetes">Kubernetes</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Thu Feb 16 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 16, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#configurando-nuestra-aplicaci%C3%B3n-temperaturas.">Configurando nuestra aplicación Temperaturas.</a>
+            
+                <ol>
+                    
+                    <li><a href="#1.-crea-un-recurso-configmap-con-un-dato-que-tenga-como-clave-servidor_temperaturas-y-como-contenido-servidor-temperaturas%3A5000.">1. Crea un recurso ConfigMap con un dato que tenga como clave SERVIDOR_TEMPERATURAS y como contenido servidor-temperaturas:5000.</a>
+            		</li>
+
+                    <li><a href="#2.-modifica-el-fichero-de-despliegue-del-frontend%3A-frontend-deployment.yaml-para-a%C3%B1adir-la-modificaci%C3%B3n-de-la-variable-temp_server-con-el-valor-que-hemos-guardado-en-el-configmap.">2. Modifica el fichero de despliegue del frontend: frontend-deployment.yaml para añadir la modificación de la variable TEMP_SERVER con el valor que hemos guardado en el ConfigMap.</a>
+            		</li>
+
+                    <li><a href="#3.-realiza-el-despliegue-y-crea-el-service-para-acceder-al-frontend.">3. Realiza el despliegue y crea el Service para acceder al frontend.</a>
+            		</li>
+
+                    <li><a href="#4.-despliega-el-microservicio-backend.">4. Despliega el microservicio backend.</a>
+            		</li>
+
+                    <li><a href="#5.-modifica-el-fichero-backend-srv.yaml-para-cambiar-el-nombre-del-service-por-servidor-temperaturas-y-crea-el-service.">5. Modifica el fichero backend-srv.yaml para cambiar el nombre del Service por servidor-temperaturas y crea el Service.</a>
+            		</li>
+
+                    <li><a href="#6.-accede-a-la-aplicaci%C3%B3n-usando-el-puerto-asignado-al-service-nodeport-del-frontend-o-creando-el-recurso-ingress.">6. Accede a la aplicación usando el puerto asignado al Service NodePort del frontend o creando el recurso Ingress.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#despliegue-y-acceso-de-la-aplicaci%C3%B3n-nextcloud.">Despliegue y acceso de la aplicación Nextcloud.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="configurando-nuestra-aplicaci%C3%B3n-temperaturas." tabindex="-1">Configurando nuestra aplicación Temperaturas.</h3>
+<p><strong>En un ejemplo anterior: Ejemplo completo: Desplegando y accediendo a la aplicación Temperaturas habíamos desplegado una aplicación formada por dos microservicios que nos permitía visualizar las temperaturas de municipios.</strong></p>
+<p><strong>Recordamos que el componente frontend hace peticiones al componente backend utilizando el nombre temperaturas-backend, que es el nombre que asignamos al Service ClusterIP para el acceso al backend.</strong></p>
+<p><strong>Vamos a cambiar la configuración de la aplicación para indicar otro nombre.</strong></p>
+<p><strong>Podemos configurar el nombre del servidor backend al que vamos acceder desde el frontend modificando la variable de entorno TEMP_SERVER a la hora de crear el despliegue del frontend.</strong></p>
+<p><strong>Por defecto el valor de esa variable es:</strong></p>
+<p><code>TEMP_SERVER temperaturas-backend:5000</code></p>
+<p><strong>Vamos a modificar esta variable en el despliegue del frontend y cambiaremos el nombre del Service del backend para que coincidan, para ello realiza los siguientes pasos:</strong></p>
+<h4 id="1.-crea-un-recurso-configmap-con-un-dato-que-tenga-como-clave-servidor_temperaturas-y-como-contenido-servidor-temperaturas%3A5000." tabindex="-1">1. Crea un recurso ConfigMap con un dato que tenga como clave SERVIDOR_TEMPERATURAS y como contenido servidor-temperaturas:5000.</h4>
+<p>Creo el recurso ConfigMap:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl create cm temperaturas --from-literal=SERVIDOR_TEMPERATURAS=servidor-temperaturas:5000<br>configmap/temperaturas created</code></pre>
+<p>Podemos ver el recurso utilizando el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl describe cm temperaturas<br>Name:         temperaturas<br>Namespace:    default<br>Labels:       &lt;none><br>Annotations:  &lt;none><br><br>Data<br>====<br>SERVIDOR_TEMPERATURAS:<br>----<br>servidor-temperaturas:5000<br><br>BinaryData<br>====<br><br>Events:  &lt;none></code></pre>
+<h4 id="2.-modifica-el-fichero-de-despliegue-del-frontend%3A-frontend-deployment.yaml-para-a%C3%B1adir-la-modificaci%C3%B3n-de-la-variable-temp_server-con-el-valor-que-hemos-guardado-en-el-configmap." tabindex="-1">2. Modifica el fichero de despliegue del frontend: frontend-deployment.yaml para añadir la modificación de la variable TEMP_SERVER con el valor que hemos guardado en el ConfigMap.</h4>
+<p>El fichero queda de la siguiente manera:</p>
+<pre class="language-txt"><code class="language-txt">apiVersion: apps/v1<br>kind: Deployment<br>metadata:<br>  name: temperaturas-frontend<br>  labels:<br>    app: temperaturas<br>    tier: frontend<br>spec:<br>  replicas: 3<br>  selector:<br>    matchLabels:<br>      app: temperaturas<br>      tier: frontend<br>  template:<br>    metadata:<br>      labels:<br>        app: temperaturas<br>        tier: frontend<br>    spec:<br>      containers:<br>      - name: contenedor-temperaturas<br>        image: iesgn/temperaturas_frontend<br>        ports:<br>          - name: http-server<br>            containerPort: 3000<br>        env:<br>          - name: TEMP_SERVER<br>            valueFrom:<br>              configMapKeyRef:<br>                name: temperaturas<br>                key: SERVIDOR_TEMPERATURAS</code></pre>
+<h4 id="3.-realiza-el-despliegue-y-crea-el-service-para-acceder-al-frontend." tabindex="-1">3. Realiza el despliegue y crea el Service para acceder al frontend.</h4>
+<p>fichero del frontend service:</p>
+<pre class="language-txt"><code class="language-txt">apiVersion: v1<br>kind: Service<br>metadata:<br>  name: temperaturas-frontend<br>  labels:<br>    app: temperaturas<br>    tier: frontend<br>spec:<br>  type: NodePort<br>  ports:<br>  - port: 3000<br>    targetPort: http-server<br>  selector:<br>    app: temperaturas<br>    tier: frontend</code></pre>
+<h4 id="4.-despliega-el-microservicio-backend." tabindex="-1">4. Despliega el microservicio backend.</h4>
+<p>Muestro el fichero del despliegue del backend:</p>
+<pre class="language-txt"><code class="language-txt">apiVersion: apps/v1<br>kind: Deployment<br>metadata:<br>  name: temperaturas-backend<br>  labels:<br>    app: temperaturas<br>    tier: backend<br>spec:<br>  replicas: 1<br>  selector:<br>    matchLabels:<br>      app: temperaturas<br>      tier: backend<br>  template:<br>    metadata:<br>      labels:<br>        app: temperaturas<br>        tier: backend<br>    spec:<br>      containers:<br>        - name: contendor-servidor-temperaturas<br>          image: iesgn/temperaturas_backend<br>          ports:<br>            - name: api-server<br>              containerPort: 5000</code></pre>
+<h4 id="5.-modifica-el-fichero-backend-srv.yaml-para-cambiar-el-nombre-del-service-por-servidor-temperaturas-y-crea-el-service." tabindex="-1">5. Modifica el fichero backend-srv.yaml para cambiar el nombre del Service por servidor-temperaturas y crea el Service.</h4>
+<p>Muestro el fichero:</p>
+<pre class="language-txt"><code class="language-txt">apiVersion: v1<br>kind: Service<br>metadata:<br>  name: servidor-temperaturas<br>  labels:<br>    app: temperaturas<br>    tier: backend<br>spec:<br>  type: ClusterIP<br>  ports:<br>  - port: 5000<br>    targetPort: api-server<br>  selector:<br>    app: temperaturas<br>    tier: backend</code></pre>
+<h4 id="6.-accede-a-la-aplicaci%C3%B3n-usando-el-puerto-asignado-al-service-nodeport-del-frontend-o-creando-el-recurso-ingress." tabindex="-1">6. Accede a la aplicación usando el puerto asignado al Service NodePort del frontend o creando el recurso Ingress.</h4>
+<p><img src="/img/SRI-K8S-V.1.png" alt="SRI-K8S-V.1.png"></p>
+<h3 id="despliegue-y-acceso-de-la-aplicaci%C3%B3n-nextcloud." tabindex="-1">Despliegue y acceso de la aplicación Nextcloud.</h3>
+<p><strong>Basándonos en el Ejemplo completo: Despliegue y acceso a Wordpress + MariaDB vamos a realizar el despliegue de la aplicación NextCloud + MariaDB. Para ello ten en cuenta lo siguiente:</strong></p>
+<ul>
+<li>
+<p><strong>El despliegue de la base de datos se haría de la misma forma que encontramos en el ejemplo de Wordpress, pero para esta actividad vamos a usar la imagen mariadb:10.5.</strong></p>
+</li>
+<li>
+<p><strong>Según la documentación de NextCloud en DockerHub las variables de entorno que tienes que modificar serían: MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD y MYSQL_HOST.</strong></p>
+</li>
+<li>
+<p><strong>Al igual que en el ejemplo utiliza un recurso ConfigMap para guardar los valores de configuración no sensibles, y un recurso Secret para los datos sensibles.</strong></p>
+</li>
+<li>
+<p><strong>4. Utiliza los ficheros yaml del ejemplo haciendo las modificaciones oportunas.</strong></p>
+</li>
+</ul>
+<p>Lo primero que haremos será crear los recursos ConfigMap y Secret.</p>
+<p><strong>FALTA MYSQL_HOST</strong></p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/nextcloud$ kubectl create cm cm-nextcloud --from-literal=MYSQL_DATABASE=mariadb --from-literal=MYSQL_USER=mariadb<br>configmap/cm-nextcloud created<br>alemd@debian:~/minikube/nextcloud$ kubectl create secret generic secret-nextcloud --from-literal=MYSQL_PASSWORD=mariadb<br>secret/secret-nextcloud created</code></pre>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/practica:-implantacion-de-aplicaciones-web-php-en-docker./">Práctica: Implantación de aplicaciones web PHP en docker.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
