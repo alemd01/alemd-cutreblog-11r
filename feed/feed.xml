@@ -245,6 +245,17 @@
 &lt;p&gt;La visualizo desde alfa:&lt;/p&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[usuario@bravo ~]$ exit&lt;br /&gt;logout&lt;br /&gt;Connection to 172.16.0.200 closed.&lt;br /&gt;usuario@alfa:~$ sudo su&lt;br /&gt;root@alfa:/home/usuario# cd&lt;br /&gt;root@alfa:~# cd /nfs/users/usuario1/&lt;br /&gt;root@alfa:/nfs/users/usuario1# ls&lt;br /&gt;desde-bravo  prueba  pruebadelta  rafa1.txt&lt;br /&gt;root@alfa:/nfs/users/usuario1# &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Como vemos a creado correctamente la carpeta en el home nfs.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;EXTRA&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Vamos a configurar nuestro servidor LDAP para que podamos loguearnos sin ser root. Esto pasa debido a que el servidor NFS necesita ser root para acceder, para ello le indicaremos un nuevo parámetro:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@alfa:~# nano /etc/exports &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Editamos la línea de la carpeta NFS que compartimos y añadimos el último parámetro:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;/nfs/users *(rw,fsid=0,subtree_check,no_root_squash)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Reiniciamos el servidor nfs:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@alfa:~# systemctl restart nfs-kernel-server&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Pruebo a iniciar sesión desde bravo(RockyLinux):&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;[usuario@bravo ~]$ su - usuario1&lt;br /&gt;Password: &lt;br /&gt;Last login: Sat Feb 18 23:15:01 UTC 2023 on pts/1&lt;br /&gt;[usuario1@bravo ~]$ &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Inicio sesión desde delta(Ubuntu):&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;ubuntu@delta:~$ su - usuario1&lt;br /&gt;Password: &lt;br /&gt;usuario1@delta:~$ ls&lt;br /&gt;desde-bravo  prueba  pruebadelta  rafa1.txt&lt;/code&gt;&lt;/pre&gt;
 &lt;hr /&gt;
 &lt;h2 id=&quot;documento-realizado-por%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Documento realizado por:&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;✒️ &lt;strong&gt;Alejandro Montes Delgado&lt;/strong&gt; - &lt;em&gt;2º ASIR&lt;/em&gt;&lt;/p&gt;

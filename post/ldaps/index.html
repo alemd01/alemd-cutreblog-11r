@@ -185,6 +185,17 @@
 <p>La visualizo desde alfa:</p>
 <pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ exit<br>logout<br>Connection to 172.16.0.200 closed.<br>usuario@alfa:~$ sudo su<br>root@alfa:/home/usuario# cd<br>root@alfa:~# cd /nfs/users/usuario1/<br>root@alfa:/nfs/users/usuario1# ls<br>desde-bravo  prueba  pruebadelta  rafa1.txt<br>root@alfa:/nfs/users/usuario1# </code></pre>
 <p>Como vemos a creado correctamente la carpeta en el home nfs.</p>
+<p><strong>EXTRA</strong></p>
+<p>Vamos a configurar nuestro servidor LDAP para que podamos loguearnos sin ser root. Esto pasa debido a que el servidor NFS necesita ser root para acceder, para ello le indicaremos un nuevo parámetro:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:~# nano /etc/exports </code></pre>
+<p>Editamos la línea de la carpeta NFS que compartimos y añadimos el último parámetro:</p>
+<pre class="language-txt"><code class="language-txt">/nfs/users *(rw,fsid=0,subtree_check,no_root_squash)</code></pre>
+<p>Reiniciamos el servidor nfs:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:~# systemctl restart nfs-kernel-server</code></pre>
+<p>Pruebo a iniciar sesión desde bravo(RockyLinux):</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ su - usuario1<br>Password: <br>Last login: Sat Feb 18 23:15:01 UTC 2023 on pts/1<br>[usuario1@bravo ~]$ </code></pre>
+<p>Inicio sesión desde delta(Ubuntu):</p>
+<pre class="language-txt"><code class="language-txt">ubuntu@delta:~$ su - usuario1<br>Password: <br>usuario1@delta:~$ ls<br>desde-bravo  prueba  pruebadelta  rafa1.txt</code></pre>
 <hr>
 <h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
 <p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
