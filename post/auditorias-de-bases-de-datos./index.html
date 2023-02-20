@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Auditorías de bases de datos. | Cutreblog">
+    <meta itemprop="description" content="En este post veremos como auditar bases de datos.">
+
+    
+    <meta name="twitter:title" content="Auditorías de bases de datos. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="En este post veremos como auditar bases de datos.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Auditorías de bases de datos. | Cutreblog">
+    <meta name="og:description" content="En este post veremos como auditar bases de datos.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Auditorías de bases de datos. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Auditorías de bases de datos.</h2>
+
+        
+            <p class="excerpt">En este post veremos como auditar bases de datos.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag GBD" href="/tag/GBD">GBD</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Mon Feb 20 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 20, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#1.-activa-desde-sql*plus-la-auditor%C3%ADa-de-los-intentos-de-acceso-exitosos-al-sistema.-comprueba-su-funcionamiento.">1. Activa desde SQL*Plus la auditoría de los intentos de acceso exitosos al sistema. Comprueba su funcionamiento.</a>
+            		</li>
+
+                    <li><a href="#2.-realiza-un-procedimiento-en-pl%2Fsql-que-te-muestre-los-accesos-fallidos-junto-con-el-motivo-de-los-mismos%2C-transformando-el-c%C3%B3digo-de-error-almacenado-en-un-mensaje-de-texto-comprensible.-contempla-todos-los-motivos-posibles-para-que-un-acceso-sea-fallido.">2. Realiza un procedimiento en PL/SQL que te muestre los accesos fallidos junto con el motivo de los mismos, transformando el código de error almacenado en un mensaje de texto comprensible. Contempla todos los motivos posibles para que un acceso sea fallido.</a>
+            		</li>
+
+                    <li><a href="#3.-activa-la-auditor%C3%ADa-de-las-operaciones-dml-realizadas-por-scott.-comprueba-su-funcionamiento.">3. Activa la auditoría de las operaciones DML realizadas por SCOTT. Comprueba su funcionamiento.</a>
+            		</li>
+
+                    <li><a href="#4.-realiza-una-auditor%C3%ADa-de-grano-fino-para-almacenar-informaci%C3%B3n-sobre-la-inserci%C3%B3n-de-empleados-con-sueldo-superior-a-2000-en-la-tabla-emp-de-scott.">4. Realiza una auditoría de grano fino para almacenar información sobre la inserción de empleados con sueldo superior a 2000 en la tabla emp de scott.</a>
+            		</li>
+
+                    <li><a href="#5.-explica-la-diferencia-entre-auditar-una-operaci%C3%B3n-by-access-o-by-session-ilustr%C3%A1ndolo-con-ejemplos.">5. Explica la diferencia entre auditar una operación by access o by session ilustrándolo con ejemplos.</a>
+            		</li>
+
+                    <li><a href="#6.-documenta-las-diferencias-entre-los-valores-db-y-db%2C-extended-del-par%C3%A1metro-audit_trail-de-oracle.-demu%C3%A9stralas-poniendo-un-ejemplo-de-la-informaci%C3%B3n-sobre-una-operaci%C3%B3n-concreta-recopilada-con-cada-uno-de-ellos.">6. Documenta las diferencias entre los valores db y db, extended del parámetro audit_trail de ORACLE. Demuéstralas poniendo un ejemplo de la información sobre una operación concreta recopilada con cada uno de ellos.</a>
+            		</li>
+
+                    <li><a href="#7.-averigua-si-en-postgres-se-pueden-realizar-los-cuatro-primeros-apartados.-si-es-as%C3%AD%2C-documenta-el-proceso-adecuadamente.">7. Averigua si en Postgres se pueden realizar los cuatro primeros apartados. Si es así, documenta el proceso adecuadamente.</a>
+            		</li>
+
+                    <li><a href="#8.-averigua-si-en-mysql-se-pueden-realizar-los-apartados-1%2C-3-y-4.-si-es-as%C3%AD%2C-documenta-el-proceso-adecuadamente.">8. Averigua si en MySQL se pueden realizar los apartados 1, 3 y 4. Si es así, documenta el proceso adecuadamente.</a>
+            		</li>
+
+                    <li><a href="#9.-averigua-las-posibilidades-que-ofrece-mongodb-para-auditar-los-cambios-que-va-sufriendo-un-documento.-demuestra-su-funcionamiento.">9. Averigua las posibilidades que ofrece MongoDB para auditar los cambios que va sufriendo un documento. Demuestra su funcionamiento.</a>
+            		</li>
+
+                    <li><a href="#10.-averigua-si-en-mongodb-se-pueden-auditar-los-accesos-a-una-colecci%C3%B3n-concreta.-demuestra-su-funcionamiento.">10. Averigua si en MongoDB se pueden auditar los accesos a una colección concreta. Demuestra su funcionamiento.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="1.-activa-desde-sql*plus-la-auditor%C3%ADa-de-los-intentos-de-acceso-exitosos-al-sistema.-comprueba-su-funcionamiento." tabindex="-1">1. Activa desde SQL*Plus la auditoría de los intentos de acceso exitosos al sistema. Comprueba su funcionamiento.</h3>
+<p>Lo primero que haremos es comprobar que las auditorías están activadas en nuestra base de datos. Para ello ejecutaremos lO siguiente:</p>
+<pre class="language-txt"><code class="language-txt">SQL> SHOW PARAMETER AUDIT;<br><br>NAME				     TYPE	 VALUE<br>------------------------------------ ----------- ------------------------------<br>audit_file_dest 		     string	 /opt/oracle/admin/ORCLCDB/adum<br>						 p<br>audit_syslog_level		     string<br>audit_sys_operations		     boolean	 TRUE<br>audit_trail			     string	 DB<br>unified_audit_common_systemlog	     string<br>unified_audit_sga_queue_size	     integer	 1048576<br>unified_audit_systemlog 	     string<br></code></pre>
+<p>Como se aprecia, el valor de audit_trail es DB, si no estuvieran activadas, aparecería none. Si queremos activarlos tenemos que ejecutar la siguiente consulta y reiniciar el sistema:</p>
+<pre class="language-txt"><code class="language-txt">ALTER SYSTEM SET audit_trail=db scope=spfile;</code></pre>
+<h3 id="2.-realiza-un-procedimiento-en-pl%2Fsql-que-te-muestre-los-accesos-fallidos-junto-con-el-motivo-de-los-mismos%2C-transformando-el-c%C3%B3digo-de-error-almacenado-en-un-mensaje-de-texto-comprensible.-contempla-todos-los-motivos-posibles-para-que-un-acceso-sea-fallido." tabindex="-1">2. Realiza un procedimiento en PL/SQL que te muestre los accesos fallidos junto con el motivo de los mismos, transformando el código de error almacenado en un mensaje de texto comprensible. Contempla todos los motivos posibles para que un acceso sea fallido.</h3>
+<h3 id="3.-activa-la-auditor%C3%ADa-de-las-operaciones-dml-realizadas-por-scott.-comprueba-su-funcionamiento." tabindex="-1">3. Activa la auditoría de las operaciones DML realizadas por SCOTT. Comprueba su funcionamiento.</h3>
+<h3 id="4.-realiza-una-auditor%C3%ADa-de-grano-fino-para-almacenar-informaci%C3%B3n-sobre-la-inserci%C3%B3n-de-empleados-con-sueldo-superior-a-2000-en-la-tabla-emp-de-scott." tabindex="-1">4. Realiza una auditoría de grano fino para almacenar información sobre la inserción de empleados con sueldo superior a 2000 en la tabla emp de scott.</h3>
+<h3 id="5.-explica-la-diferencia-entre-auditar-una-operaci%C3%B3n-by-access-o-by-session-ilustr%C3%A1ndolo-con-ejemplos." tabindex="-1">5. Explica la diferencia entre auditar una operación by access o by session ilustrándolo con ejemplos.</h3>
+<h3 id="6.-documenta-las-diferencias-entre-los-valores-db-y-db%2C-extended-del-par%C3%A1metro-audit_trail-de-oracle.-demu%C3%A9stralas-poniendo-un-ejemplo-de-la-informaci%C3%B3n-sobre-una-operaci%C3%B3n-concreta-recopilada-con-cada-uno-de-ellos." tabindex="-1">6. Documenta las diferencias entre los valores db y db, extended del parámetro audit_trail de ORACLE. Demuéstralas poniendo un ejemplo de la información sobre una operación concreta recopilada con cada uno de ellos.</h3>
+<h3 id="7.-averigua-si-en-postgres-se-pueden-realizar-los-cuatro-primeros-apartados.-si-es-as%C3%AD%2C-documenta-el-proceso-adecuadamente." tabindex="-1">7. Averigua si en Postgres se pueden realizar los cuatro primeros apartados. Si es así, documenta el proceso adecuadamente.</h3>
+<h3 id="8.-averigua-si-en-mysql-se-pueden-realizar-los-apartados-1%2C-3-y-4.-si-es-as%C3%AD%2C-documenta-el-proceso-adecuadamente." tabindex="-1">8. Averigua si en MySQL se pueden realizar los apartados 1, 3 y 4. Si es así, documenta el proceso adecuadamente.</h3>
+<h3 id="9.-averigua-las-posibilidades-que-ofrece-mongodb-para-auditar-los-cambios-que-va-sufriendo-un-documento.-demuestra-su-funcionamiento." tabindex="-1">9. Averigua las posibilidades que ofrece MongoDB para auditar los cambios que va sufriendo un documento. Demuestra su funcionamiento.</h3>
+<h3 id="10.-averigua-si-en-mongodb-se-pueden-auditar-los-accesos-a-una-colecci%C3%B3n-concreta.-demuestra-su-funcionamiento." tabindex="-1">10. Averigua si en MongoDB se pueden auditar los accesos a una colección concreta. Demuestra su funcionamiento.</h3>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/ejercicios-de-k8s-v./">Ejercicios de K8s V.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
