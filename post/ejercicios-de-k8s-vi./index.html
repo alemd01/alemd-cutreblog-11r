@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Ejercicios de K8s VI. | Cutreblog">
+    <meta itemprop="description" content="Sexto taller de la unidad de Kubernetes.">
+
+    
+    <meta name="twitter:title" content="Ejercicios de K8s VI. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Sexto taller de la unidad de Kubernetes.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Ejercicios de K8s VI. | Cutreblog">
+    <meta name="og:description" content="Sexto taller de la unidad de Kubernetes.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Ejercicios de K8s VI. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Ejercicios de K8s VI.</h2>
+
+        
+            <p class="excerpt">Sexto taller de la unidad de Kubernetes.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SRI" href="/tag/SRI">SRI</a><a class="tag Kubernetes" href="/tag/Kubernetes">Kubernetes</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Mon Feb 20 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 20, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#desplegando-un-servidor-web-persistente.">Desplegando un servidor web persistente.</a>
+            
+                <ol>
+                    
+                    <li><a href="#crea-un-fichero-yaml-para-definir-un-recurso-persistentvolumenclaim-que-se-llame-pvc-webserver-y-para-solicitar-un-volumen-de-2gb.">Crea un fichero yaml para definir un recurso PersistentVolumenClaim que se llame pvc-webserver y para solicitar un volumen de 2Gb.</a>
+            		</li>
+
+                    <li><a href="#crea-el-recurso-y-comprueba-que-se-ha-asociado-un-volumen-de-forma-din%C3%A1mica-a-la-solicitud.">Crea el recurso y comprueba que se ha asociado un volumen de forma dinámica a la solicitud.</a>
+            		</li>
+
+                    <li><a href="#crea-un-fichero-yaml-para-desplegar-un-servidor-web-desde-la-imagen-php%3A7.4-apache%2C-asocia-el-volumen-al-pod-que-se-va-a-crear-e-indica-el-punto-de-montaje-en-el-documentroot-del-servidor%3A-%2Fvar%2Fwww%2Fhtml.">Crea un fichero yaml para desplegar un servidor web desde la imagen php:7.4-apache, asocia el volumen al Pod que se va a crear e indica el punto de montaje en el DocumentRoot del servidor: /var/www/html.</a>
+            		</li>
+
+                    <li><a href="#despliega-el-servidor-y-crea-un-fichero-info.php-en-%2Fvar%2Fwww%2Fhtml%2C-con-el-siguiente-contenido%3A-%3C%3Fphp-phpinfo()%3B-%3F%3E.">Despliega el servidor y crea un fichero info.php en /var/www/html, con el siguiente contenido: <?php phpinfo(); ?>.</a>
+            		</li>
+
+                    <li><a href="#define-y-crea-un-service-nodeport%2C-accede-desde-un-navegador-al-fichero-info.php-y-comprueba-que-se-visualiza-de-forma-correcta.">Define y crea un Service NodePort, accede desde un navegador al fichero info.php y comprueba que se visualiza de forma correcta.</a>
+            		</li>
+
+                    <li><a href="#comprobemos-la-persistencia%3A-elimina-el-deployment%2C-vuelve-a-crearlo-y-vuelve-a-acceder-desde-el-navegador-al-fichero-info.php.-%C2%BFse-sigue-visualizando%3F">Comprobemos la persistencia: elimina el Deployment, vuelve a crearlo y vuelve a acceder desde el navegador al fichero info.php. ¿Se sigue visualizando?</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#haciendo-persistente-la-aplicaci%C3%B3n-guestbook.">Haciendo persistente la aplicación GuestBook.</a>
+            
+                <ol>
+                    
+                    <li><a href="#1.-crea-un-fichero-yaml-para-definir-un-recurso-persistentvolumenclaim-que-se-llame-pvc-redis-y-para-solicitar-un-volumen-de-3gb.">1. Crea un fichero yaml para definir un recurso PersistentVolumenClaim que se llame pvc-redis y para solicitar un volumen de 3Gb.</a>
+            		</li>
+
+                    <li><a href="#2.-crea-el-recurso-y-comprueba-que-se-ha-asociado-un-volumen-de-forma-din%C3%A1mica-a-la-solicitud.">2. Crea el recurso y comprueba que se ha asociado un volumen de forma dinámica a la solicitud.</a>
+            		</li>
+
+                    <li><a href="#3.-modifica-el-fichero-del-despliegue-de-redis%2C-modificando-las-xxxxxxxxxxxx-por-los-valores-correctos%3A-el-nombre-del-persistentvolumenclaim-y-el-directorio-de-montaje-en-el-contenedor-(como-hemos-visto-anteriormente-es-%2Fdata).">3. Modifica el fichero del despliegue de redis, modificando las xxxxxxxxxxxx por los valores correctos: el nombre del PersistentVolumenClaim y el directorio de montaje en el contenedor (como hemos visto anteriormente es /data).</a>
+            		</li>
+
+                    <li><a href="#4.-crea-el-despliegue-de-redis.-el-despliegue-de-la-aplicaci%C3%B3n-guestbook-y-la-creaci%C3%B3n-de-los-services-de-acceso-se-hace-con-los-ficheros-que-ya-utilizamos-anteriormente%3A-guestbook-deployment.yaml%2C-guestbook-srv.yaml-y-redis-srv.yaml.">4. Crea el despliegue de redis. El despliegue de la aplicación guestbook y la creación de los Services de acceso se hace con los ficheros que ya utilizamos anteriormente: guestbook-deployment.yaml, guestbook-srv.yaml y redis-srv.yaml.</a>
+            		</li>
+
+                    <li><a href="#5.-accede-a-la-aplicaci%C3%B3n-y-escribe-algunos-mensajes.">5. Accede a la aplicación y escribe algunos mensajes.</a>
+            		</li>
+
+                    <li><a href="#6.-comprobemos-la-persistencia%3A-elimina-el-despliegue-de-redis%2C-vuelve-a-crearlo%2C-vuelve-a-acceder-desde-el-navegador-y-comprueba-que-los-mensajes-no-se-han-perdido.">6. Comprobemos la persistencia: elimina el despliegue de redis, vuelve a crearlo, vuelve a acceder desde el navegador y comprueba que los mensajes no se han perdido.</a>
+            		</li>
+                </ol>
+            		</li>
+
+                    <li><a href="#haciendo-persistente-la-aplicaci%C3%B3n-nextcloud.">Haciendo persistente la aplicación Nextcloud.</a>
+            
+                <ol>
+                    
+                    <li><a href="#1.-crea-los-ficheros-yaml-para-definir-los-recursos-persistentvolumenclaim-para-solicitar-dos-vol%C3%BAmenes-de-4gb.">1. Crea los ficheros yaml para definir los recursos PersistentVolumenClaim para solicitar dos volúmenes de 4Gb.</a>
+            		</li>
+
+                    <li><a href="#2.-crea-esos-recursos-y-comprueba-que-se-ha-asociado-un-volumen-de-forma-din%C3%A1mica-a-cada-solicitud.">2. Crea esos recursos y comprueba que se ha asociado un volumen de forma dinámica a cada solicitud.</a>
+            		</li>
+
+                    <li><a href="#3.-modifica-los-ficheros-de-despliegue-de-la-aplicaci%C3%B3n-y-la-base-de-datos-para-asociar-los-vol%C3%BAmenes-a-cada-uno.-seg%C3%BAn-la-documentaci%C3%B3n-de-la-imagen-nextcloud-en-docker-hub%2C-la-forma-m%C3%A1s-sencilla-de-hacer-persistente-la-aplicaci%C3%B3n-es-montar-el-volumen-en-el-directorio%2Fvar%2Fwww%2Fhtml%2F.">3. Modifica los ficheros de despliegue de la aplicación y la base de datos para asociar los volúmenes a cada uno. Según la documentación de la imagen Nextcloud en Docker Hub, la forma más sencilla de hacer persistente la aplicación es montar el volumen en el directorio/var/www/html/.</a>
+            		</li>
+
+                    <li><a href="#4.-accede-a-la-aplicaci%C3%B3n%2C-config%C3%BArala-y-sube-un-fichero.">4. Accede a la aplicación, configúrala y sube un fichero.</a>
+            		</li>
+
+                    <li><a href="#5.-comprobemos-la-persistencia%3A-elimina-los-despliegues%2C-vuelve-a-crearlos-y-vuelve-a-acceder-desde-el-navegador-y-comprueba-que-la-aplicaci%C3%B3n-est%C3%A1-configurada-y-mantiene-el-fichero-que-hab%C3%ADas-subido.">5. Comprobemos la persistencia: elimina los despliegues, vuelve a crearlos y vuelve a acceder desde el navegador y comprueba que la aplicación está configurada y mantiene el fichero que habías subido.</a>
+            		</li>
+                </ol>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="desplegando-un-servidor-web-persistente." tabindex="-1">Desplegando un servidor web persistente.</h3>
+<p><strong>Siguiendo la guía explicada en el Ejemplo 2: Gestión dinámica de volúmenes, vamos a crear un servidor web que permita la ejecución de scripts PHP con almacenamiento persistente.</strong></p>
+<p><strong>Para realizar esta actividad vamos a usar asignación dinámica de volúmenes y puedes usar, como modelos, los ficheros del ejemplo 2.</strong></p>
+<p><strong>Realiza los siguientes pasos:</strong></p>
+<h4 id="crea-un-fichero-yaml-para-definir-un-recurso-persistentvolumenclaim-que-se-llame-pvc-webserver-y-para-solicitar-un-volumen-de-2gb." tabindex="-1">Crea un fichero yaml para definir un recurso PersistentVolumenClaim que se llame pvc-webserver y para solicitar un volumen de 2Gb.</h4>
+<p>El contenido del fichero es el siguiente:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> PersistentVolumeClaim<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>    <span class="token key atrule">name</span><span class="token punctuation">:</span> pvc<span class="token punctuation">-</span>webserver<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">accessModes</span><span class="token punctuation">:</span><br>    <span class="token punctuation">-</span> ReadWriteOnce<br>  <span class="token key atrule">resources</span><span class="token punctuation">:</span><br>    <span class="token key atrule">requests</span><span class="token punctuation">:</span><br>      <span class="token key atrule">storage</span><span class="token punctuation">:</span> 2Gi</code></pre>
+<h4 id="crea-el-recurso-y-comprueba-que-se-ha-asociado-un-volumen-de-forma-din%C3%A1mica-a-la-solicitud." tabindex="-1">Crea el recurso y comprueba que se ha asociado un volumen de forma dinámica a la solicitud.</h4>
+<p>Creamos el recurso con el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/taller6$ kubectl apply -f pvc-webserver.yaml<br>persistentvolumeclaim/pvc-webserver created</code></pre>
+<p>Y lo visualizamos con el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/taller6$ kubectl get pv,pvc<br>NAME                                                        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                   STORAGECLASS   REASON   AGE<br>persistentvolume/pvc-f30ccc20-4f70-48e4-923c-b9d541348327   2Gi        RWO            Delete           Bound    default/pvc-webserver   standard                27s<br><br>NAME                                  STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE<br>persistentvolumeclaim/pvc-webserver   Bound    pvc-f30ccc20-4f70-48e4-923c-b9d541348327   2Gi        RWO            standard       28s</code></pre>
+<h4 id="crea-un-fichero-yaml-para-desplegar-un-servidor-web-desde-la-imagen-php%3A7.4-apache%2C-asocia-el-volumen-al-pod-que-se-va-a-crear-e-indica-el-punto-de-montaje-en-el-documentroot-del-servidor%3A-%2Fvar%2Fwww%2Fhtml." tabindex="-1">Crea un fichero yaml para desplegar un servidor web desde la imagen php:7.4-apache, asocia el volumen al Pod que se va a crear e indica el punto de montaje en el DocumentRoot del servidor: /var/www/html.</h4>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>  <span class="token key atrule">name</span><span class="token punctuation">:</span> servidorweb<br>  <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>    <span class="token key atrule">app</span><span class="token punctuation">:</span> apache<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">1</span><br>  <span class="token key atrule">selector</span><span class="token punctuation">:</span><br>    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span><br>      <span class="token key atrule">app</span><span class="token punctuation">:</span> apache<br>  <span class="token key atrule">template</span><span class="token punctuation">:</span><br>    <span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>      <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>        <span class="token key atrule">app</span><span class="token punctuation">:</span> apache<br>    <span class="token key atrule">spec</span><span class="token punctuation">:</span><br>      <span class="token key atrule">volumes</span><span class="token punctuation">:</span><br>        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> volumen<span class="token punctuation">-</span>servidorweb<br>          <span class="token key atrule">persistentVolumeClaim</span><span class="token punctuation">:</span><br>            <span class="token key atrule">claimName</span><span class="token punctuation">:</span> pvc<span class="token punctuation">-</span>webserver<br>      <span class="token key atrule">containers</span><span class="token punctuation">:</span><br>        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> contenedor<span class="token punctuation">-</span>apache<span class="token punctuation">-</span>php<br>          <span class="token key atrule">image</span><span class="token punctuation">:</span> php<span class="token punctuation">:</span>7.4<span class="token punctuation">-</span>apache<br>          <span class="token key atrule">ports</span><span class="token punctuation">:</span><br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> http<span class="token punctuation">-</span>server<br>              <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">80</span><br>          <span class="token key atrule">volumeMounts</span><span class="token punctuation">:</span><br>            <span class="token punctuation">-</span> <span class="token key atrule">mountPath</span><span class="token punctuation">:</span> <span class="token string">"/var/www/html"</span><br>              <span class="token key atrule">name</span><span class="token punctuation">:</span> volumen<span class="token punctuation">-</span>servidorweb</code></pre>
+<h4 id="despliega-el-servidor-y-crea-un-fichero-info.php-en-%2Fvar%2Fwww%2Fhtml%2C-con-el-siguiente-contenido%3A-%3C%3Fphp-phpinfo()%3B-%3F%3E." tabindex="-1">Despliega el servidor y crea un fichero info.php en /var/www/html, con el siguiente contenido: &lt;?php phpinfo(); ?&gt;.</h4>
+<p>Desplegamos el servidor:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/taller6$ kubectl apply -f servidorweb-php.yaml <br>deployment.apps/servidorweb created</code></pre>
+<p>Ahora creamos un service:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/taller6$ nano web-service.yaml</code></pre>
+<p>Con el siguiente contenido:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> Service<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>  <span class="token key atrule">name</span><span class="token punctuation">:</span> servicio<span class="token punctuation">-</span>servidorweb<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">type</span><span class="token punctuation">:</span> NodePort<br>  <span class="token key atrule">ports</span><span class="token punctuation">:</span><br>  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> service<span class="token punctuation">-</span>http<br>    <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">80</span><br>    <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> http<span class="token punctuation">-</span>server<br>  <span class="token key atrule">selector</span><span class="token punctuation">:</span><br>    <span class="token key atrule">app</span><span class="token punctuation">:</span> apache</code></pre>
+<p>Creamos el service:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/taller6$ kubectl apply -f web-service.yaml<br>service/servicio-servidorweb created</code></pre>
+<p>Ahora ejecutamos el siguiente comando para añadir el info.php al servidor web:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/taller6$ kubectl exec pod/servidorweb-6d46fd9685-vhqjq -- bash -c "echo '&lt;?php phpinfo(); ?>' > /var/www/html/info.php"</code></pre>
+<h4 id="define-y-crea-un-service-nodeport%2C-accede-desde-un-navegador-al-fichero-info.php-y-comprueba-que-se-visualiza-de-forma-correcta." tabindex="-1">Define y crea un Service NodePort, accede desde un navegador al fichero info.php y comprueba que se visualiza de forma correcta.</h4>
+<p>El Service NodePort está creado más arriba.</p>
+<p>Probamos que funciona accediendo a través de la IP y el puerto:</p>
+<p><img src="/img/SRI-K8S-VI.1.png" alt="SRI-K8S-VI.1.png"></p>
+<h4 id="comprobemos-la-persistencia%3A-elimina-el-deployment%2C-vuelve-a-crearlo-y-vuelve-a-acceder-desde-el-navegador-al-fichero-info.php.-%C2%BFse-sigue-visualizando%3F" tabindex="-1">Comprobemos la persistencia: elimina el Deployment, vuelve a crearlo y vuelve a acceder desde el navegador al fichero info.php. ¿Se sigue visualizando?</h4>
+<p>Eliminamos el deployment:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/taller6$ kubectl delete deployments.apps servidorweb<br>deployment.apps "servidorweb" deleted</code></pre>
+<p>Volvemos a crearlo:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/taller6$ kubectl apply -f servidorweb-php.yaml<br>deployment.apps/servidorweb created</code></pre>
+<p>Volvemos a acceder a la página:</p>
+<p><img src="/img/SRI-K8S-VI.2.png" alt="SRI-K8S-VI.2.png"></p>
+<p>Como vemos funciona correctamente.</p>
+<h3 id="haciendo-persistente-la-aplicaci%C3%B3n-guestbook." tabindex="-1">Haciendo persistente la aplicación GuestBook.</h3>
+<p><strong>En este ejercicio vamos a volver a desplegar nuestra aplicación GuestBook, que realizamos en el taller 4 y 5, para añadirle persistencia a la base de datos redis.</strong></p>
+<p><strong>Por lo tanto necesitaremos solicitar un volumen, que se asociará de forma dinámica.</strong></p>
+<p><strong>Creando el despliegue de redis para que guarde la información en un directorio.</strong></p>
+<p><strong>Si estudiamos la documentación de la imagen redis en Docker Hub, para que la información de la base de datos se guarde en un directorio /data del contenedor hay que ejecutar con docker:</strong></p>
+<p><code>docker run --name some-redis -d redis redis-server --appendonly yes</code></p>
+<p><strong>Es decir, hay que crear el contenedor ejecutando el proceso redis-server con los argumentos --appendonly yes.</strong></p>
+<p><strong>Por lo tanto tenemos que cambiar el fichero de definición del Deployment de redis, redis-deployment.yaml de la siguiente manera:</strong></p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>  <span class="token key atrule">name</span><span class="token punctuation">:</span> redis<br>  <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>    <span class="token key atrule">app</span><span class="token punctuation">:</span> redis<br>    <span class="token key atrule">tier</span><span class="token punctuation">:</span> backend<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">1</span><br>  <span class="token key atrule">selector</span><span class="token punctuation">:</span><br>    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span><br>      <span class="token key atrule">app</span><span class="token punctuation">:</span> redis<br>      <span class="token key atrule">tier</span><span class="token punctuation">:</span> backend<br>  <span class="token key atrule">template</span><span class="token punctuation">:</span><br>    <span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>      <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>        <span class="token key atrule">app</span><span class="token punctuation">:</span> redis<br>        <span class="token key atrule">tier</span><span class="token punctuation">:</span> backend<br>    <span class="token key atrule">spec</span><span class="token punctuation">:</span><br>      <span class="token key atrule">volumes</span><span class="token punctuation">:</span><br>        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> volumen<span class="token punctuation">-</span>redis<br>          <span class="token key atrule">persistentVolumeClaim</span><span class="token punctuation">:</span><br>            <span class="token key atrule">claimName</span><span class="token punctuation">:</span> xxxxxxxxxxxx<br>      <span class="token key atrule">containers</span><span class="token punctuation">:</span><br>        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> contenedor<span class="token punctuation">-</span>redis<br>          <span class="token key atrule">image</span><span class="token punctuation">:</span> redis<br>          <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"redis-server"</span><span class="token punctuation">]</span><br>          <span class="token key atrule">args</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"--appendonly"</span><span class="token punctuation">,</span> <span class="token string">"yes"</span><span class="token punctuation">]</span><br>          <span class="token key atrule">ports</span><span class="token punctuation">:</span><br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> redis<span class="token punctuation">-</span>server<br>              <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">6379</span><br>          <span class="token key atrule">volumeMounts</span><span class="token punctuation">:</span><br>            <span class="token punctuation">-</span> <span class="token key atrule">mountPath</span><span class="token punctuation">:</span> xxxxxxxxxxxx<br>              <span class="token key atrule">name</span><span class="token punctuation">:</span> volumen<span class="token punctuation">-</span>redis</code></pre>
+<p><strong>Hemos usado el parámetro command para ejecutar el proceso, y el parámetro args para indicar los argumentos.</strong></p>
+<p><strong>Nota: Los valores xxxxxxxxxxxx tendrás que rellenarlos durante la realización de la actividad.</strong></p>
+<p><strong>Pasos a seguir</strong></p>
+<p><strong>Realiza los siguientes pasos:</strong></p>
+<h4 id="1.-crea-un-fichero-yaml-para-definir-un-recurso-persistentvolumenclaim-que-se-llame-pvc-redis-y-para-solicitar-un-volumen-de-3gb." tabindex="-1">1. Crea un fichero yaml para definir un recurso PersistentVolumenClaim que se llame pvc-redis y para solicitar un volumen de 3Gb.</h4>
+<p>El contenido del fichero es el siguiente:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> PersistentVolumeClaim<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>    <span class="token key atrule">name</span><span class="token punctuation">:</span> pvc<span class="token punctuation">-</span>redis<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">accessModes</span><span class="token punctuation">:</span><br>    <span class="token punctuation">-</span> ReadWriteOnce<br>  <span class="token key atrule">resources</span><span class="token punctuation">:</span><br>    <span class="token key atrule">requests</span><span class="token punctuation">:</span><br>      <span class="token key atrule">storage</span><span class="token punctuation">:</span> 3Gi</code></pre>
+<h4 id="2.-crea-el-recurso-y-comprueba-que-se-ha-asociado-un-volumen-de-forma-din%C3%A1mica-a-la-solicitud." tabindex="-1">2. Crea el recurso y comprueba que se ha asociado un volumen de forma dinámica a la solicitud.</h4>
+<p>Creamos el recurso:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/taller6$ kubectl apply -f pvc-redis.yaml <br>persistentvolumeclaim/pvc-redis created</code></pre>
+<p>Ahora comprobamos que se ha asociado el volumen:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/taller6$ kubectl get pv,pvc<br>NAME                                                        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                   STORAGECLASS   REASON   AGE<br>persistentvolume/pvc-25b35b29-616c-488d-9f94-0e9e95321da3   3Gi        RWO            Delete           Bound    default/pvc-redis       standard                47s<br>persistentvolume/pvc-f30ccc20-4f70-48e4-923c-b9d541348327   2Gi        RWO            Delete           Bound    default/pvc-webserver   standard                47m<br><br>NAME                                  STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE<br>persistentvolumeclaim/pvc-redis       Bound    pvc-25b35b29-616c-488d-9f94-0e9e95321da3   3Gi        RWO            standard       47s<br>persistentvolumeclaim/pvc-webserver   Bound    pvc-f30ccc20-4f70-48e4-923c-b9d541348327   2Gi        RWO            standard       47m</code></pre>
+<h4 id="3.-modifica-el-fichero-del-despliegue-de-redis%2C-modificando-las-xxxxxxxxxxxx-por-los-valores-correctos%3A-el-nombre-del-persistentvolumenclaim-y-el-directorio-de-montaje-en-el-contenedor-(como-hemos-visto-anteriormente-es-%2Fdata)." tabindex="-1">3. Modifica el fichero del despliegue de redis, modificando las xxxxxxxxxxxx por los valores correctos: el nombre del PersistentVolumenClaim y el directorio de montaje en el contenedor (como hemos visto anteriormente es /data).</h4>
+<p>Queda de la siguiente forma el yaml:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>  <span class="token key atrule">name</span><span class="token punctuation">:</span> redis<br>  <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>    <span class="token key atrule">app</span><span class="token punctuation">:</span> redis<br>    <span class="token key atrule">tier</span><span class="token punctuation">:</span> backend<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">1</span><br>  <span class="token key atrule">selector</span><span class="token punctuation">:</span><br>    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span><br>      <span class="token key atrule">app</span><span class="token punctuation">:</span> redis<br>      <span class="token key atrule">tier</span><span class="token punctuation">:</span> backend<br>  <span class="token key atrule">template</span><span class="token punctuation">:</span><br>    <span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>      <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>        <span class="token key atrule">app</span><span class="token punctuation">:</span> redis<br>        <span class="token key atrule">tier</span><span class="token punctuation">:</span> backend<br>    <span class="token key atrule">spec</span><span class="token punctuation">:</span><br>      <span class="token key atrule">volumes</span><span class="token punctuation">:</span><br>        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> volumen<span class="token punctuation">-</span>redis<br>          <span class="token key atrule">persistentVolumeClaim</span><span class="token punctuation">:</span><br>            <span class="token key atrule">claimName</span><span class="token punctuation">:</span> pvc<span class="token punctuation">-</span>redis<br>      <span class="token key atrule">containers</span><span class="token punctuation">:</span><br>        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> contenedor<span class="token punctuation">-</span>redis<br>          <span class="token key atrule">image</span><span class="token punctuation">:</span> redis<br>          <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"redis-server"</span><span class="token punctuation">]</span><br>          <span class="token key atrule">args</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"--appendonly"</span><span class="token punctuation">,</span> <span class="token string">"yes"</span><span class="token punctuation">]</span><br>          <span class="token key atrule">ports</span><span class="token punctuation">:</span><br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> redis<span class="token punctuation">-</span>server<br>              <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">6379</span><br>          <span class="token key atrule">volumeMounts</span><span class="token punctuation">:</span><br>            <span class="token punctuation">-</span> <span class="token key atrule">mountPath</span><span class="token punctuation">:</span> <span class="token string">"/data"</span><br>              <span class="token key atrule">name</span><span class="token punctuation">:</span> volumen<span class="token punctuation">-</span>redis</code></pre>
+<h4 id="4.-crea-el-despliegue-de-redis.-el-despliegue-de-la-aplicaci%C3%B3n-guestbook-y-la-creaci%C3%B3n-de-los-services-de-acceso-se-hace-con-los-ficheros-que-ya-utilizamos-anteriormente%3A-guestbook-deployment.yaml%2C-guestbook-srv.yaml-y-redis-srv.yaml." tabindex="-1">4. Crea el despliegue de redis. El despliegue de la aplicación guestbook y la creación de los Services de acceso se hace con los ficheros que ya utilizamos anteriormente: guestbook-deployment.yaml, guestbook-srv.yaml y redis-srv.yaml.</h4>
+<p>Desplegamos guestbook con los fichero del taller anterior:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl apply -f guestbook-deployment.yaml<br>deployment.apps/guestbook created</code></pre>
+<p>Desplegamos el servicio de guestbook:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl apply -f service-guestbook.yaml <br>service/guestbook created</code></pre>
+<p>Desplegamos el servicio de redis:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl apply -f service-guestbook2.yaml <br>service/redis created</code></pre>
+<p>Desplegamos el nuevo redis:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ cd taller6/<br>alemd@debian:~/minikube/taller6$ kubectl apply -f redis-despliegue.yaml <br>deployment.apps/redis created</code></pre>
+<h4 id="5.-accede-a-la-aplicaci%C3%B3n-y-escribe-algunos-mensajes." tabindex="-1">5. Accede a la aplicación y escribe algunos mensajes.</h4>
+<p><img src="/img/SRI-K8S-VI.3.png" alt="SRI-K8S-VI.3.png"></p>
+<h4 id="6.-comprobemos-la-persistencia%3A-elimina-el-despliegue-de-redis%2C-vuelve-a-crearlo%2C-vuelve-a-acceder-desde-el-navegador-y-comprueba-que-los-mensajes-no-se-han-perdido." tabindex="-1">6. Comprobemos la persistencia: elimina el despliegue de redis, vuelve a crearlo, vuelve a acceder desde el navegador y comprueba que los mensajes no se han perdido.</h4>
+<p>Eliminamos y volvemos a crear el despliegue:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/taller6$ kubectl delete deployments.apps redis <br>deployment.apps "redis" deleted<br>alemd@debian:~/minikube/taller6$ kubectl apply -f redis-despliegue.yaml <br>deployment.apps/redis created</code></pre>
+<p>Accedo nuevamente al navegador:</p>
+<p><img src="/img/SRI-K8S-VI.4.png" alt="SRI-K8S-VI.4.png"></p>
+<h3 id="haciendo-persistente-la-aplicaci%C3%B3n-nextcloud." tabindex="-1">Haciendo persistente la aplicación Nextcloud.</h3>
+<p><strong>Esta actividad es la continuación de la actividad realizada en el taller 5.</strong></p>
+<p><strong>Siguiendo la guía que hemos desarrollado en Ejemplo 3: Wordpress con almacenamiento persistente vamos a configurar el despliegue de Nextcloud para que use volúmenes (vamos a usar dos volúmenes, uno para la aplicación y otro para la base de datos) para que la información no se pierda.</strong></p>
+<p><strong>Realiza los siguientes pasos:</strong></p>
+<h4 id="1.-crea-los-ficheros-yaml-para-definir-los-recursos-persistentvolumenclaim-para-solicitar-dos-vol%C3%BAmenes-de-4gb." tabindex="-1">1. Crea los ficheros yaml para definir los recursos PersistentVolumenClaim para solicitar dos volúmenes de 4Gb.</h4>
+<p>El contenido del pvc para nextcloud es el siguiente:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> PersistentVolumeClaim<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>    <span class="token key atrule">name</span><span class="token punctuation">:</span> nextcloud<span class="token punctuation">-</span>pvc<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">accessModes</span><span class="token punctuation">:</span><br>    <span class="token punctuation">-</span> ReadWriteOnce<br>  <span class="token key atrule">resources</span><span class="token punctuation">:</span><br>    <span class="token key atrule">requests</span><span class="token punctuation">:</span><br>      <span class="token key atrule">storage</span><span class="token punctuation">:</span> 4Gi</code></pre>
+<p>El contenido del pvc para mariadb es el siguiente:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> PersistentVolumeClaim<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>    <span class="token key atrule">name</span><span class="token punctuation">:</span> mariadb<span class="token punctuation">-</span>pvc<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">accessModes</span><span class="token punctuation">:</span><br>    <span class="token punctuation">-</span> ReadWriteOnce<br>  <span class="token key atrule">resources</span><span class="token punctuation">:</span><br>    <span class="token key atrule">requests</span><span class="token punctuation">:</span><br>      <span class="token key atrule">storage</span><span class="token punctuation">:</span> 4Gi</code></pre>
+<h4 id="2.-crea-esos-recursos-y-comprueba-que-se-ha-asociado-un-volumen-de-forma-din%C3%A1mica-a-cada-solicitud." tabindex="-1">2. Crea esos recursos y comprueba que se ha asociado un volumen de forma dinámica a cada solicitud.</h4>
+<p>Creamos los recursos:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/nextcloud$ kubectl apply -f nextcloud-pvc.yaml <br>persistentvolumeclaim/nextcloud-pvc created<br>alemd@debian:~/minikube/nextcloud$ kubectl apply -f mariadb-pvc.yaml <br>persistentvolumeclaim/mariadb-pvc created</code></pre>
+<p>Comprobamos que se han creado correctamente:</p>
+<p><img src="/img/SRI-K8S-VI.5.png" alt="SRI-K8S-VI.5.png"></p>
+<h4 id="3.-modifica-los-ficheros-de-despliegue-de-la-aplicaci%C3%B3n-y-la-base-de-datos-para-asociar-los-vol%C3%BAmenes-a-cada-uno.-seg%C3%BAn-la-documentaci%C3%B3n-de-la-imagen-nextcloud-en-docker-hub%2C-la-forma-m%C3%A1s-sencilla-de-hacer-persistente-la-aplicaci%C3%B3n-es-montar-el-volumen-en-el-directorio%2Fvar%2Fwww%2Fhtml%2F." tabindex="-1">3. Modifica los ficheros de despliegue de la aplicación y la base de datos para asociar los volúmenes a cada uno. Según la documentación de la imagen Nextcloud en Docker Hub, la forma más sencilla de hacer persistente la aplicación es montar el volumen en el directorio/var/www/html/.</h4>
+<p>Modificamos el fichero <code>nextcloud-deployment.yaml</code>.</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>  <span class="token key atrule">name</span><span class="token punctuation">:</span> nextcloud<span class="token punctuation">-</span>deployment<br>  <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>    <span class="token key atrule">app</span><span class="token punctuation">:</span> nextcloud<br>    <span class="token key atrule">type</span><span class="token punctuation">:</span> frontend<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">1</span><br>  <span class="token key atrule">selector</span><span class="token punctuation">:</span><br>    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span><br>      <span class="token key atrule">app</span><span class="token punctuation">:</span> nextcloud<br>      <span class="token key atrule">type</span><span class="token punctuation">:</span> frontend<br>  <span class="token key atrule">template</span><span class="token punctuation">:</span><br>    <span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>      <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>        <span class="token key atrule">app</span><span class="token punctuation">:</span> nextcloud<br>        <span class="token key atrule">type</span><span class="token punctuation">:</span> frontend<br>    <span class="token key atrule">spec</span><span class="token punctuation">:</span><br>      <span class="token key atrule">containers</span><span class="token punctuation">:</span><br>        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> contenedor<span class="token punctuation">-</span>nextcloud<br>          <span class="token key atrule">image</span><span class="token punctuation">:</span> nextcloud<br>          <span class="token key atrule">ports</span><span class="token punctuation">:</span><br>            <span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">80</span><br>              <span class="token key atrule">name</span><span class="token punctuation">:</span> http<span class="token punctuation">-</span>port<br>            <span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">443</span><br>              <span class="token key atrule">name</span><span class="token punctuation">:</span> https<span class="token punctuation">-</span>port<br>          <span class="token key atrule">volumeMounts</span><span class="token punctuation">:</span><br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nextcloud<span class="token punctuation">-</span>vol<br>              <span class="token key atrule">mountPath</span><span class="token punctuation">:</span> /var/www/html<br>          <span class="token key atrule">env</span><span class="token punctuation">:</span><br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> MYSQL_DATABASE<br>              <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span><br>                <span class="token key atrule">configMapKeyRef</span><span class="token punctuation">:</span><br>                  <span class="token key atrule">name</span><span class="token punctuation">:</span> cm<span class="token punctuation">-</span>nextcloud<br>                  <span class="token key atrule">key</span><span class="token punctuation">:</span> MYSQL_DATABASE<br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> MYSQL_USER<br>              <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span><br>                <span class="token key atrule">configMapKeyRef</span><span class="token punctuation">:</span><br>                  <span class="token key atrule">name</span><span class="token punctuation">:</span> cm<span class="token punctuation">-</span>nextcloud<br>                  <span class="token key atrule">key</span><span class="token punctuation">:</span> MYSQL_USER<br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> MYSQL_PASSWORD<br>              <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span><br>                <span class="token key atrule">secretKeyRef</span><span class="token punctuation">:</span><br>                  <span class="token key atrule">name</span><span class="token punctuation">:</span> secret<span class="token punctuation">-</span>nextcloud<br>                  <span class="token key atrule">key</span><span class="token punctuation">:</span> MYSQL_PASSWORD<br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> MYSQL_HOST<br>              <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span><br>                <span class="token key atrule">configMapKeyRef</span><span class="token punctuation">:</span><br>                  <span class="token key atrule">name</span><span class="token punctuation">:</span> cm<span class="token punctuation">-</span>host<br>                  <span class="token key atrule">key</span><span class="token punctuation">:</span> MYSQL_HOST<br>      <span class="token key atrule">volumes</span><span class="token punctuation">:</span><br>        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nextcloud<span class="token punctuation">-</span>vol<br>          <span class="token key atrule">persistentVolumeClaim</span><span class="token punctuation">:</span><br>            <span class="token key atrule">claimName</span><span class="token punctuation">:</span> nextcloud<span class="token punctuation">-</span>pvc</code></pre>
+<p>Modificamos el fichero <code>mariadb-deployment.yaml</code>.</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1<br><span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment<br><span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>  <span class="token key atrule">name</span><span class="token punctuation">:</span> mariadb<span class="token punctuation">-</span>deployment<br>  <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>    <span class="token key atrule">app</span><span class="token punctuation">:</span> nextcloud<br>    <span class="token key atrule">type</span><span class="token punctuation">:</span> database<br><span class="token key atrule">spec</span><span class="token punctuation">:</span><br>  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">1</span><br>  <span class="token key atrule">selector</span><span class="token punctuation">:</span><br>    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span><br>      <span class="token key atrule">app</span><span class="token punctuation">:</span> nextcloud<br>      <span class="token key atrule">type</span><span class="token punctuation">:</span> database<br>  <span class="token key atrule">template</span><span class="token punctuation">:</span><br>    <span class="token key atrule">metadata</span><span class="token punctuation">:</span><br>      <span class="token key atrule">labels</span><span class="token punctuation">:</span><br>        <span class="token key atrule">app</span><span class="token punctuation">:</span> nextcloud<br>        <span class="token key atrule">type</span><span class="token punctuation">:</span> database<br>    <span class="token key atrule">spec</span><span class="token punctuation">:</span><br>      <span class="token key atrule">containers</span><span class="token punctuation">:</span><br>        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> contenedor<span class="token punctuation">-</span>mariadb<br>          <span class="token key atrule">image</span><span class="token punctuation">:</span> mariadb<br>          <span class="token key atrule">ports</span><span class="token punctuation">:</span><br>            <span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">3306</span><br>              <span class="token key atrule">name</span><span class="token punctuation">:</span> db<span class="token punctuation">-</span>port<br>          <span class="token key atrule">volumeMounts</span><span class="token punctuation">:</span><br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> mariadb<span class="token punctuation">-</span>vol<br>              <span class="token key atrule">mountPath</span><span class="token punctuation">:</span> /var/lib/mysql<br>          <span class="token key atrule">env</span><span class="token punctuation">:</span><br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> MYSQL_USER<br>              <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span><br>                <span class="token key atrule">configMapKeyRef</span><span class="token punctuation">:</span><br>                  <span class="token key atrule">name</span><span class="token punctuation">:</span> cm<span class="token punctuation">-</span>nextcloud<br>                  <span class="token key atrule">key</span><span class="token punctuation">:</span> MYSQL_USER<br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> MYSQL_DATABASE<br>              <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span><br>                <span class="token key atrule">configMapKeyRef</span><span class="token punctuation">:</span><br>                  <span class="token key atrule">name</span><span class="token punctuation">:</span> cm<span class="token punctuation">-</span>nextcloud<br>                  <span class="token key atrule">key</span><span class="token punctuation">:</span> MYSQL_DATABASE<br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> MYSQL_PASSWORD<br>              <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span><br>                <span class="token key atrule">secretKeyRef</span><span class="token punctuation">:</span><br>                  <span class="token key atrule">name</span><span class="token punctuation">:</span> secret<span class="token punctuation">-</span>nextcloud<br>                  <span class="token key atrule">key</span><span class="token punctuation">:</span> MYSQL_PASSWORD<br>            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> MYSQL_ROOT_PASSWORD<br>              <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span><br>                <span class="token key atrule">secretKeyRef</span><span class="token punctuation">:</span><br>                  <span class="token key atrule">name</span><span class="token punctuation">:</span> secret<span class="token punctuation">-</span>nextcloud<br>                  <span class="token key atrule">key</span><span class="token punctuation">:</span> MYSQL_PASSWORD<br>      <span class="token key atrule">volumes</span><span class="token punctuation">:</span><br>        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> mariadb<span class="token punctuation">-</span>vol<br>          <span class="token key atrule">persistentVolumeClaim</span><span class="token punctuation">:</span><br>            <span class="token key atrule">claimName</span><span class="token punctuation">:</span> mariadb<span class="token punctuation">-</span>pvc</code></pre>
+<p>Aplicamos los cambios:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/nextcloud$ kubectl apply -f mariadb-deployment.yaml<br>deployment.apps/mariadb-deployment configured<br>alemd@debian:~/minikube/nextcloud$ kubectl apply -f nextcloud-deployment.yaml<br>deployment.apps/nextcloud-deployment configured</code></pre>
+<h4 id="4.-accede-a-la-aplicaci%C3%B3n%2C-config%C3%BArala-y-sube-un-fichero." tabindex="-1">4. Accede a la aplicación, configúrala y sube un fichero.</h4>
+<p>Accedemos a la aplicación y la instalamos. Una vez instalada subimos un fichero. He creado el fichero <a href="http://persistente.md">persistente.md</a>:</p>
+<p><img src="/img/SRI-K8S-VI.6.png" alt="SRI-K8S-VI.6.png"></p>
+<h4 id="5.-comprobemos-la-persistencia%3A-elimina-los-despliegues%2C-vuelve-a-crearlos-y-vuelve-a-acceder-desde-el-navegador-y-comprueba-que-la-aplicaci%C3%B3n-est%C3%A1-configurada-y-mantiene-el-fichero-que-hab%C3%ADas-subido." tabindex="-1">5. Comprobemos la persistencia: elimina los despliegues, vuelve a crearlos y vuelve a acceder desde el navegador y comprueba que la aplicación está configurada y mantiene el fichero que habías subido.</h4>
+<p>Eliminamos los despliegues:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/nextcloud$ kubectl delete deployments.apps nextcloud-deployment<br>deployment.apps "nextcloud-deployment" deleted<br>alemd@debian:~/minikube/nextcloud$ kubectl delete deployments.apps mariadb-deployment <br>deployment.apps "mariadb-deployment" deleted</code></pre>
+<p>Volvemos a crear los despliegues:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/nextcloud$ kubectl apply -f nextcloud-deployment.yaml<br>deployment.apps/nextcloud-deployment created<br>alemd@debian:~/minikube/nextcloud$ kubectl apply -f mariadb-deployment.yaml<br>deployment.apps/mariadb-deployment created</code></pre>
+<p>Y volvemos a acceder a la aplicación:</p>
+<p><img src="/img/SRI-K8S-VI.7.png" alt="SRI-K8S-VI.7.png"></p>
+<p>Como vemos nos pide volver a iniciar sesión. Metemos el usuario y contraseña que indicamos al configurar nextcloud:</p>
+<p><img src="/img/SRI-K8S-VI.8.png" alt="SRI-K8S-VI.8.png"></p>
+<p>Al iniciar sesión vemos que sigue creado el fichero <code>persistente.md</code></p>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/auditorias-de-bases-de-datos./">Auditorías de bases de datos.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
