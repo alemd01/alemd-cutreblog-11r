@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Ejercicios de K8s VII. | Cutreblog">
+    <meta itemprop="description" content="Séptimo taller de la unidad de Kubernetes.">
+
+    
+    <meta name="twitter:title" content="Ejercicios de K8s VII. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Séptimo taller de la unidad de Kubernetes.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Ejercicios de K8s VII. | Cutreblog">
+    <meta name="og:description" content="Séptimo taller de la unidad de Kubernetes.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Ejercicios de K8s VII. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Ejercicios de K8s VII.</h2>
+
+        
+            <p class="excerpt">Séptimo taller de la unidad de Kubernetes.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SRI" href="/tag/SRI">SRI</a><a class="tag Kubernetes" href="/tag/Kubernetes">Kubernetes</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Thu Feb 23 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 23, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#instalaci%C3%B3n-de-un-cms-con-helm.">Instalación de un CMS con Helm.</a>
+            
+                <ol>
+                    
+                    <li><a href="#1.-instala-la-%C3%BAltima-versi%C3%B3n-de-helm.">1. Instala la última versión de Helm.</a>
+            		</li>
+
+                    <li><a href="#2.-a%C3%B1ade-el-repositorio-de-bitnami">2. Añade el repositorio de bitnami</a>
+            		</li>
+
+                    <li><a href="#3.-busca-el-chart-de-bitnami-para-la-instalaci%C3%B3n-de-wordpress.">3. Busca el chart de bitnami para la instalación de Wordpress.</a>
+            		</li>
+
+                    <li><a href="#4.-busca-la-documentaci%C3%B3n-del-chart-y-comprueba-los-par%C3%A1metros-para-cambiar-el-tipo-de-service-y-el-nombre-del-blog.">4. Busca la documentación del chart y comprueba los parámetros para cambiar el tipo de Service y el nombre del blog.</a>
+            		</li>
+
+                    <li><a href="#5.-instala-el-chart-definiendo-el-tipo-del-service-como-nodeport-y-poniendo-tu-nombre-como-nombre-del-blog.">5. Instala el chart definiendo el tipo del Service como NodePort y poniendo tu nombre como nombre del blog.</a>
+            		</li>
+
+                    <li><a href="#6.-comprueba-los-pods%2C-replicaset%2C-deployment-y-services-que-se-han-creado.">6. Comprueba los Pods, ReplicaSet, Deployment y Services que se han creado.</a>
+            		</li>
+
+                    <li><a href="#7.-accede-a-la-aplicaci%C3%B3n.">7. Accede a la aplicación.</a>
+            		</li>
+                </ol>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="instalaci%C3%B3n-de-un-cms-con-helm." tabindex="-1">Instalación de un CMS con Helm.</h3>
+<p>Vamos a instalar el CMS Wordpress usando Helm. Para ello, realiza los siguientes pasos:</p>
+<h4 id="1.-instala-la-%C3%BAltima-versi%C3%B3n-de-helm." tabindex="-1">1. Instala la última versión de Helm.</h4>
+<p>Para instalar helm, tenemos que seguir los siguientes pasos:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null<br>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current<br>                                 Dload  Upload   Total   Spent    Left  Speed<br>  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--    0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--  100  1700  100  1700    0     0   2014      0 --:--:-- --:--:-- --:--:--  2016</code></pre>
+<p>Instalamos el siguiente paquete:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ sudo apt-get install apt-transport-https --yes<br>Leyendo lista de paquetes... Hecho<br>Creando árbol de dependencias... Hecho<br>Leyendo la información de estado... Hecho<br>apt-transport-https ya está en su versión más reciente (2.2.4).<br>0 actualizados, 0 nuevos se instalarán, 0 para eliminar y 98 no actualizados.</code></pre>
+<p>Ejecutamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list<br>deb [arch=amd64 signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main</code></pre>
+<p>Realizamos un update:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ sudo apt update<br>Obj:1 http://repository.spotify.com stable InRelease<br>Obj:2 http://download.virtualbox.org/virtualbox/debian bullseye InRelease<br>Obj:3 https://deb.debian.org/debian bullseye InRelease                   <br>Obj:4 https://security.debian.org/debian-security bullseye-security InRelease<br>Obj:5 http://packages.microsoft.com/repos/code stable InRelease          <br>Obj:6 https://deb.debian.org/debian bullseye-backports InRelease         <br>Obj:7 https://deb.debian.org/debian bullseye-updates InRelease           <br>Des:8 https://baltocdn.com/helm/stable/debian all InRelease [7.651 B]    <br>Des:9 https://baltocdn.com/helm/stable/debian all/main amd64 Packages [3.268 B]<br>Descargados 10,9 kB en 2s (5.884 B/s)<br>Leyendo lista de paquetes... Hecho<br>Creando árbol de dependencias... Hecho<br>Leyendo la información de estado... Hecho<br>Se pueden actualizar 98 paquetes. Ejecute «apt list --upgradable» para verlos.</code></pre>
+<p>Instalamos helm:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ sudo apt install helm<br>Leyendo lista de paquetes... Hecho<br>Creando árbol de dependencias... Hecho<br>Leyendo la información de estado... Hecho<br>Se instalarán los siguientes paquetes NUEVOS:<br>  helm<br>0 actualizados, 1 nuevos se instalarán, 0 para eliminar y 98 no actualizados.<br>Se necesita descargar 15,0 MB de archivos.<br>Se utilizarán 46,9 MB de espacio de disco adicional después de esta operación.<br>Des:1 https://baltocdn.com/helm/stable/debian all/main amd64 helm amd64 3.11.1-1 [15,0 MB]<br>Descargados 15,0 MB en 40s (373 kB/s)                                    <br>Seleccionando el paquete helm previamente no seleccionado.<br>(Leyendo la base de datos ... 373507 ficheros o directorios instalados act<br>ualmente.)<br>Preparando para desempaquetar .../helm_3.11.1-1_amd64.deb ...<br>Desempaquetando helm (3.11.1-1) ...<br>Configurando helm (3.11.1-1) ...<br>Procesando disparadores para man-db (2.9.4-2) ...</code></pre>
+<p>Como podemos comprobar se ha instalado correctamente helm:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ helm version<br>version.BuildInfo{Version:"v3.11.1", GitCommit:"293b50c65d4d56187cd4e2f390f0ada46b4c4737", GitTreeState:"clean", GoVersion:"go1.18.10"}</code></pre>
+<h4 id="2.-a%C3%B1ade-el-repositorio-de-bitnami" tabindex="-1">2. Añade el repositorio de bitnami</h4>
+<p>Para añadir el repositorio de bitnami, ejecutamos el siguiente comando:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ helm repo add bitnami https://charts.bitnami.com/bitnami<br>"bitnami" has been added to your repositories</code></pre>
+<p>Listamos los repositorios y vemos que lo tenemos añadido:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ helm repo list<br>NAME   	URL                               <br>bitnami	https://charts.bitnami.com/bitnami</code></pre>
+<h4 id="3.-busca-el-chart-de-bitnami-para-la-instalaci%C3%B3n-de-wordpress." tabindex="-1">3. Busca el chart de bitnami para la instalación de Wordpress.</h4>
+<p>Actualizamos el repositorio:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ helm repo update<br>Hang tight while we grab the latest from your chart repositories...<br>...Successfully got an update from the "bitnami" chart repository<br>Update Complete. ⎈Happy Helming!⎈</code></pre>
+<p>Y buscamos el chart de bitnami para instalar Wordpress:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ helm search repo wordpress<br>NAME                   	CHART VERSION	APP VERSION	DESCRIPTION                                       <br>bitnami/wordpress      	15.2.45      	6.1.1      	WordPress is the world's most popular blogging ...<br>bitnami/wordpress-intel	2.1.31       	6.1.1      	DEPRECATED WordPress for Intel is the most popu...</code></pre>
+<h4 id="4.-busca-la-documentaci%C3%B3n-del-chart-y-comprueba-los-par%C3%A1metros-para-cambiar-el-tipo-de-service-y-el-nombre-del-blog." tabindex="-1">4. Busca la documentación del chart y comprueba los parámetros para cambiar el tipo de Service y el nombre del blog.</h4>
+<p>Los parámetros que tenemos que usar para cambiar el tipo de service es <code>--set service.type=</code> y para cambiar el nombre del blog usamos  <code>--set wordpressBlogName=</code>. A continuación muestro el comando completo.</p>
+<h4 id="5.-instala-el-chart-definiendo-el-tipo-del-service-como-nodeport-y-poniendo-tu-nombre-como-nombre-del-blog." tabindex="-1">5. Instala el chart definiendo el tipo del Service como NodePort y poniendo tu nombre como nombre del blog.</h4>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ helm install servidor-web bitnami/wordpress --set service.type=NodePort --set wordpressBlogName=amontes<br>NAME: serverweb<br>LAST DEPLOYED: Thu Feb 23 08:54:04 2023<br>NAMESPACE: default<br>STATUS: deployed<br>REVISION: 1<br>TEST SUITE: None<br>NOTES:<br>CHART NAME: wordpress<br>CHART VERSION: 15.2.45<br>APP VERSION: 6.1.1<br><br>** Please be patient while the chart is being deployed **<br><br>Your WordPress site can be accessed through the following DNS name from within your cluster:<br><br>    serverweb-wordpress.default.svc.cluster.local (port 80)<br><br>To access your WordPress site from outside the cluster follow the steps below:<br><br>1. Get the WordPress URL by running these commands:<br><br>   export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services serverweb-wordpress)<br>   export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")<br>   echo "WordPress URL: http://$NODE_IP:$NODE_PORT/"<br>   echo "WordPress Admin URL: http://$NODE_IP:$NODE_PORT/admin"<br><br>2. Open a browser and access WordPress using the obtained URL.<br><br>3. Login with the following credentials below to see your blog:<br><br>  echo Username: user<br>  echo Password: $(kubectl get secret --namespace default serverweb-wordpress -o jsonpath="{.data.wordpress-password}" | base64 -d)<br></code></pre>
+<h4 id="6.-comprueba-los-pods%2C-replicaset%2C-deployment-y-services-que-se-han-creado." tabindex="-1">6. Comprueba los Pods, ReplicaSet, Deployment y Services que se han creado.</h4>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube$ kubectl get all<br>NAME                                          READY   STATUS    RESTARTS   AGE<br>pod/servidor-web-mariadb-0                    1/1     Running   0          2m25s<br>pod/servidor-web-wordpress-86cfdd7869-hpzqt   1/1     Running   1          2m25s<br><br>NAME                             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE<br>service/kubernetes               ClusterIP   10.96.0.1       &lt;none>        443/TCP                      12m<br>service/servidor-web-mariadb     ClusterIP   10.104.242.8    &lt;none>        3306/TCP                     2m26s<br>service/servidor-web-wordpress   NodePort    10.107.162.99   &lt;none>        80:30535/TCP,443:32693/TCP   2m26s<br><br>NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE<br>deployment.apps/servidor-web-wordpress   1/1     1            1           2m25s<br><br>NAME                                                DESIRED   CURRENT   READY   AGE<br>replicaset.apps/servidor-web-wordpress-86cfdd7869   1         1         1       2m25s<br><br>NAME                                    READY   AGE<br>statefulset.apps/servidor-web-mariadb   1/1     2m25s<br></code></pre>
+<h4 id="7.-accede-a-la-aplicaci%C3%B3n." tabindex="-1">7. Accede a la aplicación.</h4>
+<p><img src="/img/SRI-K8S-VII.1.png" alt="SRI-K8S-VII.1.png"></p>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/cortafuegos-ii:-perimetral-con-nftables./">Cortafuegos II: Perimetral con nftables.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>

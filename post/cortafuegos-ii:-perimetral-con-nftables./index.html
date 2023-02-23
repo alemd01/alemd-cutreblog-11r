@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Cortafuegos II: Perimetral con nftables. | Cutreblog">
+    <meta itemprop="description" content="En este post veremos la segunda práctica de cortafuegos.">
+
+    
+    <meta name="twitter:title" content="Cortafuegos II: Perimetral con nftables. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="En este post veremos la segunda práctica de cortafuegos.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Cortafuegos II: Perimetral con nftables. | Cutreblog">
+    <meta name="og:description" content="En este post veremos la segunda práctica de cortafuegos.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Cortafuegos II: Perimetral con nftables. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Cortafuegos II: Perimetral con nftables.</h2>
+
+        
+            <p class="excerpt">En este post veremos la segunda práctica de cortafuegos.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SAD" href="/tag/SAD">SAD</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Tue Feb 21 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 21, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#despliegue-del-escenario.">Despliegue del escenario.</a>
+            		</li>
+
+                    <li><a href="#configuraci%C3%B3n-de-rutas-por-defecto.">Configuración de rutas por defecto.</a>
+            		</li>
+
+                    <li><a href="#preparaci%C3%B3n-del-escenario-con-nftables">Preparación del escenario con nftables</a>
+            
+                <ol>
+                    
+                    <li><a href="#crear-las-tablas-filter-y-nat.">Crear las tablas filter y nat.</a>
+            		</li>
+
+                    <li><a href="#crear-las-cadenas-de-filter.">Crear las cadenas de filter.</a>
+            		</li>
+
+                    <li><a href="#crear-las-cadenas-de-nat.">Crear las cadenas de nat.</a>
+            		</li>
+
+                    <li><a href="#tr%C3%A1fico-ssh-entrante-al-firewall.">Tráfico ssh entrante al firewall.</a>
+            		</li>
+
+                    <li><a href="#pol%C3%ADticas-por-defecto.">Políticas por defecto.</a>
+            		</li>
+
+                    <li><a href="#activamos-el-bit-de-forwarding.">Activamos el bit de forwarding.</a>
+            		</li>
+
+                    <li><a href="#snat.">SNAT.</a>
+            		</li>
+
+                    <li><a href="#permitimos-el-ssh-desde-el-cortafuego-a-la-lan.">Permitimos el ssh desde el cortafuego a la LAN.</a>
+            		</li>
+
+                    <li><a href="#permitimos-tr%C3%A1fico-para-la-interfaz-loopback.">Permitimos tráfico para la interfaz loopback.</a>
+            		</li>
+
+                    <li><a href="#peticiones-y-respuestas-protocolo-icmp.">Peticiones y respuestas protocolo ICMP.</a>
+            		</li>
+
+                    <li><a href="#reglas-forward.">Reglas forward.</a>
+            
+                <ol>
+                    
+                    <li><a href="#permitir-hacer-ping-desde-la-lan.">Permitir hacer ping desde la LAN.</a>
+            		</li>
+
+                    <li><a href="#consultas-y-respuestas-dns-desde-la-lan.">Consultas y respuestas DNS desde la LAN.</a>
+            		</li>
+
+                    <li><a href="#permitimos-la-navegaci%C3%B3n-web-desde-la-lan.">Permitimos la navegación web desde la LAN.</a>
+            		</li>
+
+                    <li><a href="#permitimos-el-acceso-a-nuestro-servidor-web-de-la-lan-desde-el-exterior.">Permitimos el acceso a nuestro servidor web de la LAN desde el exterior.</a>
+            		</li>
+                </ol>
+            		</li>
+                </ol>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <h3 id="despliegue-del-escenario." tabindex="-1">Despliegue del escenario.</h3>
+<p>Antes que nada, lo primero que haremos será desplegar la receta heat escenario2.yaml en OpenStack. Para que funcione tendremos que cambiar el ID de la imagen que usa por uno actualizado con debian 11. El id que he usado yo es el siguiente <code>6d992898-7e4f-44b9-a681-6dcf32d24a1f</code>, este ID se puede encontrar en el apartado de Computación de OpenStack, en Imágenes, seleccionamos la imagen que vamos a usar para las máquinas del escenario, en este caso Debian 11 y copiamos el ID.</p>
+<h3 id="configuraci%C3%B3n-de-rutas-por-defecto." tabindex="-1">Configuración de rutas por defecto.</h3>
+<p>En lan configuramos las rutas por defecto:</p>
+<pre class="language-txt"><code class="language-txt">debian@lan:~$ sudo ip route del default<br>debian@lan:~$ sudo ip route add default via 192.168.100.2</code></pre>
+<h3 id="preparaci%C3%B3n-del-escenario-con-nftables" tabindex="-1">Preparación del escenario con nftables</h3>
+<h4 id="crear-las-tablas-filter-y-nat." tabindex="-1">Crear las tablas filter y nat.</h4>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# nft add table inet filter<br>root@router-fw:/home/debian# nft add table inet nat</code></pre>
+<h4 id="crear-las-cadenas-de-filter." tabindex="-1">Crear las cadenas de filter.</h4>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# sudo nft add chain inet filter input { type filter hook input priority 0 \; counter \; policy accept \; }<br>root@router-fw:/home/debian# sudo nft add chain inet filter output { type filter hook output priority 0 \; counter \; policy accept \; }<br>root@router-fw:/home/debian# sudo nft add chain inet filter forward { type filter hook forward priority 0 \; counter \; policy accept \; }</code></pre>
+<h4 id="crear-las-cadenas-de-nat." tabindex="-1">Crear las cadenas de nat.</h4>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# sudo nft add chain inet nat prerouting { type nat hook prerouting priority 0 \; }<br>root@router-fw:/home/debian# sudo nft add chain inet nat postrouting { type nat hook postrouting priority 100 \; }</code></pre>
+<h4 id="tr%C3%A1fico-ssh-entrante-al-firewall." tabindex="-1">Tráfico ssh entrante al firewall.</h4>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# sudo nft add rule inet filter input ip saddr 172.29.0.0/16 tcp dport 22 ct state new,established counter accept<br>root@router-fw:/home/debian# sudo nft add rule inet filter output ip daddr 172.29.0.0/16 tcp sport 22 ct state established counter accept</code></pre>
+<h4 id="pol%C3%ADticas-por-defecto." tabindex="-1">Políticas por defecto.</h4>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# sudo nft chain inet filter input { policy drop \; }<br>root@router-fw:/home/debian# sudo nft chain inet filter output { policy drop \; }<br>root@router-fw:/home/debian# sudo nft chain inet filter forward { policy drop \; }</code></pre>
+<p>Llegados a este punto, no podremos ni hacer ping a la lo ni a internet ni realizar un ssh ya que está todo restringido:</p>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# ping 127.0.0.1<br>PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.<br>^C<br>--- 127.0.0.1 ping statistics ---<br>3 packets transmitted, 0 received, 100% packet loss, time 2045ms<br><br>root@router-fw:/home/debian# ping 8.8.8.8<br>PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.<br>^C<br>--- 8.8.8.8 ping statistics ---<br>4 packets transmitted, 0 received, 100% packet loss, time 3073ms<br><br>root@router-fw:/home/debian# exit<br>exit<br>debian@router-fw:~$ ssh debian@192.168.100.10<br>^C</code></pre>
+<h4 id="activamos-el-bit-de-forwarding." tabindex="-1">Activamos el bit de forwarding.</h4>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# echo 1 > /proc/sys/net/ipv4/ip_forward</code></pre>
+<h4 id="snat." tabindex="-1">SNAT.</h4>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# sudo nft add rule inet nat postrouting oifname "ens3" ip saddr 192.168.100.0/24 counter masquerade</code></pre>
+<h4 id="permitimos-el-ssh-desde-el-cortafuego-a-la-lan." tabindex="-1">Permitimos el ssh desde el cortafuego a la LAN.</h4>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# sudo nft add rule inet filter output oifname "ens4" ip daddr 192.168.100.0/24 tcp dport 22 ct state new,established counter accept<br>root@router-fw:/home/debian# sudo nft add rule inet filter input iifname "ens4" ip saddr 192.168.100.0/24 tcp sport 22 ct state established counter accept</code></pre>
+<p>Ahora probamos que el ssh a la máquina lan sí funciona:</p>
+<pre class="language-txt"><code class="language-txt">debian@router-fw:~$ ssh debian@192.168.100.10<br>Linux lan 5.10.0-18-amd64 #1 SMP Debian 5.10.140-1 (2022-09-02) x86_64<br><br>The programs included with the Debian GNU/Linux system are free software;<br>the exact distribution terms for each program are described in the<br>individual files in /usr/share/doc/*/copyright.<br><br>Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent<br>permitted by applicable law.<br>Last login: Wed Feb 22 18:17:21 2023 from 192.168.100.2<br>debian@lan:~$ </code></pre>
+<h4 id="permitimos-tr%C3%A1fico-para-la-interfaz-loopback." tabindex="-1">Permitimos tráfico para la interfaz loopback.</h4>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# sudo nft add rule inet filter output oifname "lo" counter accept<br>root@router-fw:/home/debian# sudo nft add rule inet filter input iifname "lo" counter accept</code></pre>
+<p>Probamos que vuelve a funcionar el ping a la lo:</p>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# ping 127.0.0.1<br>PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.<br>64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.122 ms<br>64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.546 ms<br>64 bytes from 127.0.0.1: icmp_seq=3 ttl=64 time=0.077 ms<br>^C<br>--- 127.0.0.1 ping statistics ---<br>3 packets transmitted, 3 received, 0% packet loss, time 2005ms<br>rtt min/avg/max/mdev = 0.077/0.248/0.546/0.211 ms</code></pre>
+<h4 id="peticiones-y-respuestas-protocolo-icmp." tabindex="-1">Peticiones y respuestas protocolo ICMP.</h4>
+<p>Para permitir que a la máquina router-fw le hagan ping desde fuera ejecutamos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# sudo nft add rule inet filter input iifname "ens3" icmp type echo-request counter accept<br>root@router-fw:/home/debian# sudo nft add rule inet filter output oifname "ens3" icmp type echo-reply counter accept</code></pre>
+<p>Probamos que funciona:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~$ ping 172.22.200.17<br>PING 172.22.200.17 (172.22.200.17) 56(84) bytes of data.<br>64 bytes from 172.22.200.17: icmp_seq=1 ttl=61 time=310 ms<br>64 bytes from 172.22.200.17: icmp_seq=2 ttl=61 time=332 ms<br>64 bytes from 172.22.200.17: icmp_seq=3 ttl=61 time=355 ms<br>64 bytes from 172.22.200.17: icmp_seq=4 ttl=61 time=174 ms<br>^C<br>--- 172.22.200.17 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3004ms<br>rtt min/avg/max/mdev = 173.704/292.667/355.466/70.578 ms</code></pre>
+<p>Ahora permito que puedan hacer ping desde el cortafuegos a la lan:</p>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# sudo nft add rule inet filter output oifname "ens4" icmp type echo-request counter accept<br>root@router-fw:/home/debian# sudo nft add rule inet filter input iifname "ens4" icmp type echo-reply counter accept</code></pre>
+<p>Pruebo que funciona:</p>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# ping 192.168.100.10<br>PING 192.168.100.10 (192.168.100.10) 56(84) bytes of data.<br>64 bytes from 192.168.100.10: icmp_seq=1 ttl=64 time=4.31 ms<br>64 bytes from 192.168.100.10: icmp_seq=2 ttl=64 time=5.72 ms<br>64 bytes from 192.168.100.10: icmp_seq=3 ttl=64 time=2.02 ms<br>64 bytes from 192.168.100.10: icmp_seq=4 ttl=64 time=6.16 ms<br>^C<br>--- 192.168.100.10 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3007ms<br>rtt min/avg/max/mdev = 2.022/4.554/6.164/1.614 ms</code></pre>
+<h4 id="reglas-forward." tabindex="-1">Reglas forward.</h4>
+<h5 id="permitir-hacer-ping-desde-la-lan." tabindex="-1">Permitir hacer ping desde la LAN.</h5>
+<p>Configuramos las siguientes reglas para que pueda haber tráfico icmp desde la lan a internet:</p>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# sudo nft add rule inet filter forward iifname "ens4" oifname "ens3" ip saddr 192.168.100.0/24 icmp type echo-request counter accept<br>root@router-fw:/home/debian# sudo nft add rule inet filter forward iifname "ens3" oifname "ens4" ip daddr 192.168.100.0/24 icmp type echo-reply counter accept</code></pre>
+<p>Realizamos un ping a 1.1.1.1 para probar que funciona:</p>
+<pre class="language-txt"><code class="language-txt">debian@lan:~$ ping 1.1.1.1<br>PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.<br>64 bytes from 1.1.1.1: icmp_seq=1 ttl=51 time=45.5 ms<br>64 bytes from 1.1.1.1: icmp_seq=2 ttl=51 time=44.0 ms<br>64 bytes from 1.1.1.1: icmp_seq=3 ttl=51 time=46.1 ms<br>64 bytes from 1.1.1.1: icmp_seq=4 ttl=51 time=45.4 ms<br>64 bytes from 1.1.1.1: icmp_seq=5 ttl=51 time=46.0 ms<br>^C<br>--- 1.1.1.1 ping statistics ---<br>5 packets transmitted, 5 received, 0% packet loss, time 4008ms<br>rtt min/avg/max/mdev = 44.020/45.400/46.062/0.744 ms</code></pre>
+<h5 id="consultas-y-respuestas-dns-desde-la-lan." tabindex="-1">Consultas y respuestas DNS desde la LAN.</h5>
+<p>Usamos las siguientes reglas para que desde la lan haya consultas y respuestas dns:</p>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# sudo nft add rule inet filter forward iifname "ens4" oifname "ens3" ip saddr 192.168.100.0/24 udp dport 53 ct state new,established counter accept<br>root@router-fw:/home/debian# sudo nft add rule inet filter forward iifname "ens3" oifname "ens4" ip daddr 192.168.100.0/24 udp sport 53 ct state established counter accept</code></pre>
+<p>Pruebo que funciona con dig:</p>
+<pre class="language-txt"><code class="language-txt">debian@lan:~$ dig @8.8.8.8 www.google.es<br><br>; &lt;&lt;>> DiG 9.16.33-Debian &lt;&lt;>> @8.8.8.8 www.google.es<br>; (1 server found)<br>;; global options: +cmd<br>;; Got answer:<br>;; ->>HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 42599<br>;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1<br><br>;; OPT PSEUDOSECTION:<br>; EDNS: version: 0, flags:; udp: 512<br>;; QUESTION SECTION:<br>;www.google.es.			IN	A<br><br>;; ANSWER SECTION:<br>www.google.es.		300	IN	A	142.250.184.163<br><br>;; Query time: 72 msec<br>;; SERVER: 8.8.8.8#53(8.8.8.8)<br>;; WHEN: Wed Feb 22 19:20:50 UTC 2023<br>;; MSG SIZE  rcvd: 58</code></pre>
+<h5 id="permitimos-la-navegaci%C3%B3n-web-desde-la-lan." tabindex="-1">Permitimos la navegación web desde la LAN.</h5>
+<pre class="language-txt"><code class="language-txt">root@router-fw:/home/debian# sudo nft add rule inet filter forward iifname "ens4" oifname "ens3" ip protocol tcp ip saddr 192.168.100.0/24 tcp dport { 80,443 } ct state new,established counter accept<br>root@router-fw:/home/debian# sudo nft add rule inet filter forward iifname "ens3" oifname "ens4" ip protocol tcp ip daddr 192.168.100.0/24 tcp sport { 80,443 } ct state established counter accept</code></pre>
+<p>Pruebo que funciona con curl:</p>
+<pre class="language-txt"><code class="language-txt">debian@lan:~$ curl google.es<br>&lt;HTML>&lt;HEAD>&lt;meta http-equiv="content-type" content="text/html;charset=utf-8"><br>&lt;TITLE>301 Moved&lt;/TITLE>&lt;/HEAD>&lt;BODY><br>&lt;H1>301 Moved&lt;/H1><br>The document has moved<br>&lt;A HREF="http://www.google.es/">here&lt;/A>.<br>&lt;/BODY>&lt;/HTML></code></pre>
+<h5 id="permitimos-el-acceso-a-nuestro-servidor-web-de-la-lan-desde-el-exterior." tabindex="-1">Permitimos el acceso a nuestro servidor web de la LAN desde el exterior.</h5>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Siguiente post</p>
+            <p class="font-bold mb-2">
+                <a href="/post/ejercicios-de-k8s-vii./">Ejercicios de K8s VII.</a>
+            </p>
+        
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/ejercicios-de-k8s-vi./">Ejercicios de K8s VI.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
