@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Práctica: Kubernetes. | Cutreblog">
+    <meta itemprop="description" content="Realización de la práctica de kubernetes.">
+
+    
+    <meta name="twitter:title" content="Práctica: Kubernetes. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Realización de la práctica de kubernetes.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Práctica: Kubernetes. | Cutreblog">
+    <meta name="og:description" content="Realización de la práctica de kubernetes.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Práctica: Kubernetes. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Práctica: Kubernetes.</h2>
+
+        
+            <p class="excerpt">Realización de la práctica de kubernetes.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SRI" href="/tag/SRI">SRI</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Mon Feb 27 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 27, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#ejercicio1%3A-despliegue-en-minikube.">Ejercicio1: Despliegue en minikube.</a>
+            		</li>
+
+                    <li><a href="#ejercicio2%3A-despliegue-en-otra-distribuci%C3%B3n-de-kubernetes.">Ejercicio2: Despliegue en otra distribución de kubernetes.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <p>En IAW has creado dos imágenes de dos aplicaciones: bookmedik (php) y polls (python django). Elige una de ellas y despliégala en kubernetes. Para ello vamos a hacer dos ejercicios:</p>
+<h3 id="ejercicio1%3A-despliegue-en-minikube." tabindex="-1">Ejercicio1: Despliegue en minikube.</h3>
+<p><strong>Escribe los ficheros yaml que te posibilitan desplegar la aplicación en minikube. Recuerda que la base de datos debe tener un volumen para hacerla persistente. Debes crear ficheros para los deployments, services, ingress, volúmenes,…</strong></p>
+<p><strong>Despliega la aplicación en minikube.</strong></p>
+<p>Lo primero que haremos será crear el ConfigMap y un Secret para guardar variables de entorno:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/bookmedik$ kubectl create cm cm-mariadb --from-literal=mysql_usuario=bookmedik  --from-literal=basededatos=bookmedik<br>configmap/cm-mariadb created<br>alemd@debian:~/minikube/bookmedik$ kubectl create secret generic secret-mariadb --from-literal=password=bookmedik --from-literal=rootpass=root</code></pre>
+<p>Ahora creo el volúmen persistente de la base de datos:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/bookmedik$ nano pvc-bookmedik.yaml<br><br>apiVersion: v1<br>kind: PersistentVolumeClaim<br>metadata:<br>    name: pvc-bookmedik<br>spec:<br>  accessModes:<br>    - ReadWriteOnce<br>  resources:<br>    requests:<br>      storage: 3Gi<br></code></pre>
+<p>Desplegamos la base de datos:</p>
+<pre class="language-txt"><code class="language-txt">apiVersion: apps/v1<br>kind: Deployment<br>metadata:<br>  name: mariadb<br>  labels:<br>    app: mariadb<br>    tier: backend<br>spec:<br>  replicas: 1<br>  selector:<br>    matchLabels:<br>      app: mariadb<br>      tier: backend<br>  template:<br>    metadata:<br>      labels:<br>        app: mariadb<br>        tier: backend<br>    spec:<br>      volumes:<br>        - name: volumen-mariadb<br>          persistentVolumeClaim:<br>            claimName: pvc-bookmedik<br>      containers:<br>        - name: contenedor-mariadb<br>          image: mariadb<br>          env:<br>            - name: MARIADB_ROOT_PASSWORD<br>              valueFrom:<br>                secretKeyRef:<br>                  name: secret-mariadb<br>                  key: rootpass<br>            - name: MARIADB_DATABASE<br>              valueFrom:<br>                configMapKeyRef:<br>                  name: cm-mariadb<br>                  key: basededatos<br>            - name: MARIADB_USER<br>              valueFrom:<br>                configMapKeyRef:<br>                  name: cm-mariadb<br>                  key: mysql_usuario<br>            - name: MARIADB_PASSWORD<br>              valueFrom:<br>                secretKeyRef:<br>                  name: secret-mariadb<br>                  key: password<br>          ports:<br>            - name: mariadb-server<br>              containerPort: 3306<br>          volumeMounts:<br>            - mountPath: "/var/lib/mysql"<br>              name: volumen-mariadb</code></pre>
+<p>Creamos también el servicio de mariadb:</p>
+<pre class="language-txt"><code class="language-txt">apiVersion: v1<br>kind: Service<br>metadata:<br>  name: mariadb<br>  labels:<br>    app: mariadb<br>    tier: backend<br>spec:<br>  type: ClusterIP<br>  ports:<br>  - port: 3306<br>    targetPort: mariadb-server<br>  selector:<br>    app: mariadb<br>    tier: backend<br></code></pre>
+<p>Lo desplegamos:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/bookmedik$ kubectl apply -f .<br>deployment.apps/mariadb created<br>persistentvolumeclaim/pvc-bookmedik created<br>service/mariadb created</code></pre>
+<p>Ahora crearemos el despliegue de bookmedik:</p>
+<pre class="language-txt"><code class="language-txt">apiVersion: apps/v1<br>kind: Deployment<br>metadata:<br>  name: bookmedik<br>  labels:<br>    app: bookmedik<br>    tier: frontend<br>spec:<br>  replicas: 2<br>  selector:<br>    matchLabels:<br>      app: bookmedik<br>      tier: frontend<br>  template:<br>    metadata:<br>      labels:<br>        app: bookmedik<br>        tier: frontend<br>    spec:<br>      containers:<br>      - name: contenedor-bookmedik<br>        image: alemd01/bookmedik:v1<br>        env:<br>          - name: USUARIO_BOOKMEDIK<br>            valueFrom:<br>              configMapKeyRef:<br>                name: cm-mariadb<br>                key: mysql_usuario<br>          - name: CONTRA_BOOKMEDIK<br>            valueFrom:<br>              secretKeyRef:<br>                name: secret-mariadb<br>                key: password<br>          - name: DATABASE_HOST<br>            value: mariadb<br>          - name: NOMBRE_DB<br>            valueFrom:<br>              configMapKeyRef:<br>                name: cm-mariadb<br>                key: basededatos<br>        ports:<br>          - name: http-server<br>            containerPort: 80</code></pre>
+<p>Ahora, por último, crearemos el servicio de bookmedik:</p>
+<pre class="language-txt"><code class="language-txt">apiVersion: v1<br>kind: Service<br>metadata:<br>  name: bookmedik<br>  labels:<br>    app: bookmedik<br>    tier: frontend<br>spec:<br>  type: NodePort<br>  ports:<br>  - port: 80<br>    targetPort: http-server<br>  selector:<br>    app: bookmedik<br>    tier: frontend<br></code></pre>
+<p>Lanzamos todo nuevamente:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/bookmedik$ kubectl apply -f .<br>deployment.apps/bookmedik created<br>service/bookmedik created<br>deployment.apps/mariadb unchanged<br>service/mariadb unchanged<br>persistentvolumeclaim/pvc-bookmedik unchanged</code></pre>
+<p>Comprobamos que se ha creado todo correctamente:</p>
+<p><img src="/img/SRI-K8S-P.2.png" alt="SRI-K8S-P.2.png"></p>
+<p>Entramos a través de la IP a bookmedik.</p>
+<p><img src="/img/SRI-K8S-P.1.png" alt="SRI-K8S-P.1.png"></p>
+<p>Para facilitarnos la tarea procederé a crear un ingress para poder acceder a través de nombre:</p>
+<pre class="language-txt"><code class="language-txt">apiVersion: networking.k8s.io/v1<br>kind: Ingress<br>metadata:<br>  name: bookmedik-ing<br>spec:<br>  rules:<br>  - host: www.amontes-bookmedik.org<br>    http:<br>      paths:<br>      - path: /<br>        pathType: Prefix<br>        backend:<br>          service:<br>            name: bookmedik<br>            port:<br>              number: 80<br></code></pre>
+<p>Lo levantamos:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~/minikube/bookmedik$ kubectl apply -f bookmedik-ingress.yaml <br>ingress.networking.k8s.io/bookmedik-ing created</code></pre>
+<p>Lo añadimos al /etc/hosts y accedemos a través de la dirección:</p>
+<p><img src="/img/SRI-K8S-P.3.png" alt="SRI-K8S-P.3.png"></p>
+<p>Comprobamos nuevamente que se loguea correctamente:</p>
+<p><img src="/img/SRI-K8S-P.4.png" alt="SRI-K8S-P.4.png"></p>
+<h3 id="ejercicio2%3A-despliegue-en-otra-distribuci%C3%B3n-de-kubernetes." tabindex="-1">Ejercicio2: Despliegue en otra distribución de kubernetes.</h3>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/practica-2:-implantacion-de-aplicaciones-web-python-en-docker./">Práctica 2: Implantación de aplicaciones web Python en docker.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>

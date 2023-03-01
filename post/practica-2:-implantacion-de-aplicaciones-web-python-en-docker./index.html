@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Práctica 2: Implantación de aplicaciones web Python en docker. | Cutreblog">
+    <meta itemprop="description" content="Práctica 2 de docker.">
+
+    
+    <meta name="twitter:title" content="Práctica 2: Implantación de aplicaciones web Python en docker. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Práctica 2 de docker.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Práctica 2: Implantación de aplicaciones web Python en docker. | Cutreblog">
+    <meta name="og:description" content="Práctica 2 de docker.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Práctica 2: Implantación de aplicaciones web Python en docker. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Práctica 2: Implantación de aplicaciones web Python en docker.</h2>
+
+        
+            <p class="excerpt">Práctica 2 de docker.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag IAW" href="/tag/IAW">IAW</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Mon Feb 27 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">February 27, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#crea-una-imagen-docker-para-poder-desplegar-un-contenedor-con-la-aplicaci%C3%B3n.-la-imagen-la-puedes-hacer-desde-una-imagen-base-o-desde-la-imagen-oficial-de-python.">Crea una imagen docker para poder desplegar un contenedor con la aplicación. La imagen la puedes hacer desde una imagen base o desde la imagen oficial de python.</a>
+            		</li>
+
+                    <li><a href="#crea-un-docker-compose-para-desplegar-los-contenedores-necesarios.-configura-los-vol%C3%BAmenes-que-creas-necesarios-para-que-la-aplicaci%C3%B3n-sea-persistente.">Crea un docker-compose para desplegar los contenedores necesarios. Configura los volúmenes que creas necesarios para que la aplicación sea persistente.</a>
+            		</li>
+
+                    <li><a href="#una-vez-probada-en-el-entorno-de-desarrollo%2C-despliega-la-aplicaci%C3%B3n-en-tu-vps-usando-el-docker-compose-y-configurando-el-nginx-como-proxy-inveso-para-acceder-por-nombre-a-la-aplicaci%C3%B3n.">Una vez probada en el entorno de desarrollo, despliega la aplicación en tu VPS usando el docker-compose y configurando el nginx como proxy inveso para acceder por nombre a la aplicación.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <p>Queremos desplegar en docker la aplicación escrita en python django: tutorial de django, que desplegamos en la tarea Despliegue de aplicaciones python.</p>
+<p>Tienes que tener en cuenta los siguientes aspectos:</p>
+<ul>
+<li>La aplicación debe guardar los datos en una base de datos mariadb.</li>
+<li>La aplicación se podrá configurar para indicar los parámetros de conexión a la base de datos: usuario, contraseña, host y base de datos.</li>
+<li>La aplicación deberá tener creado un usuario administrador para el acceso.</li>
+</ul>
+<h3 id="crea-una-imagen-docker-para-poder-desplegar-un-contenedor-con-la-aplicaci%C3%B3n.-la-imagen-la-puedes-hacer-desde-una-imagen-base-o-desde-la-imagen-oficial-de-python." tabindex="-1">Crea una imagen docker para poder desplegar un contenedor con la aplicación. La imagen la puedes hacer desde una imagen base o desde la imagen oficial de python.</h3>
+<p>Vamos a crear una red para que ambos contenedores se conecten:</p>
+<pre class="language-txt"><code class="language-txt">usuario@debian:~$ docker network create django-net<br>d57e165b54b222fa43b8ba34e8cdf9c745d99850d45ba512b76b7d53446172f3</code></pre>
+<p>Creamos el contenedor de mariadb con las siguientes variables:</p>
+<pre class="language-txt"><code class="language-txt">usuario@debian:~$ docker run -d --name mariadb -v vol_polls:/var/lib/mysql --network django-net -e MARIADB_ROOT_PASSWORD=root -e MARIADB_USER=django -e MARIADB_PASSWORD=django -e MARIADB_DATABASE=django mariadb<br>24ceb57a2f2a8426f75f4592d0ff5cb8a654f7735962ec17a40b7c3282625810<br></code></pre>
+<p>Ahora modificaremos nuestro django_tutorial ya modificado en anteriores prácticas y haremos que coja los parámetros de la base de datos por variables de entorno. Para ello editaremos lo siguiente en el <a href="http://settings.py">settings.py</a>:</p>
+<pre class="language-txt"><code class="language-txt">import os<br><br>BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))</code></pre>
+<p>Y en el apartado DATABASE ponemos lo siguiente:</p>
+<pre class="language-txt"><code class="language-txt">DATABASES = {<br>    'default': {<br>        'ENGINE': 'django.db.backends.mysql',<br>        'NAME': os.environ.get("BASE_DATOS"),<br>        'USER': os.environ.get('USUARIO'),<br>        'PASSWORD': os.environ.get("CONTRA"),<br>        'HOST': os.environ.get('HOST'),<br>        'PORT': '3306',<br>    }<br>}</code></pre>
+<p>También modificaremos los siguientes apartados:</p>
+<pre class="language-txt"><code class="language-txt">ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOSTS")]<br>STATIC_ROOT = os.path.join(BASE_DIR, 'static')<br>STATIC_URL = '/static/'<br>CSRF_TRUSTED_ORIGINS = ['http://*.alejandro-montes.es','http://*.127.0.0.1','https://*.alejandro-montes.es','https://*.127.0.0.1']</code></pre>
+<p>Ahora creamos un dockerfile:</p>
+<pre class="language-txt"><code class="language-txt">FROM python:3<br>WORKDIR /usr/src/app<br>MAINTAINER Alejandro Montes Delgado "aaleemd11@gmail.com"<br>RUN apt-get install git &amp;&amp; pip install --root-user-action=ignore --upgrade pip &amp;&amp; pip install --root-user-action=ignore django mysqlclient<br>RUN git clone https://github.com/alemd01/django_tutorial.git /usr/src/app &amp;&amp; mkdir static <br>ADD ./django_polls.sh /usr/src/app/<br>RUN chmod +x /usr/src/app/django_polls.sh<br>ENV ALLOWED_HOSTS=*<br>ENV HOST=mariadb<br>ENV USUARIO=django<br>ENV CONTRA=django<br>ENV BASE_DATOS=django<br>ENV DJANGO_SUPERUSER_PASSWORD=admin<br>ENV DJANGO_SUPERUSER_USERNAME=admin<br>ENV DJANGO_SUPERUSER_EMAIL=admin@example.org<br>CMD ["/usr/src/app/django_polls.sh"]</code></pre>
+<p>Este dockerfile hace referencia a un script, que es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">#! /bin/sh<br><br>python3 manage.py makemigrations<br>python3 manage.py migrate<br>python3 manage.py createsuperuser --noinput<br>python3 manage.py collectstatic --no-input<br>python3 manage.py runserver 0.0.0.0:8006</code></pre>
+<p>Ahora contruimos la imagen:</p>
+<pre class="language-txt"><code class="language-txt">usuario@debian:~/docker/django$ docker build -t alemd01/django_tutorial:v1 .<br>Sending build context to Docker daemon   15.3MB<br>Step 1/16 : FROM python:3<br>3: Pulling from library/python<br>1e4aec178e08: Already exists <br>6c1024729fee: Already exists <br>c3aa11fbc85a: Already exists <br>aa54add66b3a: Already exists <br>9e3a60c2bce7: Already exists <br>3b2123ce9d0d: Already exists <br>05df7720fcb8: Already exists <br>972ab8743e38: Already exists <br>c6510153b089: Already exists <br>Digest: sha256:86b2fe5e3cf5b979f4b21849ad340762f4a15129583c8134c6c2dc4a880942e6<br>Status: Downloaded newer image for python:3<br> ---> a41622906035<br>Step 2/16 : WORKDIR /usr/src/app<br> ---> Running in 8ee7c5e5e76c<br>Removing intermediate container 8ee7c5e5e76c<br> ---> 50b45c704853<br>Step 3/16 : MAINTAINER Alejandro Montes Delgado "aaleemd11@gmail.com"</code></pre>
+<p>Listamos las imágenes para verificar que se ha creado correctamente:</p>
+<pre class="language-txt"><code class="language-txt">usuario@debian:~/docker/django$ docker image ls<br>REPOSITORY                TAG       IMAGE ID       CREATED          SIZE<br>alemd01/django_tutorial   v1        936a3553d4ee   12 seconds ago   1GB<br>python                    3         a41622906035   2 days ago       925MB<br></code></pre>
+<h3 id="crea-un-docker-compose-para-desplegar-los-contenedores-necesarios.-configura-los-vol%C3%BAmenes-que-creas-necesarios-para-que-la-aplicaci%C3%B3n-sea-persistente." tabindex="-1">Crea un docker-compose para desplegar los contenedores necesarios. Configura los volúmenes que creas necesarios para que la aplicación sea persistente.</h3>
+<p>Ahora con docker compose crearemos el escenario. El contenido del docker compose es el siguiente:</p>
+<pre class="language-txt"><code class="language-txt">version: '3.7'<br>services:<br>  django-tutorial:<br>    container_name: django-tutorial<br>    image: alemd01/django_tutorial:v1<br>    restart: always<br>    environment:<br>      ALLOWED_HOSTS: "*"<br>      HOST: bd_mariadb_django<br>      USUARIO: django<br>      CONTRA: django<br>      BASE_DATOS: django<br>      DJANGO_SUPERUSER_PASSWORD: admin<br>      DJANGO_SUPERUSER_USERNAME: admin<br>      DJANGO_SUPERUSER_EMAIL: admin@admin.org<br>    ports:<br>      - 8084:8006<br>    depends_on:<br>      - db_django<br>  db_django:<br>    container_name: bd_mariadb_django<br>    image: mariadb:latest<br>    restart: always<br>    environment:<br>      MARIADB_ROOT_PASSWORD: root<br>      MARIADB_DATABASE: django<br>      MARIADB_USER: django<br>      MARIADB_PASSWORD: django<br>    volumes:<br>      - mariadb_data_django:/var/lib/mysql<br><br>volumes:<br>    mariadb_data_django:<br></code></pre>
+<p>Levantamos el escenario:</p>
+<pre class="language-txt"><code class="language-txt">usuario@debian:~/docker/django$ docker-compose up -d<br>Creating network "django_default" with the default driver<br>Creating volume "django_mariadb_data_django" with default driver<br>Creating bd_mariadb_django ... done<br>Creating django-tutorial   ... done</code></pre>
+<p>Verificamos que se han creado correctamente los contenedores:</p>
+<p><img src="/img/IAW-DOCKER-2.1.png" alt="IAW-DOCKER-2.1.png"></p>
+<p>Accedemos a nuestro django a través de internet:</p>
+<p><img src="/img/IAW-DOCKER-2.2.png" alt="IAW-DOCKER-2.2.png"></p>
+<p>Nos logueamos en la zona de administración para verificar que funciona:</p>
+<p><img src="/img/IAW-DOCKER-2.3.png" alt="IAW-DOCKER-2.3.png"></p>
+<h3 id="una-vez-probada-en-el-entorno-de-desarrollo%2C-despliega-la-aplicaci%C3%B3n-en-tu-vps-usando-el-docker-compose-y-configurando-el-nginx-como-proxy-inveso-para-acceder-por-nombre-a-la-aplicaci%C3%B3n." tabindex="-1">Una vez probada en el entorno de desarrollo, despliega la aplicación en tu VPS usando el docker-compose y configurando el nginx como proxy inveso para acceder por nombre a la aplicación.</h3>
+<p>Lo primero que haremos será subir la imagen a dockerhub:</p>
+<pre class="language-txt"><code class="language-txt">usuario@debian:~/docker/django$ docker push alemd01/django_tutorial:v1<br>The push refers to repository [docker.io/alemd01/django_tutorial]<br>8881bf95f7f1: Pushed <br>328379340940: Pushed <br>8d465b69d17c: Pushed <br>ecfce2c62c6a: Pushed <br>0dd588580c52: Pushed <br>a875c3488142: Mounted from library/python <br>dd5a8632e1df: Mounted from library/python <br>43281466799e: Mounted from library/python <br>17efc79ac0fe: Mounted from library/python <br>0b6859e9fff1: Mounted from library/python <br>11829b3be9c0: Mounted from library/python <br>dc8e1d8b53e9: Mounted from library/python <br>9d49e0bc68a4: Mounted from library/python <br>8e396a1aad50: Mounted from alemd01/bookmedik <br>v1: digest: sha256:c7cc58e1486f4d147198321cc6b0d63a09390e1e1435d97f7906d3ac24c92f5e size: 3264</code></pre>
+<p>Ahora en nuestro proovedor de dns añadiremos una entrada cname para django:</p>
+<p><img src="/img/IAW-DOCKER-2.4.png" alt="IAW-DOCKER-2.4.png"></p>
+<p>Una vez hecho esto, es momento de ir a nuestro vps y lo primero que haremos será generar un certificado para nuestro virtualhost:</p>
+<pre class="language-txt"><code class="language-txt">root@nabil:/home/alemd# certbot certonly --standalone -d django.alejandro-montes.es<br>Saving debug log to /var/log/letsencrypt/letsencrypt.log<br>Plugins selected: Authenticator standalone, Installer None<br>Attempting to parse the version 1.32.2 renewal configuration file found at /etc/letsencrypt/renewal/mail.alejandro-montes.es.conf with version 1.12.0 of Certbot. This might not work.<br>Requesting a certificate for django.alejandro-montes.es<br>Performing the following challenges:<br>http-01 challenge for django.alejandro-montes.es<br>Waiting for verification...<br>Cleaning up challenges<br><br>IMPORTANT NOTES:<br> - Congratulations! Your certificate and chain have been saved at:<br>   /etc/letsencrypt/live/django.alejandro-montes.es/fullchain.pem<br>   Your key file has been saved at:<br>   /etc/letsencrypt/live/django.alejandro-montes.es/privkey.pem<br>   Your certificate will expire on 2023-05-28. To obtain a new or<br>   tweaked version of this certificate in the future, simply run<br>   certbot again. To non-interactively renew *all* of your<br>   certificates, run "certbot renew"<br> - If you like Certbot, please consider supporting our work by:<br><br>   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate<br>   Donating to EFF:                    https://eff.org/donate-le<br></code></pre>
+<p>Ahora levantaremos el docker compose que es exactamente el mismo que usamos en desarrollo:</p>
+<pre class="language-txt"><code class="language-txt">root@nabil:/home/alemd/docker/django# docker-compose up -d<br>Creating bd_mariadb_django ... done<br>Creating django-tutorial   ... done</code></pre>
+<p>Ahora crearemos un proxy inverso a través de un virtualhost de ngninx para poder acceder a la aplicación mediante un nombre:</p>
+<pre class="language-txt"><code class="language-txt">server {<br>        listen 80;<br>        listen [::]:80;<br><br>        server_name django.alejandro-montes.es;<br><br>        return 301 https://$host$request_uri;<br>}<br><br>server {<br>        listen 443 ssl http2;<br>        listen [::]:443 ssl http2;<br><br>        ssl    on;<br>        ssl_certificate /etc/letsencrypt/live/django.alejandro-montes.es/fullchain.pem;<br>        ssl_certificate_key /etc/letsencrypt/live/django.alejandro-montes.es/privkey.pem;<br><br>        index index.html index.php index.htm index.nginx-debian.html;<br><br>        server_name django.alejandro-montes.es;<br><br>        location / {<br>                proxy_pass http://localhost:8084;<br>                include proxy_params;<br>        }<br>}</code></pre>
+<p>Lo activamos mediante un enlace simbólico:</p>
+<pre class="language-txt"><code class="language-txt">root@nabil:/home/alemd/docker/django# ln -s /etc/nginx/sites-available/django /etc/nginx/sites-enabled/django</code></pre>
+<p>Reiniciamos nginx para que se apliquen los cambios:</p>
+<pre class="language-txt"><code class="language-txt">root@nabil:/home/alemd/docker/django# systemctl restart nginx</code></pre>
+<p>Accedemos a través de internet a la url:</p>
+<p><img src="/img/IAW-DOCKER-2.5.png" alt="IAW-DOCKER-2.5.png"></p>
+<p>Entramos en la zona de administración:</p>
+<p><strong>AÑADIR CSFR(HECHO Y NO FUNCIONA)</strong> LIADA GORDA NENEEEEE</p>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Siguiente post</p>
+            <p class="font-bold mb-2">
+                <a href="/post/practica:-kubernetes./">Práctica: Kubernetes.</a>
+            </p>
+        
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/movimiento-de-datos/">Movimiento de datos</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
