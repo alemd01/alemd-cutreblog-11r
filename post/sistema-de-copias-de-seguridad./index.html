@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Sistema de copias de seguridad. | Cutreblog">
+    <meta itemprop="description" content="En esta práctica implantaremos un sistema de copias de seguridad para nuestro escenario en OpenStack.">
+
+    
+    <meta name="twitter:title" content="Sistema de copias de seguridad. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="En esta práctica implantaremos un sistema de copias de seguridad para nuestro escenario en OpenStack.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Sistema de copias de seguridad. | Cutreblog">
+    <meta name="og:description" content="En esta práctica implantaremos un sistema de copias de seguridad para nuestro escenario en OpenStack.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Sistema de copias de seguridad. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Sistema de copias de seguridad.</h2>
+
+        
+            <p class="excerpt">En esta práctica implantaremos un sistema de copias de seguridad para nuestro escenario en OpenStack.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag ASO" href="/tag/ASO">ASO</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Mon Jan 03 2022 01:00:00 GMT+0100 (hora estándar de Europa central)">January 3, 2022</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+
+            <p>Implementar un sistema de copias de seguridad para las instancias del cloud, teniendo en cuenta las siguientes características:</p>
+<ul>
+<li>Selecciona una aplicación para realizar el proceso: bacula, amanda, shell script con tar, rsync, dar, afio, etc.</li>
+<li>Utiliza una de las instancias como servidor de copias de seguridad, añadiéndole un volumen y almacenando localmente las copias de seguridad que consideres adecuadas en él.</li>
+<li>El proceso debe realizarse de forma completamente automática</li>
+<li>Selecciona qué información es necesaria guardar (listado de paquetes, ficheros de configuración, documentos, datos, etc.)</li>
+<li>Realiza semanalmente una copia completa</li>
+<li>Realiza diariamente una copia incremental o diferencial (decidir cual es más adecuada)</li>
+<li>Implementa una planificación del almacenamiento de copias de seguridad para una ejecución prevista de varios años, detallando qué copias completas se almacenarán de forma permanente y cuales se irán borrando</li>
+<li>Selecciona un directorio de datos “críticos” que deberá almacenarse cifrado en la copia de seguridad, bien encargándote de hacer la copia manualmente o incluyendo la contraseña de cifrado en el sistema</li>
+<li>Incluye en la copia los datos de las nuevas aplicaciones que se vayan instalando durante el resto del curso</li>
+<li>Utiliza una ubicación secundaria para almacenar las copias de seguridad. Solicita acceso o la instalación de las aplicaciones que sean precisas.
+La corrección consistirá tanto en la restauración puntual de un fichero en cualquier fecha como la restauración completa de una de las instancias la última semana de curso.</li>
+</ul>
+<hr>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Siguiente post</p>
+            <p class="font-bold mb-2">
+                <a href="/post/talleres-unidad-1-implantacion-aplicaciones-web./">Talleres unidad 1 Implantación Aplicaciones Web.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
