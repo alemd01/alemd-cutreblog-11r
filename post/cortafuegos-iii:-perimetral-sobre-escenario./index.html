@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    
+    <meta itemprop="name" content="Cortafuegos III: Perimetral sobre escenario. | Cutreblog">
+    <meta itemprop="description" content="En este post veremos la tercera práctica de cortafuegos.">
+
+    
+    <meta name="twitter:title" content="Cortafuegos III: Perimetral sobre escenario. | Cutreblog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="En este post veremos la tercera práctica de cortafuegos.">
+    <meta name="twitter:site" content="@ReeseCodes">
+    <meta name="twitter:creator" content="@ReeseCodes">
+    <meta name="twitter:image:src" content="https://reeseschultz.github.io/twitter.jpg">
+
+    
+    <meta name="og:title" content="Cortafuegos III: Perimetral sobre escenario. | Cutreblog">
+    <meta name="og:description" content="En este post veremos la tercera práctica de cortafuegos.">
+    <meta name="og:image" content="https://reeseschultz.github.io/og.jpg">
+    <meta name="og:url" content="https://reeseschultz.github.io/">
+    <meta name="og:site_name" content="Cutreblog">
+    <meta name="og:locale" content="en_GB">
+    <meta name="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="/logo.png" />
+
+    <title>Cortafuegos III: Perimetral sobre escenario. | Cutreblog</title>
+
+    <link rel="stylesheet" href="/assets/main.bundle.css">
+
+    
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header>
+  <nav class="container mx-auto max-w-3xl px-8 pt-2 flex flex-wrap justify-between">
+    <div>
+      <h1>
+        <a href="/">Cutreblog</a>
+      </h1>
+      <p>Blog de Alejandro Montes</p>
+    </div>
+
+    <ul class="flex flex-wrap sm:w-32 w-full mt-6 md:justify-between justify-evenly">
+      <li>
+        <a href="/404.html">404</a>
+      </li>
+
+      <li>
+        <a href="/about">Sobre mí.</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+    <main class="container mx-auto max-w-3xl p-8 grow">
+      
+    <p></p>
+    <div>
+        <h2>Cortafuegos III: Perimetral sobre escenario.</h2>
+
+        
+            <p class="excerpt">En este post veremos la tercera práctica de cortafuegos.</p>
+        
+
+        
+            <div class="mb-2">
+                <a class="tag SAD" href="/tag/SAD">SAD</a>
+            </div>
+        
+
+        
+            
+                <p class="text-sm italic">Creado en
+                    <span datetime="Wed Mar 01 2023 01:00:00 GMT+0100 (hora estándar de Europa central)">March 1, 2023</span>.</p>
+            
+        
+
+        <div class="content post">
+            
+                <hr />
+
+                <h3>Tabla de Contenido.</h3>
+
+                <nav class="toc">
+                <ol>
+                    
+                    <li><a href="#la-m%C3%A1quina-alfa-tiene-un-servidor-ssh-escuchando-por-el-puerto-22%2C-pero-al-acceder-desde-el-exterior-habr%C3%A1-que-conectar-al-puerto-2222.">La máquina Alfa tiene un servidor ssh escuchando por el puerto 22, pero al acceder desde el exterior habrá que conectar al puerto 2222.</a>
+            		</li>
+
+                    <li><a href="#desde-delta-y-bravo-se-debe-permitir-la-conexi%C3%B3n-ssh-por-el-puerto-22-a-la-m%C3%A1quina-alfa.">Desde Delta y Bravo se debe permitir la conexión ssh por el puerto 22 a la máquina Alfa.</a>
+            		</li>
+
+                    <li><a href="#la-m%C3%A1quina-alfa-debe-tener-permitido-el-tr%C3%A1fico-para-la-interfaz-loopback.">La máquina Alfa debe tener permitido el tráfico para la interfaz loopback.</a>
+            		</li>
+
+                    <li><a href="#a-la-m%C3%A1quina-alfa-se-le-puede-hacer-ping-desde-la-dmz%2C-pero-desde-la-lan-se-le-debe-rechazar-la-conexi%C3%B3n-(reject)-y-desde-el-exterior-se-rechazar%C3%A1-de-manera-silenciosa.">A la máquina Alfa se le puede hacer ping desde la DMZ, pero desde la LAN se le debe rechazar la conexión (REJECT) y desde el exterior se rechazará de manera silenciosa.</a>
+            		</li>
+
+                    <li><a href="#la-m%C3%A1quina-alfa-puede-hacer-ping-a-la-lan%2C-la-dmz-y-al-exterior.">La máquina Alfa puede hacer ping a la LAN, la DMZ y al exterior.</a>
+            		</li>
+
+                    <li><a href="#desde-la-m%C3%A1quina-bravo-se-puede-hacer-ping-y-conexi%C3%B3n-ssh-a-las-m%C3%A1quinas-de-la-lan.">Desde la máquina Bravo se puede hacer ping y conexión ssh a las máquinas de la LAN.</a>
+            		</li>
+
+                    <li><a href="#desde-cualquier-m%C3%A1quina-de-la-lan-se-puede-conectar-por-ssh-a-la-m%C3%A1quina-bravo.">Desde cualquier máquina de la LAN se puede conectar por ssh a la máquina Bravo.</a>
+            		</li>
+
+                    <li><a href="#configura-la-m%C3%A1quina-alfa-para-que-las-m%C3%A1quinas-de-lan-y-dmz-puedan-acceder-al-exterior.">Configura la máquina Alfa para que las máquinas de LAN y DMZ puedan acceder al exterior.</a>
+            		</li>
+
+                    <li><a href="#las-m%C3%A1quinas-de-la-lan-pueden-hacer-ping-al-exterior-y-navegar.">Las máquinas de la LAN pueden hacer ping al exterior y navegar.</a>
+            		</li>
+
+                    <li><a href="#la-m%C3%A1quina-bravo-puede-navegar.-instala-un-servidor-web%2C-un-servidor-ftp-y-un-servidor-de-correos-si-no-los-tienes-a%C3%BAn.">La máquina Bravo puede navegar. Instala un servidor web, un servidor ftp y un servidor de correos si no los tienes aún.</a>
+            		</li>
+
+                    <li><a href="#configura-la-m%C3%A1quina-alfa-para-que-los-servicios-web-y-ftp-sean-accesibles-desde-el-exterior.">Configura la máquina Alfa para que los servicios web y ftp sean accesibles desde el exterior.</a>
+            		</li>
+
+                    <li><a href="#el-servidor-web-y-el-servidor-ftp-deben-ser-accesibles-desde-la-lan-y-desde-el-exterior.">El servidor web y el servidor ftp deben ser accesibles desde la LAN y desde el exterior.</a>
+            		</li>
+
+                    <li><a href="#el-servidor-de-correos-s%C3%B3lo-debe-ser-accesible-desde-la-lan.">El servidor de correos sólo debe ser accesible desde la LAN.</a>
+            		</li>
+
+                    <li><a href="#en-la-m%C3%A1quina-charlie-instala-un-servidor-mysql-si-no-lo-tiene-a%C3%BAn.-a-este-servidor-se-puede-acceder-desde-la-dmz%2C-pero-no-desde-el-exterior.">En la máquina Charlie instala un servidor mysql si no lo tiene aún. A este servidor se puede acceder desde la DMZ, pero no desde el exterior.</a>
+            		</li>
+
+                    <li><a href="#evita-ataques-dos-por-icmp-flood%2C-limitando-el-n%C3%BAmero-de-peticiones-por-segundo-desde-una-misma-ip.">Evita ataques DoS por ICMP Flood, limitando el número de peticiones por segundo desde una misma IP.</a>
+            		</li>
+
+                    <li><a href="#evita-ataques-dos-por-syn-flood.">Evita ataques DoS por SYN Flood.</a>
+            		</li>
+
+                    <li><a href="#evita-que-realicen-escaneos-de-puertos-a-alfa.">Evita que realicen escaneos de puertos a Alfa.</a>
+            		</li>
+                </ol>
+            </nav>
+
+                <hr />
+            
+
+            <p><strong>Sobre el escenario creado en el módulo de servicios con las máquinas Alfa (Router), Bravo (DMZ), Charlie y Delta (LAN) y empleando iptables o nftables, configura un cortafuegos perimetral en la máquina Alfa de forma que el escenario siga funcionando completamente teniendo en cuenta los siguientes puntos:</strong></p>
+<ul>
+<li><strong>Política por defecto DROP para las cadenas INPUT, FORWARD y OUTPUT.</strong></li>
+<li><strong>Se pueden usar las extensiones que creamos adecuadas, pero al menos debe implementarse seguimiento de la conexión.</strong></li>
+<li><strong>Debemos implementar que el cortafuegos funcione después de un reinicio de la máquina.</strong></li>
+<li><strong>Debes indicar pruebas de funcionamiento de todas las reglas.</strong></li>
+<li><strong>El cortafuego debe cumplir al menos estas reglas:</strong></li>
+</ul>
+<h3 id="la-m%C3%A1quina-alfa-tiene-un-servidor-ssh-escuchando-por-el-puerto-22%2C-pero-al-acceder-desde-el-exterior-habr%C3%A1-que-conectar-al-puerto-2222." tabindex="-1">La máquina Alfa tiene un servidor ssh escuchando por el puerto 22, pero al acceder desde el exterior habrá que conectar al puerto 2222.</h3>
+<p>Antes que nada permitiremos el tráfico ssh a alfa para que no se interrumpa la conexión al aplicar las políticas drop:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -t nat -A PREROUTING -p tcp --dport 2222 -i ens3 -j DNAT --to 10.0.0.148:22<br>root@alfa:/home/usuario# iptables -A INPUT -i ens3 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A OUTPUT -o ens3 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT</code></pre>
+<p>Pruebo que funciona la conexión ssh desde el exterior a través del puerto 22:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~$ ssh -A usuario@172.22.200.13 -p 2222<br>Linux alfa 5.10.0-21-amd64 #1 SMP Debian 5.10.162-1 (2023-01-21) x86_64<br><br>The programs included with the Debian GNU/Linux system are free software;<br>the exact distribution terms for each program are described in the<br>individual files in /usr/share/doc/*/copyright.<br><br>Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent<br>permitted by applicable law.<br>Last login: Sun Mar  5 09:20:39 2023 from 172.29.0.70<br>usuario@alfa:~$ </code></pre>
+<p>Ahora pongo las políticas por defecto para input, output y forward:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -P INPUT DROP<br>root@alfa:/home/usuario# iptables -P OUTPUT DROP<br>root@alfa:/home/usuario# iptables -P FORWARD DROP</code></pre>
+<h3 id="desde-delta-y-bravo-se-debe-permitir-la-conexi%C3%B3n-ssh-por-el-puerto-22-a-la-m%C3%A1quina-alfa." tabindex="-1">Desde Delta y Bravo se debe permitir la conexión ssh por el puerto 22 a la máquina Alfa.</h3>
+<p>Primero para poder trabajar correctamente sobre el escenario, añado reglas para que desde alfa se pueda conectar por ssh tanto a la red interna(charlie y delta) como a la red dmz(bravo):</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A OUTPUT -d 192.168.0.0/24 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A INPUT -s 192.168.0.0/24 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A OUTPUT -d 172.16.0.0/16 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A INPUT -s 172.16.0.0/16 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT</code></pre>
+<p>Ahora, añado las reglas para que delta pueda conectarse por ssh a alga:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A OUTPUT -d 192.168.0.3/24 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A INPUT -s 192.168.0.3/24 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT</code></pre>
+<p>Lo mismo pero las reglas para Bravo:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A OUTPUT -d 172.16.0.200/16 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A INPUT -s 172.16.0.200/16 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT</code></pre>
+<p>Realizo ssh desde delta a alfa:</p>
+<pre class="language-txt"><code class="language-txt">ubuntu@delta:~$ ssh usuario@192.168.0.1<br>Linux alfa 5.10.0-21-amd64 #1 SMP Debian 5.10.162-1 (2023-01-21) x86_64<br><br>The programs included with the Debian GNU/Linux system are free software;<br>the exact distribution terms for each program are described in the<br>individual files in /usr/share/doc/*/copyright.<br><br>Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent<br>permitted by applicable law.<br>Last login: Sun Mar  5 09:59:07 2023 from 172.29.0.70<br>usuario@alfa:~$ <br></code></pre>
+<p>Realizo ssh desde bravo a alfa:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ ssh usuario@172.16.0.1<br>Linux alfa 5.10.0-21-amd64 #1 SMP Debian 5.10.162-1 (2023-01-21) x86_64<br><br>The programs included with the Debian GNU/Linux system are free software;<br>the exact distribution terms for each program are described in the<br>individual files in /usr/share/doc/*/copyright.<br><br>Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent<br>permitted by applicable law.<br>Last login: Sun Mar  5 10:01:17 2023 from 192.168.0.3<br>usuario@alfa:~$ <br></code></pre>
+<h3 id="la-m%C3%A1quina-alfa-debe-tener-permitido-el-tr%C3%A1fico-para-la-interfaz-loopback." tabindex="-1">La máquina Alfa debe tener permitido el tráfico para la interfaz loopback.</h3>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A INPUT -i lo -p icmp -j ACCEPT<br>root@alfa:/home/usuario# iptables -A OUTPUT -o lo -p icmp -j ACCEPT</code></pre>
+<p>ping a la loopback:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# ping 127.0.0.1<br>PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.<br>64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.143 ms<br>64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.106 ms<br>64 bytes from 127.0.0.1: icmp_seq=3 ttl=64 time=0.067 ms<br>64 bytes from 127.0.0.1: icmp_seq=4 ttl=64 time=0.096 ms<br>^C<br>--- 127.0.0.1 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3056ms<br>rtt min/avg/max/mdev = 0.067/0.103/0.143/0.027 ms<br>root@alfa:/home/usuario# <br></code></pre>
+<h3 id="a-la-m%C3%A1quina-alfa-se-le-puede-hacer-ping-desde-la-dmz%2C-pero-desde-la-lan-se-le-debe-rechazar-la-conexi%C3%B3n-(reject)-y-desde-el-exterior-se-rechazar%C3%A1-de-manera-silenciosa." tabindex="-1">A la máquina Alfa se le puede hacer ping desde la DMZ, pero desde la LAN se le debe rechazar la conexión (REJECT) y desde el exterior se rechazará de manera silenciosa.</h3>
+<p>Las reglas para que desde la red DMZ puedan hacer ping a bravo son las siguientes:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A INPUT -s 172.16.0.0/16 -p icmp -m icmp --icmp-type echo-request -j ACCEPT<br>root@alfa:/home/usuario# iptables -A OUTPUT -d 172.16.0.0/16 -p icmp -m icmp --icmp-type echo-reply -j ACCEPT</code></pre>
+<p>Ping desde la red dmz a alfa:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ ping 172.16.0.1<br>PING 172.16.0.1 (172.16.0.1) 56(84) bytes of data.<br>64 bytes from 172.16.0.1: icmp_seq=1 ttl=64 time=0.395 ms<br>64 bytes from 172.16.0.1: icmp_seq=2 ttl=64 time=0.881 ms<br>64 bytes from 172.16.0.1: icmp_seq=3 ttl=64 time=0.697 ms<br>64 bytes from 172.16.0.1: icmp_seq=4 ttl=64 time=0.929 ms<br>^C<br>--- 172.16.0.1 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3059ms<br>rtt min/avg/max/mdev = 0.395/0.725/0.929/0.209 ms</code></pre>
+<p>Las reglas usadas para rechazar la conexión desde la red LAN son las siguientes:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A INPUT -s 192.168.0.0/24 -p icmp -m icmp --icmp-type echo-request -j REJECT<br>root@alfa:/home/usuario# iptables -A OUTPUT -d 192.168.0.0/24 -p icmp -m icmp --icmp-type echo-reply -j REJECT</code></pre>
+<p>Prueba de que no funciona el ping desde la lan:</p>
+<pre class="language-txt"><code class="language-txt">ubuntu@delta:~$ ping 192.168.0.1<br>PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.<br>^C<br>--- 192.168.0.1 ping statistics ---<br>12 packets transmitted, 0 received, 100% packet loss, time 11247ms</code></pre>
+<p>Con rechazar de manera silenciosa nos referimos a que se rechaza directamente con las políticas drop que hemos puesto al principio. Para ello pruebo que desde el exterior tampoco podemos hacer ping a alfa:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~$ ping 172.22.200.13<br>PING 172.22.200.13 (172.22.200.13) 56(84) bytes of data.<br>^C<br>--- 172.22.200.13 ping statistics ---<br>4 packets transmitted, 0 received, 100% packet loss, time 3073ms<br></code></pre>
+<h3 id="la-m%C3%A1quina-alfa-puede-hacer-ping-a-la-lan%2C-la-dmz-y-al-exterior." tabindex="-1">La máquina Alfa puede hacer ping a la LAN, la DMZ y al exterior.</h3>
+<p>Con estas reglas aceptamos que alga haga ping a todo:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A OUTPUT -p icmp -m icmp --icmp-type echo-request -j ACCEPT<br>root@alfa:/home/usuario# iptables -A INPUT -p icmp -m icmp --icmp-type echo-reply -j ACCEPT</code></pre>
+<p>Prueba de ping a la LAN, DMZ y exterior:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# ping 192.168.0.2<br>PING 192.168.0.2 (192.168.0.2) 56(84) bytes of data.<br>64 bytes from 192.168.0.2: icmp_seq=1 ttl=64 time=0.232 ms<br>64 bytes from 192.168.0.2: icmp_seq=2 ttl=64 time=0.101 ms<br>64 bytes from 192.168.0.2: icmp_seq=3 ttl=64 time=0.106 ms<br>^C<br>--- 192.168.0.2 ping statistics ---<br>3 packets transmitted, 3 received, 0% packet loss, time 2032ms<br>rtt min/avg/max/mdev = 0.101/0.146/0.232/0.060 ms<br>root@alfa:/home/usuario# ping 192.168.0.3<br>PING 192.168.0.3 (192.168.0.3) 56(84) bytes of data.<br>64 bytes from 192.168.0.3: icmp_seq=1 ttl=64 time=0.103 ms<br>64 bytes from 192.168.0.3: icmp_seq=2 ttl=64 time=0.105 ms<br>64 bytes from 192.168.0.3: icmp_seq=3 ttl=64 time=0.099 ms<br>^C<br>--- 192.168.0.3 ping statistics ---<br>3 packets transmitted, 3 received, 0% packet loss, time 2041ms<br>rtt min/avg/max/mdev = 0.099/0.102/0.105/0.002 ms<br>root@alfa:/home/usuario# ping 172.16.0.200<br>PING 172.16.0.200 (172.16.0.200) 56(84) bytes of data.<br>64 bytes from 172.16.0.200: icmp_seq=1 ttl=64 time=0.889 ms<br>64 bytes from 172.16.0.200: icmp_seq=2 ttl=64 time=0.890 ms<br>64 bytes from 172.16.0.200: icmp_seq=3 ttl=64 time=1.04 ms<br>^C<br><br>root@alfa:/home/usuario# ping 8.8.8.8<br>PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.<br>64 bytes from 8.8.8.8: icmp_seq=1 ttl=111 time=40.6 ms<br>64 bytes from 8.8.8.8: icmp_seq=2 ttl=111 time=40.4 ms<br>64 bytes from 8.8.8.8: icmp_seq=3 ttl=111 time=40.5 ms<br>64 bytes from 8.8.8.8: icmp_seq=4 ttl=111 time=40.7 ms<br>^C<br>--- 8.8.8.8 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3006ms<br>rtt min/avg/max/mdev = 40.398/40.544/40.682/0.116 ms<br>root@alfa:/home/usuario# <br></code></pre>
+<h3 id="desde-la-m%C3%A1quina-bravo-se-puede-hacer-ping-y-conexi%C3%B3n-ssh-a-las-m%C3%A1quinas-de-la-lan." tabindex="-1">Desde la máquina Bravo se puede hacer ping y conexión ssh a las máquinas de la LAN.</h3>
+<p>Permitir ping desde bravo a la LAN:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A FORWARD -s 172.16.0.200/16 -d 192.168.0.0/24 -p icmp -m icmp --icmp-type echo-request -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -d 172.16.0.200/16 -s 192.168.0.0/24 -p icmp -m icmp --icmp-type echo-reply -j ACCEPT</code></pre>
+<p>Pruebo que funciona el ping:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ ping 192.168.0.2<br>PING 192.168.0.2 (192.168.0.2) 56(84) bytes of data.<br>64 bytes from 192.168.0.2: icmp_seq=1 ttl=63 time=0.921 ms<br>64 bytes from 192.168.0.2: icmp_seq=2 ttl=63 time=0.888 ms<br>64 bytes from 192.168.0.2: icmp_seq=3 ttl=63 time=0.990 ms<br>64 bytes from 192.168.0.2: icmp_seq=4 ttl=63 time=0.916 ms<br>^C<br>--- 192.168.0.2 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3004ms<br>rtt min/avg/max/mdev = 0.888/0.928/0.990/0.037 ms<br>[usuario@bravo ~]$ ping 192.168.0.3<br>PING 192.168.0.3 (192.168.0.3) 56(84) bytes of data.<br>64 bytes from 192.168.0.3: icmp_seq=1 ttl=63 time=0.372 ms<br>64 bytes from 192.168.0.3: icmp_seq=2 ttl=63 time=0.869 ms<br>64 bytes from 192.168.0.3: icmp_seq=3 ttl=63 time=0.939 ms<br>^C<br>--- 192.168.0.3 ping statistics ---<br>3 packets transmitted, 3 received, 0% packet loss, time 2053ms<br>rtt min/avg/max/mdev = 0.372/0.726/0.939/0.252 ms<br>[usuario@bravo ~]$ <br></code></pre>
+<p>Permitir ssh desde bravo a la LAN:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A FORWARD -s 172.16.0.200/16 -d 192.168.0.0/24 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -d 172.16.0.200/16 -s 192.168.0.0/24 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT<br></code></pre>
+<p>ssh desde bravo a la LAN:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ ssh ubuntu@192.168.0.2<br>The authenticity of host '192.168.0.2 (192.168.0.2)' can't be established.<br>ED25519 key fingerprint is SHA256:z9xxpXd5midX9yWZZYnriMe0GiGsB6EyvICFXTngapc.<br>This key is not known by any other names<br>Are you sure you want to continue connecting (yes/no/[fingerprint])? yes<br>Warning: Permanently added '192.168.0.2' (ED25519) to the list of known hosts.<br>ubuntu@192.168.0.2's password: <br>Welcome to Ubuntu 20.04.5 LTS (GNU/Linux 5.10.0-21-amd64 x86_64)<br><br> * Documentation:  https://help.ubuntu.com<br> * Management:     https://landscape.canonical.com<br> * Support:        https://ubuntu.com/advantage<br>Last login: Tue Feb 14 09:39:47 2023 from 192.168.0.1<br>ubuntu@charlie:~$ <br></code></pre>
+<h3 id="desde-cualquier-m%C3%A1quina-de-la-lan-se-puede-conectar-por-ssh-a-la-m%C3%A1quina-bravo." tabindex="-1">Desde cualquier máquina de la LAN se puede conectar por ssh a la máquina Bravo.</h3>
+<p>Las reglas usadas son las siguientes:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A FORWARD -s 192.168.0.0/24 -d 172.16.0.200/16 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -s 172.16.0.200/16 -d 192.168.0.0/24 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT</code></pre>
+<p>Me conecto desde charlie a bravo:</p>
+<pre class="language-txt"><code class="language-txt">ubuntu@charlie:~$ ssh usuario@172.16.0.200<br>Last login: Sun Mar  5 12:45:52 2023 from 172.16.0.1<br>[usuario@bravo ~]$ <br></code></pre>
+<p>Me conecto desde delta a bravo:</p>
+<pre class="language-txt"><code class="language-txt">ubuntu@delta:~$ ssh usuario@172.16.0.200<br>The authenticity of host '172.16.0.200 (172.16.0.200)' can't be established.<br>ECDSA key fingerprint is SHA256:LB+A+mITUMpM9cur6VRckSO/0uVzUYjPGAcNUopJwZ0.<br>Are you sure you want to continue connecting (yes/no/[fingerprint])? yes<br>Warning: Permanently added '172.16.0.200' (ECDSA) to the list of known hosts.<br>Last login: Sun Mar  5 12:46:44 2023 from 192.168.0.2<br>[usuario@bravo ~]$ <br></code></pre>
+<h3 id="configura-la-m%C3%A1quina-alfa-para-que-las-m%C3%A1quinas-de-lan-y-dmz-puedan-acceder-al-exterior." tabindex="-1">Configura la máquina Alfa para que las máquinas de LAN y DMZ puedan acceder al exterior.</h3>
+<p>Configuración para que la LAN salga al exterior:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o ens3 -j MASQUERADE<br>root@alfa:/home/usuario# iptables -A FORWARD -i br0 -o ens3 -p icmp -m icmp --icmp-type echo-request -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -i ens3 -o br0 -p icmp -m icmp --icmp-type echo-reply -j ACCEPT</code></pre>
+<p>Prueba de que funciona correctamente desde la LAN:</p>
+<pre class="language-txt"><code class="language-txt">ubuntu@delta:~$ ping 8.8.8.8<br>PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.<br>64 bytes from 8.8.8.8: icmp_seq=1 ttl=110 time=40.6 ms<br>64 bytes from 8.8.8.8: icmp_seq=2 ttl=110 time=41.0 ms<br>64 bytes from 8.8.8.8: icmp_seq=3 ttl=110 time=40.9 ms<br>64 bytes from 8.8.8.8: icmp_seq=4 ttl=110 time=40.9 ms<br>^C<br>--- 8.8.8.8 ping statistics ---<br>4 packets transmitted, 4 received, 0% packet loss, time 3005ms<br>rtt min/avg/max/mdev = 40.614/40.854/41.031/0.152 ms</code></pre>
+<p>Reglas para que la DMZ salga al exterior:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -t nat -A POSTROUTING -s 172.16.0.0/16 -o ens3 -j MASQUERADE<br>root@alfa:/home/usuario# iptables -A FORWARD -i ens4 -o ens3 -p icmp -m icmp --icmp-type echo-request -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -i ens3 -o ens4 -p icmp -m icmp --icmp-type echo-reply -j ACCEPT</code></pre>
+<p>Prueba de que funciona correctamente desde la DMZ:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ ping 8.8.8.8<br>PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.<br>64 bytes from 8.8.8.8: icmp_seq=1 ttl=110 time=40.8 ms<br>64 bytes from 8.8.8.8: icmp_seq=2 ttl=110 time=41.1 ms<br>64 bytes from 8.8.8.8: icmp_seq=3 ttl=110 time=41.7 ms<br>^C<br>--- 8.8.8.8 ping statistics ---<br>3 packets transmitted, 3 received, 0% packet loss, time 2003ms<br>rtt min/avg/max/mdev = 40.762/41.189/41.672/0.373 ms<br></code></pre>
+<h3 id="las-m%C3%A1quinas-de-la-lan-pueden-hacer-ping-al-exterior-y-navegar." tabindex="-1">Las máquinas de la LAN pueden hacer ping al exterior y navegar.</h3>
+<p>Primero para que pueda navegar debe resolver correctamente las direcciones dns, entonces tendremos que permitir el tráfico dns en nuestro escenario:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A INPUT -p udp --sport 53 -m state --state ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -t nat -A PREROUTING -p udp -i ens3 --dport 53 -j DNAT --to 192.168.0.2<br>root@alfa:/home/usuario# iptables -A FORWARD -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -p udp --sport 53 -m state --state ESTABLISHED -j ACCEPT</code></pre>
+<p>En el apartado anterior hemos configurado el ping, ahora configuraremos que pueda navegar en el exterior:</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A FORWARD -i br0 -o ens3 -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -i ens3 -o br0 -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -i br0 -o ens3 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -i ens3 -o br0 -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT</code></pre>
+<p>Prueba desde charlie:</p>
+<pre class="language-txt"><code class="language-txt">ubuntu@charlie:~$ curl google.es<br>&lt;HTML>&lt;HEAD>&lt;meta http-equiv="content-type" content="text/html;charset=utf-8"><br>&lt;TITLE>301 Moved&lt;/TITLE>&lt;/HEAD>&lt;BODY><br>&lt;H1>301 Moved&lt;/H1><br>The document has moved<br>&lt;A HREF="http://www.google.es/">here&lt;/A>.<br>&lt;/BODY>&lt;/HTML></code></pre>
+<p>Prueba desde delta:</p>
+<pre class="language-txt"><code class="language-txt">ubuntu@delta:~$ curl google.es<br>&lt;HTML>&lt;HEAD>&lt;meta http-equiv="content-type" content="text/html;charset=utf-8"><br>&lt;TITLE>301 Moved&lt;/TITLE>&lt;/HEAD>&lt;BODY><br>&lt;H1>301 Moved&lt;/H1><br>The document has moved<br>&lt;A HREF="http://www.google.es/">here&lt;/A>.<br>&lt;/BODY>&lt;/HTML></code></pre>
+<h3 id="la-m%C3%A1quina-bravo-puede-navegar.-instala-un-servidor-web%2C-un-servidor-ftp-y-un-servidor-de-correos-si-no-los-tienes-a%C3%BAn." tabindex="-1">La máquina Bravo puede navegar. Instala un servidor web, un servidor ftp y un servidor de correos si no los tienes aún.</h3>
+<p>Usaré delta para el servidor de correos ya que tiene instalado un servidor de correos.</p>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -A FORWARD -i ens4 -o ens3 -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -i ens3 -o ens4 -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -i ens4 -o ens3 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -i ens3 -o ens4 -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT</code></pre>
+<p>Pruebo de que bravo puede navegar:</p>
+<pre class="language-txt"><code class="language-txt">[usuario@bravo ~]$ curl google.es<br>&lt;HTML>&lt;HEAD>&lt;meta http-equiv="content-type" content="text/html;charset=utf-8"><br>&lt;TITLE>301 Moved&lt;/TITLE>&lt;/HEAD>&lt;BODY><br>&lt;H1>301 Moved&lt;/H1><br>The document has moved<br>&lt;A HREF="http://www.google.es/">here&lt;/A>.<br>&lt;/BODY>&lt;/HTML></code></pre>
+<h3 id="configura-la-m%C3%A1quina-alfa-para-que-los-servicios-web-y-ftp-sean-accesibles-desde-el-exterior." tabindex="-1">Configura la máquina Alfa para que los servicios web y ftp sean accesibles desde el exterior.</h3>
+<pre class="language-txt"><code class="language-txt">root@alfa:/home/usuario# iptables -t nat -A PREROUTING -p tcp -i ens3 --dport 80 -j DNAT --to 172.16.0.200<br>root@alfa:/home/usuario# iptables -A FORWARD -i ens3 -o ens4 -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -i ens4 -o ens3 -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -t nat -A PREROUTING -p tcp -i ens3 --dport 21 -j DNAT --to 172.16.0.200<br>root@alfa:/home/usuario# iptables -A FORWARD -i ens3 -o ens4 -p tcp --dport 21 -m state --state NEW,ESTABLISHED -j ACCEPT<br>root@alfa:/home/usuario# iptables -A FORWARD -i ens4 -o ens3 -p tcp --sport 21 -m state --state ESTABLISHED -j ACCEPT</code></pre>
+<p>Prueba de que es accesible desde el exterior el servidor web:</p>
+<pre class="language-txt"><code class="language-txt">alemd@debian:~$ curl 172.22.200.13<br>&lt;!doctype html><br>&lt;html lang="en" class="no-js"><br>&lt;head><br>    &lt;meta charset="utf-8"><br>    &lt;meta http-equiv="x-ua-compatible" content="ie=edge"><br>    &lt;meta name="viewport" content="width=device-width, initial-scale=1"><br>    &lt;link rel="canonical" href="https://html5-templates.com/" /><br>    &lt;title>Bootstrap Template With Sticky Menu&lt;/title><br>    &lt;meta name="description" content="Simplified Bootstrap template with sticky menu"><br>    &lt;link href="css/bootstrap.min.css" rel="stylesheet"><br>    &lt;link href="css/sticky-menu.css" rel="stylesheet"><br>&lt;/head><br>&lt;body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top"><br>    &lt;nav class="navbar navbar-default navbar-fixed-top" role="navigation"><br>        &lt;div class="container"><br>            &lt;div class="navbar-header page-scroll"><br>                &lt;button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"><br>                    &lt;span class="sr-only">Toggle menu&lt;/span><br>                    &lt;span class="icon-bar">&lt;/span><br>                    &lt;span class="icon-bar">&lt;/span><br>                    &lt;span class="icon-bar">&lt;/span><br>                &lt;/button><br>                &lt;a class="navbar-brand page-scroll" href="#page-top">Welcome&lt;/a><br>            &lt;/div><br><br>            &lt;div class="collapse navbar-collapse navbar-ex1-collapse"><br>                &lt;ul class="nav navbar-nav"><br>                    &lt;li class="hidden"><br>                        &lt;a class="page-scroll" href="#page-top">&lt;/a><br>                    &lt;/li><br>                    &lt;li><br>                        &lt;a class="page-scroll" href="#about">About&lt;/a><br>                    &lt;/li><br>                    &lt;li><br>                        &lt;a class="page-scroll" href="#whatwedo">What We Do&lt;/a><br>                    &lt;/li><br>                    &lt;li><br>                        &lt;a class="page-scroll" href="#contact">Contact&lt;/a><br>                    &lt;/li><br>                &lt;/ul><br>            &lt;/div>	&lt;!-- .navbar-collapse --><br>        &lt;/div>		&lt;!-- .container --><br>    &lt;/nav><br>    &lt;!-- Welcome   --><br>    &lt;section id="welcome" class="welcome-section"><br>        &lt;div class="container"><br>            &lt;div class="row"><br>                &lt;div class="col-lg-12"><br>                    &lt;h1>Curso: Introducción Docker&lt;/h1><br>                    &lt;h2>Aplicación escrita en PHP&lt;/h2><br>                    &lt;p>Fecha: &lt;strong><br>                        05/03/2023                    &lt;/strong>&lt;/p><br>                    &lt;a class="btn btn-primary page-scroll" href="#about">Click To Scroll Down!&lt;/a><br>                &lt;/div><br>            &lt;/div><br>        &lt;/div><br>    &lt;/section><br><br>    &lt;!-- About --><br>    &lt;section id="about" class="about-section"><br>        &lt;div class="container"><br>            &lt;div class="row"><br>                &lt;div class="col-lg-12"><br>                    &lt;h1>About&lt;/h1><br>                &lt;/div><br>            &lt;/div><br>        &lt;/div><br>    &lt;/section><br><br>    &lt;!-- What we do Section --><br>    &lt;section id="whatwedo" class="whatwedo-section"><br>        &lt;div class="container"><br>            &lt;div class="row"><br>                &lt;div class="col-lg-12"><br>                    &lt;h1>What We Do&lt;/h1><br>                &lt;/div><br>            &lt;/div><br>        &lt;/div><br>    &lt;/section><br><br>    &lt;!-- Contact Section --><br>    &lt;section id="contact" class="contact-section"><br>        &lt;div class="container"><br>            &lt;div class="row"><br>                &lt;div class="col-lg-12"><br>                    &lt;h1>Contact Section&lt;/h1><br>                &lt;/div><br>            &lt;/div><br>        &lt;/div><br>    &lt;/section><br>	<br>	&lt;a id="back2Top" title="Back to top" href="#">&amp;#10148;&lt;/a><br>	<br>    &lt;!-- jQuery --><br>    &lt;script src="js/jquery.js">&lt;/script><br><br>    &lt;!-- Bootstrap Core JavaScript --><br>    &lt;script src="js/bootstrap.min.js">&lt;/script><br><br>    &lt;!-- Scrolling Nav JavaScript --><br>    &lt;script src="js/jquery.easing.min.js">&lt;/script><br>    &lt;script src="js/sticky-menu.js">&lt;/script><br><br>&lt;/body><br><br>&lt;/html></code></pre>
+<h3 id="el-servidor-web-y-el-servidor-ftp-deben-ser-accesibles-desde-la-lan-y-desde-el-exterior." tabindex="-1">El servidor web y el servidor ftp deben ser accesibles desde la LAN y desde el exterior.</h3>
+<h3 id="el-servidor-de-correos-s%C3%B3lo-debe-ser-accesible-desde-la-lan." tabindex="-1">El servidor de correos sólo debe ser accesible desde la LAN.</h3>
+<h3 id="en-la-m%C3%A1quina-charlie-instala-un-servidor-mysql-si-no-lo-tiene-a%C3%BAn.-a-este-servidor-se-puede-acceder-desde-la-dmz%2C-pero-no-desde-el-exterior." tabindex="-1">En la máquina Charlie instala un servidor mysql si no lo tiene aún. A este servidor se puede acceder desde la DMZ, pero no desde el exterior.</h3>
+<h3 id="evita-ataques-dos-por-icmp-flood%2C-limitando-el-n%C3%BAmero-de-peticiones-por-segundo-desde-una-misma-ip." tabindex="-1">Evita ataques DoS por ICMP Flood, limitando el número de peticiones por segundo desde una misma IP.</h3>
+<h3 id="evita-ataques-dos-por-syn-flood." tabindex="-1">Evita ataques DoS por SYN Flood.</h3>
+<h3 id="evita-que-realicen-escaneos-de-puertos-a-alfa." tabindex="-1">Evita que realicen escaneos de puertos a Alfa.</h3>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
+
+        </div>
+            <p class="uppercase text-xs mt-6">Post anterior.</p>
+
+            <p class="font-bold">
+                <a href="/post/practica:-kubernetes./">Práctica: Kubernetes.</a>
+            </p>
+        
+    </div>
+
+    </main>
+    <footer class="bg-gray-900 pb-10">
+  <p class="block text-center text-sm mb-6">
+    Built by
+    <a target="_blank" href="https://github.com/reeseschultz">
+      Reese Schultz
+    </a>
+  </p>
+
+  <a class="block text-center text-sm" href="/privacy-policy">Privacy Policy</a>
+</footer>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="/assets/main.bundle.js"></script>
+  </body>
+</html>
