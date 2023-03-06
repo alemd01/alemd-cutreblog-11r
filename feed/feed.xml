@@ -5,11 +5,44 @@
 	
 	<link href="https://reeseschultz.github.io/feed/feed.xml" rel="self"/>
 	<link href="https://reeseschultz.github.io"/>
-	<updated>2023-03-01T00:00:00Z</updated>
+	<updated>2023-03-06T00:00:00Z</updated>
 	<id>https://example.com/</id>
 	<author> 
 		<name>Reese Schultz</name>
 	</author>
+	
+	<entry>
+		<title>Práctica: Cluster de Alta Disponibilidad</title>
+		<link href="https://reeseschultz.github.io/post/practica:-cluster-de-alta-disponibilidad/"/>
+		<updated>2023-03-06T00:00:00Z</updated>
+		<id>https://reeseschultz.github.io/post/practica:-cluster-de-alta-disponibilidad/</id>
+		<content type="html">&lt;h3 id=&quot;cluster-de-ha-activo-pasivo.&quot; tabindex=&quot;-1&quot;&gt;Cluster de HA activo-pasivo.&lt;/h3&gt;
+&lt;h4 id=&quot;1.-utiliza-el-vagrantfile-la-receta-ansible-del-escenario-7%3A-07-ha-ipfailover-apache2%2Bdrbd%2Bgfs2-para-crear-un-cl%C3%BAster-de-alta-disponibilidad-activo-pasivo.-nota%3A-la-receta-instala-apache2-%2B-php.&quot; tabindex=&quot;-1&quot;&gt;1. Utiliza el Vagrantfile la receta ansible del escenario 7: 07-HA-IPFailover-Apache2+DRBD+GFS2 para crear un clúster de alta disponibilidad activo-pasivo. Nota: La receta instala apache2 + php.&lt;/h4&gt;
+&lt;h4 id=&quot;2.-comprueba-que-los-recursos-est%C3%A1n-configurados-de-manera-adecuada%2C-configura-tu-host-para-que-use-el-servidor-dns-y-comprueba-que-puedes-acceder-de-forma-adecuada-a-la-p%C3%A1gina.&quot; tabindex=&quot;-1&quot;&gt;2. Comprueba que los recursos están configurados de manera adecuada, configura tu host para que use el servidor DNS y comprueba que puedes acceder de forma adecuada a la página.&lt;/h4&gt;
+&lt;h4 id=&quot;3.-instala-en-los-dos-nodos-un-galera-mariadb.&quot; tabindex=&quot;-1&quot;&gt;3. Instala en los dos nodos un Galera MariaDB.&lt;/h4&gt;
+&lt;h4 id=&quot;4.-instala-wordpress-en-el-cl%C3%BAster.&quot; tabindex=&quot;-1&quot;&gt;4. Instala Wordpress en el clúster.&lt;/h4&gt;
+&lt;hr /&gt;
+&lt;p&gt;Una vez levantado el escenario con vagrant y hayamos pasado la receta de ansible, podemos ver que se ha configurado el cluster y se han activado los servicios:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@nodo1:/home/vagrant# pcs status&lt;br /&gt;Cluster name: mycluster&lt;br /&gt;Cluster Summary:&lt;br /&gt;  * Stack: corosync&lt;br /&gt;  * Current DC: nodo1 (version 2.0.5-ba59be7122) - partition with quorum&lt;br /&gt;  * Last updated: Mon Mar  6 11:54:13 2023&lt;br /&gt;  * Last change:  Mon Mar  6 11:34:41 2023 by root via cibadmin on nodo1&lt;br /&gt;  * 2 nodes configured&lt;br /&gt;  * 5 resource instances configured&lt;br /&gt;&lt;br /&gt;Node List:&lt;br /&gt;  * Online: [ nodo1 nodo2 ]&lt;br /&gt;&lt;br /&gt;Full List of Resources:&lt;br /&gt;  * VirtualIP	(ocf::heartbeat:IPaddr2):	 Started nodo1&lt;br /&gt;  * WebSite	(ocf::heartbeat:apache):	 Started nodo1&lt;br /&gt;  * Clone Set: WebData-clone [WebData] (promotable):&lt;br /&gt;    * Masters: [ nodo1 ]&lt;br /&gt;    * Slaves: [ nodo2 ]&lt;br /&gt;  * WebFS	(ocf::heartbeat:Filesystem):	 Started nodo1&lt;br /&gt;&lt;br /&gt;Daemon Status:&lt;br /&gt;  corosync: active/enabled&lt;br /&gt;  pacemaker: active/enabled&lt;br /&gt;  pcsd: active/enabled&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Configuramos el dns de nuestra máquina con la ip interna que tiene la máquina dns del escenario(no la ip por defecto de vagrant) y comprobamos que podemos acceder a la página:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-AD.1.png&quot; alt=&quot;SRI-AD.1.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Si apagamos el nodo1, nos visualizará el nodo2:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://reeseschultz.github.io/img/SRI-AD.2.png&quot; alt=&quot;SRI-AD.2.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Ahora procederemos a instalar en ambos nodos mariadb y ejecutaremos el script mysql_secure_installation. En el nodo 1 instalaremos el cluster, para ello pararemos la base de datos y editaremos el fichero galera:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;root@nodo1:~# systemctl stop mariadb.service&lt;br /&gt;root@nodo1:~# nano /etc/mysql/mariadb.conf.d/60-galera.cnf&lt;br /&gt;&lt;br /&gt;[galera]&lt;br /&gt;# Mandatory settings&lt;br /&gt;wsrep_on                 = ON&lt;br /&gt;wsrep_cluster_name       = &quot;MariaDB Galera Cluster&quot;&lt;br /&gt;wsrep_cluster_address    = gcomm://10.1.1.101,10.1.1.102&lt;br /&gt;binlog_format            = row&lt;br /&gt;default_storage_engine   = InnoDB&lt;br /&gt;innodb_autoinc_lock_mode = 2&lt;br /&gt;&lt;br /&gt;# Allow server to accept connections on all interfaces.&lt;br /&gt;bind-address = 0.0.0.0&lt;br /&gt;wsrep-NODE-address=10.1.1.101&lt;br /&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;cluster-de-ha-activo-activo.&quot; tabindex=&quot;-1&quot;&gt;Cluster de HA activo-activo.&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Siguiendo las instrucciones que encuentras en el escenario 7: 07-HA-IPFailover-Apache2+DRBD+GFS2 convierte el clúster en activo-activo. Es necesario instalar el fencing para que el clúster funcione de manera adecuada. Nota: Tienes que tener en cuenta que se va a formatear de nuevo el drbd, por lo que se va a perder el wordpress. Si quieres puedes guardarlo en otro directorio, para luego recuperarlo.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Una vez que el clúster este configurado como activo-activo y WordPress esté funcionado, configura un método de balanceo de carga:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Balanceo por DNS: Podríamos quitar el recurso VirtualIP y hacer un balanceo de carga por DNS como vimos en el escenario 1 (1 punto) o el escenario 2 (2 puntos).&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Añadir un balanceador de carga HAProxy (que balancee la carga entre los dos servidores web) (2 puntos).&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Podrías instalar un HAProxy en los dos nodos y crear un recurso del clúster para que los controle. Para ello habría que crear un recurso con pacemaker para controlar los balanceadores de carga (el recurso se llama systemd:happroxy). Puedes seguir de base el artículo How to setup highly available Pacemaker/Corosync cluster with HAProxy load balancer (3 puntos).&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2 id=&quot;documento-realizado-por%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Documento realizado por:&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;✒️ &lt;strong&gt;Alejandro Montes Delgado&lt;/strong&gt; - &lt;em&gt;2º ASIR&lt;/em&gt;&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>Cortafuegos III: Perimetral sobre escenario.</title>
@@ -4017,6 +4050,10 @@ Primero hay que crear un repositorio en Github, después hay que crear un direct
 &lt;p&gt;Ahora entramos en RMAN:&lt;/p&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;alemd@debian:~$ rman target=/ catalog USUARIO_RMAN&lt;br /&gt;&lt;br /&gt;Recovery Manager: Release 19.0.0.0.0 - Production on Sat Mar 4 11:52:40 2023&lt;br /&gt;Version 19.3.0.0.0&lt;br /&gt;&lt;br /&gt;Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.&lt;br /&gt;&lt;br /&gt;connected to target database: ORCLCDB (not mounted)&lt;br /&gt;recovery catalog database Password: &lt;br /&gt;RMAN-00571: ===========================================================&lt;br /&gt;RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============&lt;br /&gt;RMAN-00571: ===========================================================&lt;br /&gt;RMAN-00554: initialization of internal recovery manager package failed&lt;br /&gt;RMAN-04004: error from recovery catalog database: ORA-01033: inicializacion o cierre de ORACLE en curso&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Como vemos se ha borrado el fichero de control donde se encontraba nuestro catálogo. Tenemos que decirle a RMAN que restaure los controlfile desde los ficheros de la copia de seguridad:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;RMAN&gt; RESTORE CONTROLFILE FROM &#39;/opt/oracle/product/19c/dbhome_1/dbs/c-2889830663-20230303-00&#39;;&lt;br /&gt;&lt;br /&gt;Starting restore at 06-MAR-23&lt;br /&gt;using channel ORA_DISK_1&lt;br /&gt;&lt;br /&gt;channel ORA_DISK_1: restoring control file&lt;br /&gt;channel ORA_DISK_1: restore complete, elapsed time: 00:00:01&lt;br /&gt;output file name=/opt/oracle/oradata/ORCLCDB/control01.ctl&lt;br /&gt;output file name=/opt/oracle/oradata/ORCLCDB/control02.ctl&lt;br /&gt;Finished restore at 06-MAR-23&lt;br /&gt;&lt;br /&gt;RMAN&gt; &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora montamos la base de datos:&lt;/p&gt;
+&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;RMAN&gt; RESTORE CONTROLFILE FROM &#39;/opt/oracle/product/19c/dbhome_1/dbs/c-2889830663-20230303-00&#39;;&lt;br /&gt;&lt;br /&gt;Starting restore at 06-MAR-23&lt;br /&gt;using channel ORA_DISK_1&lt;br /&gt;&lt;br /&gt;channel ORA_DISK_1: restoring control file&lt;br /&gt;channel ORA_DISK_1: restore complete, elapsed time: 00:00:01&lt;br /&gt;output file name=/opt/oracle/oradata/ORCLCDB/control01.ctl&lt;br /&gt;output file name=/opt/oracle/oradata/ORCLCDB/control02.ctl&lt;br /&gt;Finished restore at 06-MAR-23&lt;br /&gt;&lt;br /&gt;RMAN&gt; &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Por último restauramos la base de datos:&lt;/p&gt;
 &lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&quot;6.-documenta-el-empleo-de-las-herramientas-de-copia-de-seguridad-y-restauraci%C3%B3n-de-postgres.&quot; tabindex=&quot;-1&quot;&gt;6. Documenta el empleo de las herramientas de copia de seguridad y restauración de Postgres.&lt;/h3&gt;
 &lt;h3 id=&quot;7.-documenta-el-empleo-de-las-herramientas-de-copia-de-seguridad-y-restauraci%C3%B3n-de-mysql.&quot; tabindex=&quot;-1&quot;&gt;7. Documenta el empleo de las herramientas de copia de seguridad y restauración de MySQL.&lt;/h3&gt;
