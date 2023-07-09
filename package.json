@@ -1,0 +1,20 @@
+{
+  "name": "alemd-cutreblog-11r",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alemd01/alemd-cutreblog-11r.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alemd01/alemd-cutreblog-11r/issues"
+  },
+  "homepage": "https://github.com/alemd01/alemd-cutreblog-11r#readme"
+}
