@@ -1,0 +1,35 @@
+<p>#—
+#layout: post
+#title: “Práctica: Cluster de Alta Disponibilidad”
+#excerpt: En esta práctica vamos a configurar un cluster en alta disponibilidad.
+#date: 2023-03-06
+#updatedDate: 2023-03-06
+#tags:</p>
+<h1 id="--post" tabindex="-1">- post</h1>
+<h1 id="--sri" tabindex="-1">- SRI</h1>
+<p>#—</p>
+<h3 id="cluster-de-ha-activo-pasivo." tabindex="-1">Cluster de HA activo-pasivo.</h3>
+<h4 id="1.-utiliza-el-vagrantfile-la-receta-ansible-del-escenario-7%3A-07-ha-ipfailover-apache2%2Bdrbd%2Bgfs2-para-crear-un-cl%C3%BAster-de-alta-disponibilidad-activo-pasivo.-nota%3A-la-receta-instala-apache2-%2B-php." tabindex="-1">1. Utiliza el Vagrantfile la receta ansible del escenario 7: 07-HA-IPFailover-Apache2+DRBD+GFS2 para crear un clúster de alta disponibilidad activo-pasivo. Nota: La receta instala apache2 + php.</h4>
+<h4 id="2.-comprueba-que-los-recursos-est%C3%A1n-configurados-de-manera-adecuada%2C-configura-tu-host-para-que-use-el-servidor-dns-y-comprueba-que-puedes-acceder-de-forma-adecuada-a-la-p%C3%A1gina." tabindex="-1">2. Comprueba que los recursos están configurados de manera adecuada, configura tu host para que use el servidor DNS y comprueba que puedes acceder de forma adecuada a la página.</h4>
+<h4 id="3.-instala-en-los-dos-nodos-un-galera-mariadb." tabindex="-1">3. Instala en los dos nodos un Galera MariaDB.</h4>
+<h4 id="4.-instala-wordpress-en-el-cl%C3%BAster." tabindex="-1">4. Instala Wordpress en el clúster.</h4>
+<hr>
+<p>Una vez levantado el escenario con vagrant y hayamos pasado la receta de ansible, podemos ver que se ha configurado el cluster y se han activado los servicios:</p>
+<pre class="language-txt"><code class="language-txt">root@nodo1:/home/vagrant# pcs status<br>Cluster name: mycluster<br>Cluster Summary:<br>  * Stack: corosync<br>  * Current DC: nodo1 (version 2.0.5-ba59be7122) - partition with quorum<br>  * Last updated: Mon Mar  6 11:54:13 2023<br>  * Last change:  Mon Mar  6 11:34:41 2023 by root via cibadmin on nodo1<br>  * 2 nodes configured<br>  * 5 resource instances configured<br><br>Node List:<br>  * Online: [ nodo1 nodo2 ]<br><br>Full List of Resources:<br>  * VirtualIP	(ocf::heartbeat:IPaddr2):	 Started nodo1<br>  * WebSite	(ocf::heartbeat:apache):	 Started nodo1<br>  * Clone Set: WebData-clone [WebData] (promotable):<br>    * Masters: [ nodo1 ]<br>    * Slaves: [ nodo2 ]<br>  * WebFS	(ocf::heartbeat:Filesystem):	 Started nodo1<br><br>Daemon Status:<br>  corosync: active/enabled<br>  pacemaker: active/enabled<br>  pcsd: active/enabled<br></code></pre>
+<p>Configuramos el dns de nuestra máquina con la ip interna que tiene la máquina dns del escenario(no la ip por defecto de vagrant) y comprobamos que podemos acceder a la página:</p>
+<p><img src="/img/SRI-AD.1.png" alt="SRI-AD.1.png"></p>
+<p>Si apagamos el nodo1, nos visualizará el nodo2:</p>
+<p><img src="/img/SRI-AD.2.png" alt="SRI-AD.2.png"></p>
+<p>Ahora procederemos a instalar en ambos nodos mariadb y ejecutaremos el script mysql_secure_installation. En el nodo 1 instalaremos el cluster, para ello pararemos la base de datos y editaremos el fichero galera:</p>
+<pre class="language-txt"><code class="language-txt">root@nodo1:~# systemctl stop mariadb.service<br>root@nodo1:~# nano /etc/mysql/mariadb.conf.d/60-galera.cnf<br><br>[galera]<br># Mandatory settings<br>wsrep_on                 = ON<br>wsrep_cluster_name       = "MariaDB Galera Cluster"<br>wsrep_cluster_address    = gcomm://10.1.1.101,10.1.1.102<br>binlog_format            = row<br>default_storage_engine   = InnoDB<br>innodb_autoinc_lock_mode = 2<br><br># Allow server to accept connections on all interfaces.<br>bind-address = 0.0.0.0<br>wsrep-NODE-address=10.1.1.101<br></code></pre>
+<h3 id="cluster-de-ha-activo-activo." tabindex="-1">Cluster de HA activo-activo.</h3>
+<p><strong>Siguiendo las instrucciones que encuentras en el escenario 7: 07-HA-IPFailover-Apache2+DRBD+GFS2 convierte el clúster en activo-activo. Es necesario instalar el fencing para que el clúster funcione de manera adecuada. Nota: Tienes que tener en cuenta que se va a formatear de nuevo el drbd, por lo que se va a perder el wordpress. Si quieres puedes guardarlo en otro directorio, para luego recuperarlo.</strong></p>
+<p><strong>Una vez que el clúster este configurado como activo-activo y WordPress esté funcionado, configura un método de balanceo de carga:</strong></p>
+<ul>
+<li><strong>Balanceo por DNS: Podríamos quitar el recurso VirtualIP y hacer un balanceo de carga por DNS como vimos en el escenario 1 (1 punto) o el escenario 2 (2 puntos).</strong></li>
+<li><strong>Añadir un balanceador de carga HAProxy (que balancee la carga entre los dos servidores web) (2 puntos).</strong></li>
+<li><strong>Podrías instalar un HAProxy en los dos nodos y crear un recurso del clúster para que los controle. Para ello habría que crear un recurso con pacemaker para controlar los balanceadores de carga (el recurso se llama systemd:happroxy). Puedes seguir de base el artículo How to setup highly available Pacemaker/Corosync cluster with HAProxy load balancer (3 puntos).</strong></li>
+</ul>
+<hr>
+<h2 id="documento-realizado-por%3A" tabindex="-1"><strong>Documento realizado por:</strong></h2>
+<p>✒️ <strong>Alejandro Montes Delgado</strong> - <em>2º ASIR</em></p>
